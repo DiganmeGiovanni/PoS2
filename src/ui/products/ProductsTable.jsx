@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Paginator from './../components/paginated_table/Paginator';
 import { Link } from "react-router-dom";
 
-const ProductsTable = ({ products, activePage, totalPages, navCallback }) => {
+const ProductsTable = ({ products, activePage, totalPages, navCallback, onFilterNameChange }) => {
   const makeTableBody = () => {
     if (products.length === 0) {
       return (
@@ -52,6 +52,20 @@ const ProductsTable = ({ products, activePage, totalPages, navCallback }) => {
               <th className="text-right">Cantidad vendida</th>
               <th>&nbsp;</th>
             </tr>
+            <tr>
+              <th/>
+              <th>
+                <input type="text"
+                       className="form-control"
+                       onChange={ onFilterNameChange }
+                />
+              </th>
+              <th/>
+              <th/>
+              <th/>
+              <th/>
+              <th/>
+            </tr>
           </thead>
           <tbody>{ makeTableBody() }</tbody>
         </table>
@@ -71,6 +85,7 @@ ProductsTable.propTypes = {
   activePage: PropTypes.number.isRequired,
   totalPages: PropTypes.number.isRequired,
   navCallback: PropTypes.func.isRequired,
+  onFilterNameChange: PropTypes.func.isRequired
 };
 
 export default ProductsTable;

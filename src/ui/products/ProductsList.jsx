@@ -41,6 +41,11 @@ class ProductsList extends React.Component {
     PoSActions.products.setEndDate(endDate);
   }
 
+  // noinspection JSMethodCanBeStatic
+  onFilterNameChange(e) {
+    PoSActions.products.filterByName(e.target.value);
+  }
+
   navToPage(targetPage) {
     PoSActions.products.page(
       targetPage,
@@ -84,6 +89,7 @@ class ProductsList extends React.Component {
           navCallback={this.navToPage}
           activePage={this.state.pageIdx}
           totalPages={this.state.pagesCount}
+          onFilterNameChange={ this.onFilterNameChange }
         />
       </div>
     );

@@ -33,6 +33,12 @@ const PoSActions = {
         type: ActionTypes.PRODUCTS.SET_END_DATE,
         endDate
       });
+    },
+    filterByName(name) {
+      PosDispatcher.dispatch({
+        type: ActionTypes.PRODUCTS.FILTER_BY_NAME,
+        name
+      });
     }
   },
   provider: {

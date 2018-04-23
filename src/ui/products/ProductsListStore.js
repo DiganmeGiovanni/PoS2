@@ -15,6 +15,9 @@ class ProductsListStore extends EventEmitter {
       pagesCount: 0,
 
       endDate: new Date(),
+      filters: {
+        name: '',
+      }
     };
   }
 
@@ -28,6 +31,11 @@ class ProductsListStore extends EventEmitter {
 
   removeChangeListener(callback) {
     this.removeListener(this.CHANGE_EVENT, callback);
+  }
+
+  filterByName(name) {
+    this.activePage.filters.name = name;
+    this.page(1, 20);
   }
 
   setEndDate(date) {
@@ -84,6 +92,9 @@ class ProductsListStore extends EventEmitter {
         ) SALES\
         ON SALES.product_id = PROD.id\
     ';
+    sql = this.appendConditions(sql);
+
+    // Prepare count sql
     let countSql = `SELECT COUNT(*) AS count FROM (${ sql }) SQ1`;
 
     // Append offset and limit
@@ -93,7 +104,7 @@ class ProductsListStore extends EventEmitter {
     sequelize
       .query(countSql, {
         type: Sequelize.QueryTypes.SELECT,
-        replacements: { date: new Date() }
+        replacements: { date: new Date(), name: '%' + this.activePage.filters.name + '%' }
       })
       .then(result => {
         this.activePage.pagesCount = Math.ceil(result[0].count / pageSize);
@@ -103,7 +114,8 @@ class ProductsListStore extends EventEmitter {
           replacements: {
             offset: (pageNumber - 1) * pageSize,
             limit: pageSize,
-            date: new Date()
+            date: new Date(),
+            name: '%' + this.activePage.filters.name + '%'
           }
         })
         .then(products => {
@@ -120,6 +132,15 @@ class ProductsListStore extends EventEmitter {
       });
   }
 
+  appendConditions(sql) {
+    if (this.activePage.filters.name === '') {
+      return sql;
+    }
+
+    sql += " WHERE PROD.name LIKE :name ";
+    return sql;
+  }
+
   getState() {
     return this.activePage;
   }
@@ -134,6 +155,10 @@ storeInstance.dispatchToken = PoSDispatcher.register((action) => {
 
     case ActionTypes.PRODUCTS.SET_END_DATE:
       storeInstance.setEndDate(action.endDate);
+      break;
+
+    case ActionTypes.PRODUCTS.FILTER_BY_NAME:
+      storeInstance.filterByName(action.name);
       break;
   }
 });
