@@ -21,13 +21,13 @@ const PurchaseContents = ({ contents, totalCost, totalPaid, onTotalPaidChange, e
             <td>{ inOrder.product.name }</td>
             <td className="text-right">{ inOrder.quantity }</td>
             <td className="text-center">Pieza</td>
-            <td className="text-right">
+            <td className="text-right" style={{ width: '104px'}}>
               { TextFormatter.asMoney(inOrder.price) }
             </td>
-            <td className="text-right">
+            <td className="text-right" style={{ width: '104px' }}>
               { TextFormatter.asMoney(inOrder.cost) }
             </td>
-            <td className="text-right">
+            <td className="text-right" style={{ width: '104px' }}>
               { TextFormatter.asMoney(inOrder.cost * inOrder.quantity) }
             </td>
           </tr>

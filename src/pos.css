@@ -1,9 +1,15 @@
 /*noinspection CssUnknownTarget*/
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
+html,
+body,
+.main-background {
+  background: #ecf0f1;
+}
+
 body {
-  background: #F5F5F5;
   font-family: 'Roboto', sans-serif;
+  font-size: 1.7em;
   overflow-y: auto !important;
 }
 

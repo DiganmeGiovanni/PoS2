@@ -16,15 +16,15 @@ const createWindow = async () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     icon: path.join(__dirname, 'assets/icons/png/256x256.png'),
-    width: 1150,
+    width: 1200,
     height: 864,
-    webPreferences: {
-      zoomFactor: 1.25
-    }
+    // webPreferences: {
+    //   zoomFactor: 1
+    // }
   });
 
   // and load the index.html of the app.
-  // mainWindow.setMenu(null);
+  mainWindow.setMenu(null);
   mainWindow.loadURL(`file://${__dirname}/index.html`);
 
   // Open the DevTools.
