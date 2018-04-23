@@ -87,7 +87,7 @@ class ProductsListStore extends EventEmitter {
     let countSql = `SELECT COUNT(*) AS count FROM (${ sql }) SQ1`;
 
     // Append offset and limit
-    sql += ' LIMIT :offset, :limit';
+    sql += ' ORDER BY name LIMIT :offset, :limit';
 
     // Get count
     sequelize
@@ -96,7 +96,7 @@ class ProductsListStore extends EventEmitter {
         replacements: { date: new Date() }
       })
       .then(result => {
-        this.activePage.pagesCount = Math.ceil(result.count / pageSize);
+        this.activePage.pagesCount = Math.ceil(result[0].count / pageSize);
 
         sequelize.query(sql, {
           type: Sequelize.QueryTypes.SELECT,
