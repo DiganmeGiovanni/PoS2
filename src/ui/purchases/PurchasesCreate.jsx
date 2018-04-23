@@ -72,6 +72,14 @@ class PurchasesCreate extends React.Component {
   }
 
   // noinspection JSMethodCanBeStatic
+  onTotalPaidChange(e) {
+    e.preventDefault();
+    PoSActions.purchase
+      .create
+      .changeTotalPaid(e.target.value);
+  }
+
+  // noinspection JSMethodCanBeStatic
   onSaveClicked(e) {
     e.preventDefault();
     PoSActions.purchase.create.save();
@@ -143,6 +151,8 @@ class PurchasesCreate extends React.Component {
               contents={ this.state.contents }
               totalCost={ this.state.totalCost }
               errMessage={ this.state.validationErrors.contents }
+              totalPaid={ this.state.totalPaid }
+              onTotalPaidChange={ this.onTotalPaidChange }
             />
           </div>
         </div>

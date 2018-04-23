@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TextFormatter from "../../../services/TextFormatter";
 
-const PurchaseContents = ({ contents, totalCost, errMessage }) => {
+const PurchaseContents = ({ contents, totalCost, totalPaid, onTotalPaidChange, errMessage }) => {
 
   const renderContents = () => {
     if (contents.length === 0) {
@@ -75,10 +75,31 @@ const PurchaseContents = ({ contents, totalCost, errMessage }) => {
             <td/>
             <td/>
             <td/>
-            <td/>
-            <td/>
+            <td className="text-right" colSpan="2">
+              <b>Costo total:</b>
+            </td>
             <td className="text-right text-bold">
               <b>{ TextFormatter.asMoney(totalCost) }</b>
+            </td>
+          </tr>
+          <tr>
+            <td/>
+            <td/>
+            <td/>
+            <td/>
+            <td className="text-right" colSpan="2">
+              <b>Total pagado:</b>
+            </td>
+            <td className="text-right" style={{ width: '104px'}}>
+              <input type="text"
+                     className="form-control"
+                     onChange={ onTotalPaidChange }
+                     value={ totalPaid }
+                     style={{
+                       margin: '0',
+                       textAlign: 'right'
+                     }}
+              />
             </td>
           </tr>
           </tfoot>
@@ -91,6 +112,8 @@ const PurchaseContents = ({ contents, totalCost, errMessage }) => {
 PurchaseContents.propTypes = {
   contents: PropTypes.array.isRequired,
   totalCost: PropTypes.number.isRequired,
+  totalPaid: PropTypes.number.isRequired,
+  onTotalPaidChange: PropTypes.func.isRequired,
   errMessage: PropTypes.string.isRequired
 };
 

@@ -74,6 +74,12 @@ const PoSActions = {
           amount: amount
         });
       },
+      changeTotalPaid(amount) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASE.CHANGE_TOTAL_PAID,
+          amount: amount
+        })
+      },
       save() {
         PosDispatcher.dispatch({ type: ActionTypes.PURCHASE.SAVE });
       },

@@ -21,6 +21,7 @@ class PurchaseCreateStore extends EventEmitter {
       date: new Date(),
       paymentInvestment: 0,
       paymentReinvestment: 0,
+      totalPaid: 0,
       validationErrors: {
         contents: '',
         date: '',
@@ -92,6 +93,11 @@ class PurchaseCreateStore extends EventEmitter {
 
   setRedirectAsCompleted() {
     this.state.redirectToList = false;
+  }
+
+  setTotalPaid(amount) {
+    this.state.totalPaid = amount;
+    this.emitChange();
   }
 
   save() {
@@ -222,12 +228,12 @@ class PurchaseCreateStore extends EventEmitter {
 
     let payment = this.state.paymentInvestment;
     payment += this.state.paymentReinvestment;
-    if (payment !== this.state.totalCost) {
+    if (payment !== (this.state.totalPaid * 1)) {
       formOk = false;
       this.state
         .validationErrors
-        .paymentInvestment = 'El monto pagado no coincide con el costo de la' +
-            ' compra (' + this.state.totalCost + ')';
+        .paymentInvestment = 'El monto pagado no coincide con el total' +
+            ' indicado para la compra (' + this.state.totalPaid + ')';
     } else {
       this.state.validationErrors.paymentInvestment = '';
     }
@@ -260,6 +266,10 @@ storeInstance.dispatchToken = PoSDispatcher.register((action) => {
 
     case ActionTypes.PURCHASE.CHANGE_PAYMENT_AS_REINVESTMENT:
       storeInstance.setPaymentReinvestment(action.amount);
+      break;
+
+    case ActionTypes.PURCHASE.CHANGE_TOTAL_PAID:
+      storeInstance.setTotalPaid(action.amount);
       break;
 
     case ActionTypes.PURCHASE.CHANGE_DATE:

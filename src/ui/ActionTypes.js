@@ -17,6 +17,7 @@ const ActionTypes = {
     ADD_CONTENT: 'purchase/add_content',
     CHANGE_PAYMENT_AS_REINVESTMENT: 'purchase/change_reinvestment',
     CHANGE_PAYMENT_AS_INVESTMENT: 'purchase/change_investment',
+    CHANGE_TOTAL_PAID: 'purchase/change_total_paid',
     CHANGE_DATE: 'purchase/change_date',
     SAVE: 'purchase/save',
     SET_REDIRECT_AS_COMPLETED: 'purchase/set_redirect_as_completed',
