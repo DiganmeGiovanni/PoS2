@@ -61,18 +61,24 @@ class ProductsListStore extends EventEmitter {
         ON MU.id = PROD.measurement_unit_id\
       LEFT JOIN (\
           SELECT\
-            PROD.id  AS product_id,\
-            COUNT(*) AS stock\
-          FROM existence EXI\
-          INNER JOIN purchase PUR\
-            ON PUR.id = EXI.purchase_id\
-          INNER JOIN product PROD\
-            ON PROD.id = EXI.product_id\
-          LEFT JOIN sale_has_existence SHE\
-            ON SHE.existence_id = EXI.id\
-          WHERE SHE.id IS NULL\
-          AND PUR.date <= :date\
-          GROUP BY PROD.id\
+            existence.product_id,\
+            SUM(\
+              IFNULL(\
+                CASE she.partial_quantity\
+                WHEN 0\
+                THEN 0\
+                ELSE 1 - she.partial_quantity\
+                END,\
+                1\
+              )\
+            ) AS stock\
+            FROM existence\
+              INNER JOIN purchase p\
+                ON existence.purchase_id = p.id\
+              LEFT JOIN sale_has_existence she\
+                ON existence.id = she.existence_id\
+            AND p.date < :date\
+            GROUP BY existence.product_id\
         ) EXISTENCES\
         ON EXISTENCES.product_id = PROD.id\
       LEFT JOIN (\

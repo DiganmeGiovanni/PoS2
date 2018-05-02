@@ -52,7 +52,7 @@ class ProductService {
    * until given date
    * @param {number} productId - Product's id
    * @param {Date} date - Look for price until this date
-   * @param {Function} cb - If provided, will be executed with result,
+   * @param {Function} [cb] - If provided, will be executed with result,
    *                        otherwise a promise will be returned
    */
   lastCost(productId, date, cb) {
@@ -80,7 +80,7 @@ class ProductService {
    * until given date
    * @param {number} productId - Product's id
    * @param {Date} date - Look for price until this date
-   * @param {Function} cb - If provided, will be executed with result,
+   * @param {Function} [cb] - If provided, will be executed with result,
    *                        otherwise a promise will be returned
    * @return {Promise}
    */
@@ -102,21 +102,37 @@ class ProductService {
     }
   }
 
+  /**
+   * Calculates the available stock for a product on specified date
+   * by checking all no consumed existences and partially consumed
+   * existences
+   * @param {number} productId - Id of product
+   * @param {string} date - Date in which to calculate existences
+   * @param {Function} [cb] - Callback for query promise
+   * @returns {Promise}
+   */
   stockCount(productId, date, cb) {
     let sql = '\
       SELECT\
-        PROD.id,\
-        COUNT(*) AS stock\
-      FROM existence EXI\
-      INNER JOIN purchase PUR\
-        ON PUR.id = EXI.purchase_id\
-      INNER JOIN product PROD\
-        ON PROD.id = EXI.product_id\
-      LEFT JOIN sale_has_existence SHE\
-        ON SHE.existence_id = EXI.id\
-      WHERE SHE.id IS NULL\
-        AND PUR.date <= :date\
-        AND PROD.id = :productId\
+        existence.product_id,\
+        SUM(\
+            IFNULL(\
+                CASE she.partial_quantity\
+                WHEN 0\
+                  THEN 0\
+                ELSE 1 - she.partial_quantity\
+                END,\
+                1\
+            )\
+        ) AS stock\
+      FROM existence\
+      INNER JOIN purchase p\
+          on existence.purchase_id = p.id\
+      LEFT JOIN sale_has_existence she\
+          on existence.id = she.existence_id\
+      WHERE product_id = :productId\
+        AND p.date < :date\
+      GROUP BY existence.product_id\
     ';
 
     let promise = sequelize.query(sql, {
@@ -138,30 +154,47 @@ class ProductService {
     }
   }
 
-  availableExistences(productId, quantity, date, cb) {
+  /**
+   * Retrieves all the existences purchased before given date
+   * with stock available
+   * @param {number} productId - Id of product
+   * @param {string} date - Date until which to retrieve stock
+   * @param {Function} [cb] - Callback for query promise
+   */
+  stockAvailable(productId, date, cb) {
     let sql = '\
       SELECT\
-        EXI.id AS existence_id,\
-        EXI.product_id\
-      FROM existence EXI\
-      INNER JOIN purchase PUR\
-        ON PUR.id = EXI.purchase_id\
-      INNER JOIN product PROD\
-        ON PROD.id = EXI.product_id\
-      LEFT JOIN sale_has_existence SHE\
-        ON SHE.existence_id = EXI.id\
-      WHERE SHE.id IS NULL\
-        AND PUR.date <= :date\
-        AND PROD.id = :productId\
-      LIMIT :quantity\
+        existence.id,\
+        IFNULL(\
+          CASE she.partial_quantity\
+            WHEN 0\
+              THEN 0\
+            ELSE 1 - she.partial_quantity\
+          END,\
+          1\
+        ) AS available\
+      FROM existence\
+      INNER JOIN purchase p\
+        ON existence.purchase_id = p.id\
+      LEFT JOIN sale_has_existence she\
+        on existence.id = she.existence_id\
+      WHERE product_id = :productId\
+        AND p.date < :date\
+        AND IFNULL(\
+          CASE she.partial_quantity\
+            WHEN 0\
+              THEN 0\
+            ELSE 1 - she.partial_quantity\
+          END,\
+          1\
+        ) > 0\
     ';
 
     let promise = sequelize.query(sql, {
       type: Sequelize.QueryTypes.SELECT,
       replacements: {
         date: moment(date).utc().format('YYYY-MM-DD HH:mm:ss'),
-        productId: productId,
-        quantity: quantity
+        productId: productId
       }
     });
 
@@ -169,7 +202,7 @@ class ProductService {
       promise
         .then(cb)
         .catch(err => {
-          console.error('Available existences could not be retrieved' + err);
+          console.error('Stock available could not be retrieved' + err);
         });
     } else {
       return promise;

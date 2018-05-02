@@ -31,6 +31,15 @@ const ActionTypes = {
     FETCH_P_MODEL: 'purchase_prices/fetch_p_model'
   },
   SALES: {
+    CREATE: {
+      ON_DATE_CHANGE: 'sales/create/on_date_change',
+      ON_PRODUCT_AUTO_COMPLETE_VALUE_CHANGE: 'sales/create/on_product_ac_change',
+      ON_PRODUCT_SELECTED: 'sales/create/on_product_selected',
+      ON_QUANTITY_CHANGE: 'sales/create/on_quantity_change',
+      ON_SELF_CONSUMPTION_CHANGE: 'sales/create/on_self_consumption_change',
+      ON_PRICE_CHANGE: 'sales/create/on_price_change',
+    },
+
     ADD_CONTENT: 'sales/add_content',
     CHANGE_DATE: 'sales/change_date',
     CHANGE_SELF_CONSUMPTION: 'sales/self_consumption',

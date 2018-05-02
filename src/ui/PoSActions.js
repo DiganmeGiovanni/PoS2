@@ -151,6 +151,44 @@ const PoSActions = {
         PosDispatcher.dispatch({
           type: ActionTypes.SALES.SET_REDIRECT_AS_COMPLETED
         });
+      },
+
+      // New actions
+      onDateChange(date) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.SALES.CREATE.ON_DATE_CHANGE,
+          date
+        });
+      },
+      onProductAutoCompleteValueChange(value) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.SALES.CREATE.ON_PRODUCT_AUTO_COMPLETE_VALUE_CHANGE,
+          value
+        });
+      },
+      onProductSelected(product) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.SALES.CREATE.ON_PRODUCT_SELECTED,
+          product
+        });
+      },
+      onQuantityChange(value) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.SALES.CREATE.ON_QUANTITY_CHANGE,
+          value
+        });
+      },
+      onSelfConsumptionChange(value) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.SALES.CREATE.ON_SELF_CONSUMPTION_CHANGE,
+          value
+        });
+      },
+      onPriceChange(value) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.SALES.CREATE.ON_PRICE_CHANGE,
+          value
+        })
       }
     },
     list: {

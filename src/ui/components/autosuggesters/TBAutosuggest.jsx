@@ -2,49 +2,28 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
 
-/** @deprecated */
-class FGAutosuggest extends React.Component {
+class TBAutosuggest extends React.Component {
   constructor(props) {
     super(props);
-    this.onChange = this.onChange.bind(this);
 
-    this.state = { value: '' }
-  }
-
-  onChange(evt, { newValue }) {
-    this.setState({ value: newValue })
   }
 
   renderLabel() {
-    let id = '';
-    if (this.props.id !== null) {
-      id = `inp-${id}`;
+    let inpId = '';
+    if (this.props.inpId !== null) {
+      inpId = this.props.inpId
     }
 
     return (
-      <label htmlFor={ id } className="control-label">
+      <label htmlFor={ inpId } className="control-label">
         { this.props.label }
       </label>
     )
   }
 
-  renderError() {
-    if (this.props.errMessage == null) {
-      return '';
-    }
-
-    return (
-      <div className="help-block">{ this.props.errMessage }</div>
-    )
-  }
-
   render() {
-    let fgClass = this.props.errMessage === null
-      ? 'form-group'
-      : 'form-group has-error';
-
     return (
-      <div className={ fgClass }>
+      <div className="form-group">
         { this.renderLabel() }
 
         <Autosuggest
@@ -54,35 +33,39 @@ class FGAutosuggest extends React.Component {
           onSuggestionSelected={ this.props.onSugSelected }
           getSuggestionValue={ this.props.getSugValue }
           renderSuggestion={ this.props.renderSug }
+
           inputProps={{
             className: 'form-control',
             placeholder: 'Comience a escribir para búscar',
-            value: this.state.value,
-            onChange: this.onChange
+            value: this.props.value,
+            onChange: this.props.onValueChange
           }}
         />
-
-        { this.renderError() }
       </div>
     )
   }
 }
 
-FGAutosuggest.propTypes = {
-  id: PropTypes.string,
+TBAutosuggest.propTypes = {
+  inpId: PropTypes.string,
   label: PropTypes.string.isRequired,
-  errMessage: PropTypes.string,
+
+  // Autosuggest specific callbacks
   suggestions: PropTypes.array.isRequired,
   onSugFetchRequested: PropTypes.func.isRequired,
   onSugClearRequested: PropTypes.func.isRequired,
   onSugSelected: PropTypes.func.isRequired,
   getSugValue: PropTypes.func.isRequired,
   renderSug: PropTypes.func.isRequired,
+
+  // Custom prop to keep input value synced with
+  // another components
+  value: PropTypes.string.isRequired,
+  onValueChange: PropTypes.func.isRequired,
 };
 
-FGAutosuggest.defaultProps = {
-  id: null,
-  errMessage: null,
+TBAutosuggest.defaultProps = {
+  id: null
 };
 
-export default FGAutosuggest;
+export default TBAutosuggest;
