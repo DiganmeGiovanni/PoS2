@@ -315,6 +315,11 @@ const SaleHasExistence = sequelize.define('sale_has_existence', {
       key: 'id',
     },
   },
+  selfConsumption: {
+    field: 'self_consumption',
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
+  },
 });
 
 
