@@ -18,7 +18,8 @@ const SaleProductForm = ({
                            priceError,
                            onPriceChange,
                            lastPrice,
-                           totalPrice, }) => {
+                           totalPrice,
+                           onAddProductClicked, }) => {
 
   return (
     <div className="panel panel-default">
@@ -28,7 +29,6 @@ const SaleProductForm = ({
       <div className="panel-body">
         <div className="row">
           <div className="col-xs-12">
-
             <SaleProductAutosuggest
               onProductSelected={ onProductSelected }
               value={ productAutocompleteValue }
@@ -80,7 +80,7 @@ const SaleProductForm = ({
               <div className="col-xs-6">
                 <div className="form-group">
                   <label className="control-label">
-                    Autoconsumo?
+                    ¿Autoconsumo?
                   </label>
                   <select
                     id="inp-self_consumption"
@@ -171,6 +171,16 @@ const SaleProductForm = ({
             </div>
           </div>
         </div>
+
+        <div className="row">
+          <div className="col-xs-12 text-center">
+            <button className="btn btn-primary"
+                    onClick={ onAddProductClicked }
+            >
+              <span>Agregar producto</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -196,6 +206,7 @@ SaleProductForm.propTypes = {
   lastPrice: PropTypes.number.isRequired,
 
   totalPrice: PropTypes.number.isRequired,
+  onAddProductClicked: PropTypes.func.isRequired,
 };
 
 export default SaleProductForm;

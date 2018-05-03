@@ -22,7 +22,12 @@ class CreateSaleStore extends EventEmitter {
 
       // Sale related data
       error: null,
-      contents: [],
+      contents: [
+        // product: {}
+        // quantity: number
+        // price
+        // selfConsumption
+      ],
       total: 0,
       date: new Date(),
 
@@ -77,6 +82,24 @@ class CreateSaleStore extends EventEmitter {
     return this.state;
   }
 
+  addProduct() {
+    if (this._validate()) {
+      let qty = this.state.form.quantity.value * 1;
+      let price = this.state.form.price.value * 1;
+      let content = {
+        product: this.state.form.product.value,
+        quantity: qty,
+        price: price,
+        selfConsumption: this.state.form.selfConsumption.value
+      };
+
+      this.state.total += qty * price;
+      this.state.contents.push(content);
+      this.resetProductForm();
+      this.emitChange();
+    }
+  }
+
   onDateChange(date) {
     console.log('Changing date');
     this.state.date = date;
@@ -93,11 +116,14 @@ class CreateSaleStore extends EventEmitter {
     this.state.form.product.value = product;
 
     // Retrieve current available stock
+    let alreadyAddedQty = this._countAlreadyAdded(product.id);
     ProductService.stockCount(product.id, this.state.date)
       .then(products => {
-        this.state.form.stock.value = products.length > 0
+        let stock = products.length > 0
           ? products[0].stock
           : 0;
+        stock -= alreadyAddedQty;
+        this.state.form.stock.value = stock;
 
         this.emitChange();
       })
@@ -112,7 +138,7 @@ class CreateSaleStore extends EventEmitter {
       .then(purchasePrice => {
         this.state.form.cost.value = purchasePrice == null
           ? 0
-          : purchasePrice.price
+          : purchasePrice.price;
         this.emitChange();
       })
       .catch(err => {
@@ -137,15 +163,10 @@ class CreateSaleStore extends EventEmitter {
         let price = this.state.form.lastPrice.value;
         this.onPriceChange(price)
       });
-
-    console.log('Product selected');
-    console.log(product.name);
-    // TODO Load stock, cost, last price
-    // TODO Reset quantity, self-consumption and unit price
   }
 
   onQuantityChange(value) {
-    this.state.form.quantity.value = value;
+    this.state.form.quantity.value = `${value}`;
     if (this._validateQuantity() && this._validatePrice()) {
       this._calculateTotalPrice();
     }
@@ -163,7 +184,7 @@ class CreateSaleStore extends EventEmitter {
   }
 
   onPriceChange(value) {
-    this.state.form.price.value = value;
+    this.state.form.price.value = `${value}`;
     if (this._validateQuantity() && this._validatePrice()) {
       this._calculateTotalPrice();
     }
@@ -229,6 +250,26 @@ class CreateSaleStore extends EventEmitter {
     return value;
   }
 
+  /** Counts the already added quantity of given product */
+  _countAlreadyAdded(productId) {
+    let alreadyAdded = 0;
+
+    // TODO Verify variables names
+    for (let content of this.state.contents) {
+      if (content.product.id === productId) {
+        alreadyAdded += content.quantity;
+      }
+    }
+
+    return alreadyAdded;
+  }
+
+  _validate() {
+    return this._validateQuantity() &&
+      this._validatePrice() &&
+      this._validateProduct();
+  }
+
   _validatePrice() {
     let price = CreateSaleStore._trimDots(this.state.form.price.value);
 
@@ -238,6 +279,15 @@ class CreateSaleStore extends EventEmitter {
     }
     else {
       this.state.form.price.error = null;
+    }
+
+    return true;
+  }
+
+  _validateProduct() {
+    if (this.state.form.product.value === null) {
+      this.state.form.product.error = 'Indique el producto';
+      return false;
     }
 
     return true;
@@ -287,6 +337,10 @@ storeInstance.dispatchToken = PoSDispatcher.register(action => {
 
     case ActionTypes.SALES.CREATE.ON_PRICE_CHANGE:
       storeInstance.onPriceChange(action.value);
+      break;
+
+    case ActionTypes.SALES.CREATE.ON_ADD_PRODUCT_CLICKED:
+      storeInstance.addProduct();
       break;
   }
 });

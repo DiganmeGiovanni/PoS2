@@ -1,4 +1,4 @@
-import { Product, PurchasePrice, SalePrice } from '../model/entities';
+import {MeasurementUnit, Product, PurchasePrice, SalePrice} from '../model/entities';
 import sequelize from '../model/database';
 import moment from 'moment';
 const Sequelize = require('sequelize');
@@ -7,11 +7,16 @@ class ProductService {
   find(query, limit, cb) {
     Product.findAll({
       where: { name: { [Sequelize.Op.like]: `%${ query }%`}},
-      limit: limit
+      limit: limit,
+      include: [{
+        model: MeasurementUnit,
+        as: 'measurementUnit'
+      }]
     })
     .then(cb)
-    .catch(() => {
+    .catch(error => {
       console.error('Products could not be retrieved');
+      console.error(error);
     });
   }
 

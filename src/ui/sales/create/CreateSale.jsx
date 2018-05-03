@@ -2,7 +2,6 @@ import React from 'react';
 import SaleForm from './SaleForm';
 import CreateSaleStore from './CreateSaleStore';
 import PoSActions from "../../PoSActions";
-import PropTypes from "prop-types";
 
 class CreateSale extends React.Component {
   constructor(props) {
@@ -22,6 +21,10 @@ class CreateSale extends React.Component {
 
   onChange() {
     this.setState(CreateSaleStore.getState());
+  }
+
+  static onAddProductClicked() {
+    PoSActions.sales.create.onAddProductClicked();
   }
 
   static onDateChange(moment) {
@@ -73,6 +76,10 @@ class CreateSale extends React.Component {
       lastPrice={ this.state.form.lastPrice.value }
 
       totalPrice={ this.state.form.totalPrice.value }
+      onAddProductClicked={ CreateSale.onAddProductClicked }
+
+      contents={ this.state.contents }
+      total={ this.state.total }
     />
   }
 }

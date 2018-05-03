@@ -38,6 +38,7 @@ const ActionTypes = {
       ON_QUANTITY_CHANGE: 'sales/create/on_quantity_change',
       ON_SELF_CONSUMPTION_CHANGE: 'sales/create/on_self_consumption_change',
       ON_PRICE_CHANGE: 'sales/create/on_price_change',
+      ON_ADD_PRODUCT_CLICKED: 'sales/create/on_add_product_clicked',
     },
 
     ADD_CONTENT: 'sales/add_content',

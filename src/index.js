@@ -24,7 +24,7 @@ const createWindow = async () => {
   });
 
   // and load the index.html of the app.
-  mainWindow.setMenu(null);
+  // mainWindow.setMenu(null);
   mainWindow.loadURL(`file://${__dirname}/index.html`);
 
   // Open the DevTools.

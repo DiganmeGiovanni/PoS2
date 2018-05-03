@@ -189,7 +189,12 @@ const PoSActions = {
           type: ActionTypes.SALES.CREATE.ON_PRICE_CHANGE,
           value
         })
-      }
+      },
+      onAddProductClicked() {
+        PosDispatcher.dispatch({
+          type: ActionTypes.SALES.CREATE.ON_ADD_PRODUCT_CLICKED
+        })
+      },
     },
     list: {
       page(pageNumber, pageSize) {

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 const DatePicker = require('react-datetime');
 import 'moment/locale/es';
+import SaleContents from "./SaleContents";
 
 const SaleForm = ({
                     date,
@@ -23,7 +24,10 @@ const SaleForm = ({
                     priceError,
                     onPriceChange,
                     lastPrice,
-                    totalPrice, }) => {
+                    totalPrice,
+                    onAddProductClicked,
+                    contents,
+                    total, }) => {
 
   return (
     <div className="container">
@@ -72,7 +76,13 @@ const SaleForm = ({
             lastPrice={ lastPrice }
 
             totalPrice={ totalPrice }
+            onAddProductClicked={ onAddProductClicked }
           />
+        </div>
+
+        {/* Sale contents */}
+        <div className="col-md-8">
+          <SaleContents contents={ contents } total={ total }/>
         </div>
       </div>
     </div>
@@ -103,6 +113,10 @@ SaleForm.propTypes = {
   lastPrice: PropTypes.number.isRequired,
 
   totalPrice: PropTypes.number.isRequired,
+  onAddProductClicked: PropTypes.func.isRequired,
+
+  contents: PropTypes.array.isRequired,
+  total: PropTypes.number.isRequired,
 };
 
 export default SaleForm;
