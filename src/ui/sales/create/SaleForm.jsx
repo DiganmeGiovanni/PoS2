@@ -85,6 +85,14 @@ const SaleForm = ({
           <SaleContents contents={ contents } total={ total }/>
         </div>
       </div>
+
+      <div className="row">
+        <div className="col-xs-12 text-center margin-top-16 padding-bottom-64">
+          <button className="btn btn-success">
+            <span>Crear venta</span>
+          </button>
+        </div>
+      </div>
     </div>
   )
 };

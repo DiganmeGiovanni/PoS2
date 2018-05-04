@@ -40,7 +40,7 @@ const SaleProductForm = ({
         <div className="row">
 
           {/* Quantity */}
-          <div className="col-sm-4 col-md-12">
+          <div className="col-sm-6 col-md-12">
             <div className="row">
               <div className="col-xs-6">
                 <FormGroup
@@ -75,7 +75,7 @@ const SaleProductForm = ({
           </div>
 
           {/* Self consumption && cost */}
-          <div className="col-sm-4 col-md-12">
+          <div className="col-sm-6 col-md-12">
             <div className="row">
               <div className="col-xs-6">
                 <div className="form-group">
@@ -115,7 +115,7 @@ const SaleProductForm = ({
           </div>
 
           {/* Prices */}
-          <div className="col-sm-4 col-md-12">
+          <div className="col-sm-6 col-md-12">
             <div className="row">
               <div className="col-xs-6">
                 <FormGroup
@@ -150,7 +150,7 @@ const SaleProductForm = ({
           </div>
 
           {/* Total price */}
-          <div className="col-sm-4 col-md-12">
+          <div className="col-sm-6 col-md-12">
             <div className="row">
               <div className="col-xs-6">
                 <div className="form-group">
@@ -173,7 +173,7 @@ const SaleProductForm = ({
         </div>
 
         <div className="row">
-          <div className="col-xs-12 text-center">
+          <div className="col-xs-12 text-center margin-top-16">
             <button className="btn btn-primary"
                     onClick={ onAddProductClicked }
             >

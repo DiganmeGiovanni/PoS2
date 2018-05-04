@@ -300,7 +300,7 @@ class CreateSaleStore extends EventEmitter {
       this.state.form.quantity.error = 'Es invalida';
       return false;
     }
-    else if (quantity > this.state.form.stock.value) {
+    else if (this.state.form.quantity.value * 1 > this.state.form.stock.value) {
       this.state.form.quantity.error = 'Sobrepasa stock';
       return false;
     }
