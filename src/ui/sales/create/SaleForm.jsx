@@ -29,7 +29,8 @@ const SaleForm = ({
                     onAddProductClicked,
                     contents,
                     total,
-                    onSaveClicked, }) => {
+                    onSaveClicked,
+                    error, }) => {
 
   return (
     <div className="container">
@@ -85,7 +86,7 @@ const SaleForm = ({
 
         {/* Sale contents */}
         <div className="col-md-8">
-          <SaleContents contents={ contents } total={ total }/>
+          <SaleContents contents={ contents } total={ total } error={ error }/>
         </div>
       </div>
 
@@ -132,6 +133,7 @@ SaleForm.propTypes = {
   contents: PropTypes.array.isRequired,
   total: PropTypes.number.isRequired,
 
+  error: PropTypes.string,
   onSaveClicked: PropTypes.func.isRequired,
 };
 

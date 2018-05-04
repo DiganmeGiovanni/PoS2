@@ -2,7 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TextFormatter from '../../../services/TextFormatter';
 
-const SaleContents = ({ contents, total }) => {
+const SaleContents = ({ contents, total, error }) => {
+
+  const renderError = () => {
+    if (error !== null) {
+      return (
+        <div className="alert alert-danger margin-bottom-16">
+          <span className="fa fa-warning"/>
+          <span>&nbsp;&nbsp;</span>
+          <span>{ error }</span>
+        </div>
+      )
+    }
+
+    return '';
+  };
 
   const renderContents = () => {
     if (contents.length > 0) {
@@ -37,7 +51,7 @@ const SaleContents = ({ contents, total }) => {
         <div className="panel-title">Contenido de la venta</div>
       </div>
       <div className="panel-body">
-        {/* TODO Show global error */}
+        { renderError() }
 
         <div className="table-responsive">
           <table className="table table-striped">
@@ -71,6 +85,7 @@ const SaleContents = ({ contents, total }) => {
 SaleContents.propTypes = {
   contents: PropTypes.array.isRequired,
   total: PropTypes.number.isRequired,
+  error: PropTypes.string,
 };
 
 export default SaleContents;

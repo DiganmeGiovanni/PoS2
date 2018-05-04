@@ -97,6 +97,7 @@ class CreateSale extends React.Component {
       contents={ this.state.contents }
       total={ this.state.total }
 
+      error={ this.state.error }
       onSaveClicked={ CreateSale.onSaveClicked }
     />
   }

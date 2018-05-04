@@ -154,7 +154,7 @@ class CreateSaleStore extends EventEmitter {
     ProductService.stockCount(product.id, this.state.date)
       .then(products => {
         let stock = products.length > 0
-          ? products[0].stock
+          ? products[0].stock ? products[0].stock : 0
           : 0;
         stock -= alreadyAddedQty;
         this.state.form.stock.value = stock;
@@ -296,15 +296,16 @@ class CreateSaleStore extends EventEmitter {
 
       // Validate stock
       let promise = ProductService.stockCount(productId, date).then(products => {
-        let stock = products.length > 0 ? products[0].stock : 0;
+        let stock = products.length > 0
+          ? products[0].stock ? products[0].stock : 0
+          : 0;
         if (quantity > stock) {
-          // TODO Abort
-
-          let msg = `La cantidad ${ stock } disponible de ${ content.product.name}`;
+          let msg = 'La cantidad (' + stock + ') disponible de "' + content.product.name + '"';
           msg += ' no es suficiente';
-          this.state.error = 'La cantidad disponible en stock'
+          this.state.error = msg;
           this.emitChange();
-          return;
+
+          throw "Insufficient stock";
         }
 
         // Get sale price to use
