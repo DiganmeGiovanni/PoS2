@@ -61,6 +61,7 @@ class SaleViewStore extends EventEmitter {
       SELECT\
         PROD.id,\
         PROD.name,\
+        SHE.self_consumption         AS self_consumption,\
         COUNT(*)                    AS quantity,\
         MU.name                     AS measurement_unit_name,\
         SALE_PRICE.price,\

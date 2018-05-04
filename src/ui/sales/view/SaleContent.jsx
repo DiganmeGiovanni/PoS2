@@ -17,6 +17,7 @@ const SaleContent = ({ contents, isLoadingProducts }) => {
     return contents.map((product, idx) => (
       <tr key={ idx }>
         <td>{ product.name }</td>
+        <td>{ product.self_consumption ? 'Si' : 'No' }</td>
         <td className="text-right">{ product.quantity }</td>
         <td>{ product.measurement_unit_name }</td>
         <td className="text-right">
@@ -34,6 +35,7 @@ const SaleContent = ({ contents, isLoadingProducts }) => {
       <thead>
       <tr>
         <th>Producto</th>
+        <th>¿Autoconsumo?</th>
         <th className="text-right">Cantidad</th>
         <th>Unidad</th>
         <th className="text-right">Precio C/U</th>

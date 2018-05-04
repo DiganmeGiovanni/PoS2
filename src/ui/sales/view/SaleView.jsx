@@ -52,12 +52,6 @@ class SaleView extends React.Component {
         </div>
 
         <div className="col-sm-4">
-          <label className="control-label">Autoconsumo</label>
-          <br/>
-          <span>{ this.state.sale.selfConsumption ? 'Si' : 'No' }</span>
-        </div>
-
-        <div className="col-sm-4">
           <label className="control-label">Total</label>
           <br/>
           <span>{ TextFormatter.asMoney(this.state.sale.total) }</span>

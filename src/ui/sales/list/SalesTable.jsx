@@ -13,7 +13,7 @@ const SalesTable = ({ sales, activePage, totalPages, navCb}) => {
     if (sales.length === 0) {
       return (
         <tr>
-          <td colSpan={6} className="text-center">
+          <td colSpan={5} className="text-center">
             <i>No hay ventas registradas</i>
           </td>
         </tr>
@@ -25,9 +25,6 @@ const SalesTable = ({ sales, activePage, totalPages, navCb}) => {
         <td>{ sale.id }</td>
         <td>{ moment(sale.date).format('YYYY, MMMM DD') }</td>
         <td>{ moment(sale.date).fromNow(true) }</td>
-        <td>
-          { sale.self_consumption ? 'Si' : 'No' }
-        </td>
         <td className="text-right">
           { TextFormatter.asMoney(sale.total) }
         </td>
@@ -54,7 +51,6 @@ const SalesTable = ({ sales, activePage, totalPages, navCb}) => {
             <th>#</th>
             <th>Fecha</th>
             <th>Fecha relativa</th>
-            <th>¿Autoconsumo?</th>
             <th className="text-right">Total</th>
             <th>&nbsp;</th>
           </tr>
