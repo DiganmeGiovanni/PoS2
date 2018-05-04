@@ -11,6 +11,17 @@ class CreateSale extends React.Component {
     this.state = CreateSaleStore.getState();
   }
 
+  componentDidMount() {
+    document.title = 'Registrar venta';
+  }
+
+  componentDidUpdate() {
+    if (this.state.redirectToList) {
+      PoSActions.sales.create.setRedirectAsCompleted();
+      this.props.history.push('/sales');
+    }
+  }
+
   componentWillMount() {
     CreateSaleStore.addChangeListener(this.onChange);
   }
@@ -53,6 +64,10 @@ class CreateSale extends React.Component {
     PoSActions.sales.create.onPriceChange(e.target.value);
   }
 
+  static onSaveClicked() {
+    PoSActions.sales.create.onSaveClicked();
+  }
+
   render() {
     return <SaleForm
       date={ this.state.date }
@@ -60,6 +75,7 @@ class CreateSale extends React.Component {
       productAutocompleteValue={ this.state.form.product.inpValue }
       onProductAutoCompleteValueChange={ CreateSale.onProductAutocompleteValueChange }
       onProductSelected={ CreateSale.onProductSelected }
+      productAutocompleteError={ this.state.form.product.error }
 
       quantity={ this.state.form.quantity.value }
       quantityError={ this.state.form.quantity.error }
@@ -80,6 +96,8 @@ class CreateSale extends React.Component {
 
       contents={ this.state.contents }
       total={ this.state.total }
+
+      onSaveClicked={ CreateSale.onSaveClicked }
     />
   }
 }

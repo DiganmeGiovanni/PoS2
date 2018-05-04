@@ -5,7 +5,6 @@ import Autosuggest from 'react-autosuggest';
 class TBAutosuggest extends React.Component {
   constructor(props) {
     super(props);
-
   }
 
   renderLabel() {
@@ -21,9 +20,15 @@ class TBAutosuggest extends React.Component {
     )
   }
 
+  renderError() {
+    if (this.props.error) {
+      return <span className="help-block">{ this.props.error }</span>
+    }
+  }
+
   render() {
     return (
-      <div className="form-group">
+      <div className={`form-group ${ this.props.error ? 'has-error' : ''}`}>
         { this.renderLabel() }
 
         <Autosuggest
@@ -41,6 +46,8 @@ class TBAutosuggest extends React.Component {
             onChange: this.props.onValueChange
           }}
         />
+
+        { this.renderError() }
       </div>
     )
   }
@@ -62,6 +69,8 @@ TBAutosuggest.propTypes = {
   // another components
   value: PropTypes.string.isRequired,
   onValueChange: PropTypes.func.isRequired,
+
+  error: PropTypes.string,
 };
 
 TBAutosuggest.defaultProps = {

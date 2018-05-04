@@ -120,24 +120,18 @@ class ProductService {
     let sql = '\
       SELECT\
         existence.product_id,\
-        SUM(\
-            IFNULL(\
-                CASE she.partial_quantity\
-                WHEN 0\
-                  THEN 0\
-                ELSE 1 - she.partial_quantity\
-                END,\
-                1\
-            )\
-        ) AS stock\
+        SUM(IFNULL(1 - CONSUMED.quantity, 1)) AS stock\
       FROM existence\
-      INNER JOIN purchase p\
-          on existence.purchase_id = p.id\
-      LEFT JOIN sale_has_existence she\
-          on existence.id = she.existence_id\
-      WHERE product_id = :productId\
+        INNER JOIN purchase p\
+          ON existence.purchase_id = p.id\
+        LEFT JOIN (\
+            SELECT existence_id, SUM(partial_quantity) AS quantity\
+            FROM sale_has_existence\
+            GROUP BY existence_id\
+          ) CONSUMED\
+          ON CONSUMED.existence_id = existence.id\
+      WHERE existence.product_id = :productId\
         AND p.date < :date\
-      GROUP BY existence.product_id\
     ';
 
     let promise = sequelize.query(sql, {
@@ -170,29 +164,19 @@ class ProductService {
     let sql = '\
       SELECT\
         existence.id,\
-        IFNULL(\
-          CASE she.partial_quantity\
-            WHEN 0\
-              THEN 0\
-            ELSE 1 - she.partial_quantity\
-          END,\
-          1\
-        ) AS available\
+        IFNULL(1 - CONSUMED.quantity, 1) AS available\
       FROM existence\
       INNER JOIN purchase p\
         ON existence.purchase_id = p.id\
-      LEFT JOIN sale_has_existence she\
-        on existence.id = she.existence_id\
-      WHERE product_id = :productId\
-        AND p.date < :date\
-        AND IFNULL(\
-          CASE she.partial_quantity\
-            WHEN 0\
-              THEN 0\
-            ELSE 1 - she.partial_quantity\
-          END,\
-          1\
-        ) > 0\
+      LEFT JOIN (\
+          SELECT existence_id, SUM(partial_quantity) AS quantity\
+          FROM sale_has_existence\
+          GROUP BY existence_id\
+        ) CONSUMED\
+        ON CONSUMED.existence_id = existence.id\
+      WHERE existence.product_id = :productId\
+      AND p.date < :date\
+      AND IFNULL(1 - CONSUMED.quantity, 1) > 0\
     ';
 
     let promise = sequelize.query(sql, {

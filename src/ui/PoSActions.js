@@ -195,6 +195,11 @@ const PoSActions = {
           type: ActionTypes.SALES.CREATE.ON_ADD_PRODUCT_CLICKED
         })
       },
+      onSaveClicked() {
+        PosDispatcher.dispatch({
+          type: ActionTypes.SALES.CREATE.ON_SAVE_CLICKED
+        });
+      },
     },
     list: {
       page(pageNumber, pageSize) {

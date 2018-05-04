@@ -7,6 +7,7 @@ const SaleProductForm = ({
                            productAutocompleteValue,
                            onProductAutoCompleteValueChange,
                            onProductSelected,
+                           productAutocompleteError,
                            quantity,
                            quantityError,
                            onQuantityChange,
@@ -33,6 +34,7 @@ const SaleProductForm = ({
               onProductSelected={ onProductSelected }
               value={ productAutocompleteValue }
               onValueChange={ onProductAutoCompleteValueChange }
+              error={ productAutocompleteError }
             />
           </div>
         </div>
@@ -190,6 +192,7 @@ SaleProductForm.propTypes = {
   productAutocompleteValue: PropTypes.string.isRequired,
   onProductAutoCompleteValueChange: PropTypes.func.isRequired,
   onProductSelected: PropTypes.func.isRequired,
+  productAutocompleteError: PropTypes.string,
 
   quantity: PropTypes.string.isRequired,
   quantityError: PropTypes.string,

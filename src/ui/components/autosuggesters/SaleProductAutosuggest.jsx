@@ -46,6 +46,7 @@ class SaleProductAutosuggest extends React.Component {
         renderSug={ SaleProductAutosuggest.renderSuggestion }
         value={ this.props.value }
         onValueChange={ this.props.onValueChange }
+        error={ this.props.error }
       />
     )
   }
@@ -54,7 +55,8 @@ class SaleProductAutosuggest extends React.Component {
 SaleProductAutosuggest.propTypes = {
   onProductSelected: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired,
-  onValueChange: PropTypes.func.isRequired
+  onValueChange: PropTypes.func.isRequired,
+  error: PropTypes.string,
 };
 
 export default SaleProductAutosuggest;

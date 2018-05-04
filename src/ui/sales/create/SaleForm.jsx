@@ -13,6 +13,7 @@ const SaleForm = ({
                     productAutocompleteValue,
                     onProductAutoCompleteValueChange,
                     onProductSelected,
+                    productAutocompleteError,
                     quantity,
                     quantityError,
                     onQuantityChange,
@@ -27,7 +28,8 @@ const SaleForm = ({
                     totalPrice,
                     onAddProductClicked,
                     contents,
-                    total, }) => {
+                    total,
+                    onSaveClicked, }) => {
 
   return (
     <div className="container">
@@ -77,6 +79,7 @@ const SaleForm = ({
 
             totalPrice={ totalPrice }
             onAddProductClicked={ onAddProductClicked }
+            productAutocompleteError={ productAutocompleteError }
           />
         </div>
 
@@ -88,7 +91,9 @@ const SaleForm = ({
 
       <div className="row">
         <div className="col-xs-12 text-center margin-top-16 padding-bottom-64">
-          <button className="btn btn-success">
+          <button className="btn btn-success"
+                  onClick={ onSaveClicked }
+          >
             <span>Crear venta</span>
           </button>
         </div>
@@ -105,6 +110,7 @@ SaleForm.propTypes = {
   productAutocompleteValue: PropTypes.string.isRequired,
   onProductAutoCompleteValueChange: PropTypes.func.isRequired,
   onProductSelected: PropTypes.func.isRequired,
+  productAutocompleteError: PropTypes.string,
 
   quantity: PropTypes.string.isRequired,
   quantityError: PropTypes.string,
@@ -125,6 +131,8 @@ SaleForm.propTypes = {
 
   contents: PropTypes.array.isRequired,
   total: PropTypes.number.isRequired,
+
+  onSaveClicked: PropTypes.func.isRequired,
 };
 
 export default SaleForm;

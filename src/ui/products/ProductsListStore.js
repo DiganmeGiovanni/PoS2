@@ -2,6 +2,7 @@ import { EventEmitter } from 'events';
 import PoSDispatcher from '../PoSDispatcher';
 import ActionTypes from '../ActionTypes';
 import sequelize from '../../model/database';
+import moment from "moment/moment";
 const Sequelize = require('sequelize');
 
 class ProductsListStore extends EventEmitter {
@@ -62,23 +63,18 @@ class ProductsListStore extends EventEmitter {
       LEFT JOIN (\
           SELECT\
             existence.product_id,\
-            SUM(\
-              IFNULL(\
-                CASE she.partial_quantity\
-                WHEN 0\
-                THEN 0\
-                ELSE 1 - she.partial_quantity\
-                END,\
-                1\
-              )\
-            ) AS stock\
-            FROM existence\
-              INNER JOIN purchase p\
-                ON existence.purchase_id = p.id\
-              LEFT JOIN sale_has_existence she\
-                ON existence.id = she.existence_id\
-            AND p.date < :date\
-            GROUP BY existence.product_id\
+            SUM(IFNULL(1 - CONSUMED.quantity, 1)) AS stock\
+          FROM existence\
+          INNER JOIN purchase p\
+            ON existence.purchase_id = p.id\
+          LEFT JOIN (\
+              SELECT existence_id, SUM(partial_quantity) AS quantity\
+              FROM sale_has_existence\
+              GROUP BY existence_id\
+            ) CONSUMED\
+            ON CONSUMED.existence_id = existence.id\
+          WHERE p.date < :date\
+          GROUP BY existence.product_id\
         ) EXISTENCES\
         ON EXISTENCES.product_id = PROD.id\
       LEFT JOIN (\
@@ -110,7 +106,10 @@ class ProductsListStore extends EventEmitter {
     sequelize
       .query(countSql, {
         type: Sequelize.QueryTypes.SELECT,
-        replacements: { date: new Date(), name: '%' + this.activePage.filters.name + '%' }
+        replacements: {
+          date: moment(new Date()).utc().format('YYYY-MM-DD HH:mm:ss'),
+          name: '%' + this.activePage.filters.name + '%'
+        }
       })
       .then(result => {
         this.activePage.pagesCount = Math.ceil(result[0].count / pageSize);
@@ -120,7 +119,7 @@ class ProductsListStore extends EventEmitter {
           replacements: {
             offset: (pageNumber - 1) * pageSize,
             limit: pageSize,
-            date: new Date(),
+            date: moment(new Date()).utc().format('YYYY-MM-DD HH:mm:ss'),
             name: '%' + this.activePage.filters.name + '%'
           }
         })

@@ -66,6 +66,41 @@ class CreateSaleStore extends EventEmitter {
     }
   }
 
+  /** Remove '.' from begin or end of value */
+  static _trimDots(value) {
+    if (value === '.' || value.length === 0) {
+      return 0;
+    }
+
+    if (typeof value === "number") {
+      return value;
+    }
+
+    // Starts with dot
+    if (value.startsWith('.')) {
+      value = value.substr(1);
+
+      // Also ends with dot?
+      if (value.endsWith('.')) {
+        value = value.substr(0, value.length - 2);
+
+        if (value.length === 0) {
+          return 0;
+        }
+
+        return value;
+      }
+    }
+
+    // Ends with dot
+    if (value.endsWith('.')) {
+      value = value.substr(0, value.length - 2);
+      return value;
+    }
+
+    return value;
+  }
+
   emitChange() {
     this.emit(this.CHANGE_EVENT);
   }
@@ -101,7 +136,6 @@ class CreateSaleStore extends EventEmitter {
   }
 
   onDateChange(date) {
-    console.log('Changing date');
     this.state.date = date;
     this.emitChange();
   }
@@ -192,6 +226,29 @@ class CreateSaleStore extends EventEmitter {
     this.emitChange();
   }
 
+  onSaveClicked() {
+    if (this._validateSale()) {
+
+      // Store sale in transaction
+      sequelize.transaction(transaction => {
+          let saleData = {
+            date: this.state.date,
+            total: this.state.total
+          };
+
+          return Sale.create(saleData, { transaction: transaction })
+            .then(sale => {
+              return this._saveContents(sale, transaction);
+            });
+        })
+        .then(() => this.reset(true))
+        .catch(err => {
+          console.error('Sale could not be created');
+          console.error(err);
+        });
+    }
+  }
+
   /** Reset the state to empty/default values */
   reset(redirectToList) {
     this.state = CreateSaleStore.initialState(redirectToList);
@@ -215,46 +272,10 @@ class CreateSaleStore extends EventEmitter {
     this.state.form.totalPrice.value = quantity * price;
   }
 
-  /** Remove '.' from begin or end of value */
-  static _trimDots(value) {
-    if (value === '.' || value.length === 0) {
-      return 0;
-    }
-
-    if (typeof value === "number") {
-      return value;
-    }
-
-    // Starts with dot
-    if (value.startsWith('.')) {
-      value = value.substr(1);
-
-      // Also ends with dot?
-      if (value.endsWith('.')) {
-        value = value.substr(0, value.length - 2);
-
-        if (value.length === 0) {
-          return 0;
-        }
-
-        return value;
-      }
-    }
-
-    // Ends with dot
-    if (value.endsWith('.')) {
-      value = value.substr(0, value.length - 2);
-      return value;
-    }
-
-    return value;
-  }
-
   /** Counts the already added quantity of given product */
   _countAlreadyAdded(productId) {
     let alreadyAdded = 0;
 
-    // TODO Verify variables names
     for (let content of this.state.contents) {
       if (content.product.id === productId) {
         alreadyAdded += content.quantity;
@@ -264,10 +285,119 @@ class CreateSaleStore extends EventEmitter {
     return alreadyAdded;
   }
 
+  _saveContents(sale, transaction) {
+    let promises = [];
+
+    for (let content of this.state.contents) {
+      let productId = content.product.id;
+      let quantity = content.quantity;
+      let price = content.price;
+      let date = sale.date;
+
+      // Validate stock
+      let promise = ProductService.stockCount(productId, date).then(products => {
+        let stock = products.length > 0 ? products[0].stock : 0;
+        if (quantity > stock) {
+          // TODO Abort
+
+          let msg = `La cantidad ${ stock } disponible de ${ content.product.name}`;
+          msg += ' no es suficiente';
+          this.state.error = 'La cantidad disponible en stock'
+          this.emitChange();
+          return;
+        }
+
+        // Get sale price to use
+        return ProductService.lastPrice(productId, date).then(lPrice => {
+
+          // Create new one
+          if (lPrice === null || lPrice.price !== price) {
+            let salePrice = {
+              price: price,
+              productId: productId,
+              date: date
+            };
+            return SalePrice.create(salePrice, { transaction: transaction }).then(sPrice => {
+              return this._saveExistencesIntoSale(
+                productId,
+                sale.id,
+                sPrice.id,
+                quantity,
+                date,
+                transaction
+              );
+            })
+          }
+
+          // User already existing
+          else {
+            return this._saveExistencesIntoSale(
+              productId,
+              sale.id,
+              lPrice.id,
+              quantity,
+              date,
+              transaction
+            );
+          }
+        })
+      });
+      promises.push(promise);
+    }
+
+    return Promise.all(promises);
+  }
+
+  _saveExistencesIntoSale(productId, saleId, sPriceId, quantity, date, transaction) {
+    let suppliedQuantity = 0;
+    return ProductService.stockAvailable(productId, date).then(existences => {
+
+      // Prepare all sale_has_existence required to supply required quantity
+      let sHasExistences = [];
+      for (let existence of existences) {
+        let pendingQty = quantity - suppliedQuantity;
+        if (pendingQty <= 0) break;
+
+        let takenQty = 1;
+        if (pendingQty >= existence.available) {
+          if (existence.available !== 1) {
+            takenQty = existence.available;
+          }
+        } else {
+          takenQty = pendingQty;
+        }
+
+        suppliedQuantity += takenQty;
+        sHasExistences.push({
+          saleId: saleId,
+          existenceId: existence.id,
+          salePriceId: sPriceId,
+          partialQuantity: takenQty === 1 ? null : takenQty
+        });
+      }
+
+      // Store all 'sale_has_existence' on transaction
+      return SaleHasExistence.bulkCreate(sHasExistences, { transaction: transaction});
+    })
+  }
+
   _validate() {
-    return this._validateQuantity() &&
+    let formOk = this._validateQuantity() &&
       this._validatePrice() &&
       this._validateProduct();
+
+    if (isNaN(this.state.form.quantity.value)) {
+      this.state.form.quantity.error = 'Invalida';
+      formOk = false;
+    }
+
+    if (isNaN(this.state.form.price.value)) {
+      this.state.form.price.error = 'Invalido';
+      formOk = false;
+    }
+
+    if (!formOk) this.emitChange();
+    return formOk;
   }
 
   _validatePrice() {
@@ -288,6 +418,8 @@ class CreateSaleStore extends EventEmitter {
     if (this.state.form.product.value === null) {
       this.state.form.product.error = 'Indique el producto';
       return false;
+    } else {
+      this.state.form.product.error = null;
     }
 
     return true;
@@ -304,8 +436,22 @@ class CreateSaleStore extends EventEmitter {
       this.state.form.quantity.error = 'Sobrepasa stock';
       return false;
     }
+    else if (this.state.form.quantity.value * 1 === 0) {
+      this.state.form.quantity.error = 'Invalida';
+      return false;
+    }
     else {
       this.state.form.quantity.error = null;
+    }
+
+    return true;
+  }
+
+  _validateSale() {
+    if (this.state.contents.length === 0) {
+      this.state.error = 'Agregue al menos un producto';
+      this.emitChange();
+      return false;
     }
 
     return true;
@@ -341,6 +487,14 @@ storeInstance.dispatchToken = PoSDispatcher.register(action => {
 
     case ActionTypes.SALES.CREATE.ON_ADD_PRODUCT_CLICKED:
       storeInstance.addProduct();
+      break;
+
+    case ActionTypes.SALES.CREATE.ON_SAVE_CLICKED:
+      storeInstance.onSaveClicked();
+      break;
+
+    case ActionTypes.SALES.SET_REDIRECT_AS_COMPLETED:
+      storeInstance.setRedirectAsCompleted();
       break;
   }
 });
