@@ -20,6 +20,23 @@ class ProductService {
     });
   }
 
+  findOne(productId) {
+    return Product.findOne({
+      where: { id: productId },
+      include: [{
+        model: MeasurementUnit,
+        as: 'measurementUnit'
+      }]
+    });
+  }
+
+  purchasePrices(productId) {
+    return PurchasePrice.findAll({
+      where: { productId: productId },
+      order: [['date', 'ASC']]
+    });
+  }
+
   /**
    * Queries the last purchase price offered by a given provider
    * for specified product

@@ -10,6 +10,7 @@ import MUnitsList from './ui/m_unit/MUnitsList';
 import MUnitsCreate from './ui/m_unit/MUnitsCreate';
 import ProductsList from './ui/products/ProductsList';
 import ProductsCreate from './ui/products/ProductsCreate';
+import ProductView from './ui/products/view/ProductView';
 import ProvidersList from './ui/providers/ProvidersList';
 import ProvidersCreate from './ui/providers/ProvidersCreate';
 import PurchasePricesList from './ui/purchase_prices/PurchasePricesList';
@@ -73,6 +74,11 @@ export default class App extends React.Component {
             path={'/products/create'}
             component={ProductsCreate}
             data={{ title: 'Punto de venta' }}
+          />
+          <Route
+            exact
+            path={'/products/view/:productId'}
+            component={ ProductView }
           />
           <Route
             exact

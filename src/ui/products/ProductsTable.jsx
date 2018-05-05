@@ -26,11 +26,11 @@ const ProductsTable = ({ products, activePage, totalPages, navCallback, onFilter
         <td className="text-right">{ product.sold }</td>
         <td className="text-center">
           <span>&nbsp;&nbsp;&nbsp;</span>
-          <Link to={`/purchase_prices/${ product.id }`}
-                title="Precios de compra"
-                className="btn btn-sm btn-default text-center hidden"
+          <Link to={`/products/view/${ product.id }`}
+                title="Detalles"
+                className="btn btn-sm btn-default text-center"
           >
-            <span className="glyphicon glyphicon-usd"/>
+            <span className="glyphicon glyphicon-eye-open"/>
           </Link>
         </td>
       </tr>
