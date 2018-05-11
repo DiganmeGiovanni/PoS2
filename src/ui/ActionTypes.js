@@ -40,6 +40,7 @@ const ActionTypes = {
       ON_PRICE_CHANGE: 'sales/create/on_price_change',
       ON_ADD_PRODUCT_CLICKED: 'sales/create/on_add_product_clicked',
       ON_SAVE_CLICKED: 'sales/create/on_save_clicked',
+      ON_CONTENT_DELETE_CLICKED: 'sales/create/on_content_delete_clicked',
     },
 
     ADD_CONTENT: 'sales/add_content',

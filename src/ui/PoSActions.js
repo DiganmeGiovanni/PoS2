@@ -200,6 +200,12 @@ const PoSActions = {
           type: ActionTypes.SALES.CREATE.ON_SAVE_CLICKED
         });
       },
+      onContentDeleteClicked(index) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.SALES.CREATE.ON_CONTENT_DELETE_CLICKED,
+          index
+        })
+      }
     },
     list: {
       page(pageNumber, pageSize) {

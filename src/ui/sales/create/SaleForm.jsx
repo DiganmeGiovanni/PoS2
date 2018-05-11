@@ -30,7 +30,8 @@ const SaleForm = ({
                     contents,
                     total,
                     onSaveClicked,
-                    error, }) => {
+                    error,
+                    onContentDeleteClicked, }) => {
 
   return (
     <div className="container">
@@ -86,7 +87,12 @@ const SaleForm = ({
 
         {/* Sale contents */}
         <div className="col-md-8">
-          <SaleContents contents={ contents } total={ total } error={ error }/>
+          <SaleContents
+            contents={ contents }
+            total={ total }
+            error={ error }
+            onContentDeleteClicked={ onContentDeleteClicked }
+          />
         </div>
       </div>
 
@@ -135,6 +141,7 @@ SaleForm.propTypes = {
 
   error: PropTypes.string,
   onSaveClicked: PropTypes.func.isRequired,
+  onContentDeleteClicked: PropTypes.func.isRequired,
 };
 
 export default SaleForm;

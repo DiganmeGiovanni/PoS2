@@ -232,6 +232,16 @@ class CreateSaleStore extends EventEmitter {
     this.emitChange();
   }
 
+  onDeleteContentClicked(index) {
+    let content = this.state.contents[index];
+    let price = content.price;
+    let quantity = content.quantity;
+
+    this.state.total -= quantity * price;
+    this.state.contents.splice(index, 1);
+    this.emitChange();
+  }
+
   onSaveClicked() {
     if (this._validateSale()) {
 
@@ -505,6 +515,10 @@ storeInstance.dispatchToken = PoSDispatcher.register(action => {
 
     case ActionTypes.SALES.SET_REDIRECT_AS_COMPLETED:
       storeInstance.setRedirectAsCompleted();
+      break;
+
+    case ActionTypes.SALES.CREATE.ON_CONTENT_DELETE_CLICKED:
+      storeInstance.onDeleteContentClicked(action.index);
       break;
   }
 });

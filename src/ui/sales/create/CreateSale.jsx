@@ -68,6 +68,10 @@ class CreateSale extends React.Component {
     PoSActions.sales.create.onSaveClicked();
   }
 
+  static onContentDeleteClicked(index) {
+    PoSActions.sales.create.onContentDeleteClicked(index);
+  }
+
   render() {
     return <SaleForm
       date={ this.state.date }
@@ -99,6 +103,7 @@ class CreateSale extends React.Component {
 
       error={ this.state.error }
       onSaveClicked={ CreateSale.onSaveClicked }
+      onContentDeleteClicked={ CreateSale.onContentDeleteClicked }
     />
   }
 }
