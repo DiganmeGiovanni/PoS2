@@ -68,7 +68,7 @@ class ProductsListStore extends EventEmitter {
           INNER JOIN purchase p\
             ON existence.purchase_id = p.id\
           LEFT JOIN (\
-              SELECT existence_id, SUM(partial_quantity) AS quantity\
+              SELECT existence_id, SUM(IFNULL(partial_quantity, 1)) AS quantity\
               FROM sale_has_existence\
               GROUP BY existence_id\
             ) CONSUMED\
