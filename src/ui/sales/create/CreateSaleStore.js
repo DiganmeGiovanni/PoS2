@@ -15,6 +15,10 @@ class CreateSaleStore extends EventEmitter {
 
   /** Creates the default state with empty/default values */
   static initialState(redirectToList) {
+    var date = new Date();
+    date.setHours(23);
+    date.setMinutes(59);
+
     return {
 
       // Component logic related
@@ -29,7 +33,7 @@ class CreateSaleStore extends EventEmitter {
         // selfConsumption
       ],
       total: 0,
-      date: new Date(),
+      date: date,
 
       // Product form data
       form: CreateSaleStore.initialFormState()
@@ -136,6 +140,8 @@ class CreateSaleStore extends EventEmitter {
   }
 
   onDateChange(date) {
+    date.setHours(23);
+    date.setMinutes(59);
     this.state.date = date;
     this.emitChange();
   }
@@ -325,12 +331,13 @@ class CreateSaleStore extends EventEmitter {
                 sPrice.id,
                 quantity,
                 date,
+                content.selfConsumption,
                 transaction
               );
             })
           }
 
-          // User already existing
+          // Price already existing
           else {
             return this._saveExistencesIntoSale(
               productId,
@@ -338,6 +345,7 @@ class CreateSaleStore extends EventEmitter {
               lPrice.id,
               quantity,
               date,
+              content.selfConsumption,
               transaction
             );
           }
@@ -349,7 +357,7 @@ class CreateSaleStore extends EventEmitter {
     return Promise.all(promises);
   }
 
-  _saveExistencesIntoSale(productId, saleId, sPriceId, quantity, date, transaction) {
+  _saveExistencesIntoSale(productId, saleId, sPriceId, quantity, date, selfConsumption, transaction) {
     let suppliedQuantity = 0;
     return ProductService.stockAvailable(productId, date).then(existences => {
 
@@ -373,7 +381,8 @@ class CreateSaleStore extends EventEmitter {
           saleId: saleId,
           existenceId: existence.id,
           salePriceId: sPriceId,
-          partialQuantity: takenQty === 1 ? null : takenQty
+          partialQuantity: takenQty === 1 ? null : takenQty,
+          selfConsumption: selfConsumption
         });
       }
 
