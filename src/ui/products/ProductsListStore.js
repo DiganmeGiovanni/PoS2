@@ -79,18 +79,18 @@ class ProductsListStore extends EventEmitter {
         ON EXISTENCES.product_id = PROD.id\
       LEFT JOIN (\
           SELECT\
-            PROD.id  AS product_id,\
-            COUNT(*) AS quantity\
+            EXI.product_id AS product_id,\
+            SUM(\
+              CASE WHEN SHE.existence_id IS NULL THEN 0\
+              ELSE IFNULL(SHE.partial_quantity, 1)\
+            END) AS quantity\
           FROM existence EXI\
           INNER JOIN purchase PUR\
             ON PUR.id = EXI.purchase_id\
-          INNER JOIN product PROD\
-            ON PROD.id = EXI.product_id\
           LEFT JOIN sale_has_existence SHE\
             ON SHE.existence_id = EXI.id\
-          WHERE SHE.id IS NOT NULL\
-          AND PUR.date <= :date\
-          GROUP BY PROD.id\
+          WHERE PUR.date < :date \
+          GROUP BY EXI.product_id\
         ) SALES\
         ON SALES.product_id = PROD.id\
     ';

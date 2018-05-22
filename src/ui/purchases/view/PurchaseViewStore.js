@@ -66,8 +66,17 @@ class PurchaseViewStore extends EventEmitter {
         PROV.name                         AS provider_name, \
         COUNT(*)                          AS quantity,\
         MU.name                           AS measurement_unit,\
-        SUM(IFNULL(SHE.id, 0))            AS sold,\
-        COUNT(*) - SUM(IFNULL(SHE.id, 0)) AS stock,\
+        SUM(\
+          CASE\
+            WHEN SHE.existence_id IS NULL THEN 0\
+            ELSE IFNULL(SHE.partial_quantity, 1)\
+          END)                            AS sold,\
+        COUNT(*) -\
+        SUM(\
+          CASE\
+            WHEN SHE.existence_id IS NULL THEN 0\
+            ELSE IFNULL(SHE.partial_quantity, 1)\
+          END)                            AS stock,\
         PURCHASE_PRICE.price * COUNT(*)   AS total\
       FROM existence EXI\
       INNER JOIN product PROD\
@@ -77,7 +86,7 @@ class PurchaseViewStore extends EventEmitter {
       INNER JOIN provider PROV\
         ON PROV.id = PURCHASE_PRICE.provider_id\
       INNER JOIN measurement_unit MU\
-        ON PURCHASE_PRICE.measurement_unit_id = MU.id\
+        ON PROD.measurement_unit_id = MU.id\
       LEFT JOIN sale_has_existence SHE\
         ON EXI.id = SHE.existence_id\
       WHERE EXI.purchase_id = :purchaseId\
