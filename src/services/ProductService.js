@@ -1,4 +1,4 @@
-import {MeasurementUnit, Product, PurchasePrice, SalePrice} from '../model/entities';
+import {Brand, MeasurementUnit, Product, PurchasePrice, SalePrice} from '../model/entities';
 import sequelize from '../model/database';
 import moment from 'moment';
 const Sequelize = require('sequelize');
@@ -20,18 +20,34 @@ class ProductService {
     });
   }
 
+  // noinspection JSMethodCanBeStatic
   findOne(productId) {
     return Product.findOne({
       where: { id: productId },
-      include: [{
-        model: MeasurementUnit,
-        as: 'measurementUnit'
-      }]
+      include: [
+        {
+          model: MeasurementUnit,
+          as: 'measurementUnit'
+        },
+        {
+          model: Brand,
+          as: 'brand'
+        }
+      ]
     });
   }
 
+  // noinspection JSMethodCanBeStatic
   purchasePrices(productId) {
     return PurchasePrice.findAll({
+      where: { productId: productId },
+      order: [['date', 'ASC']]
+    });
+  }
+
+  // noinspection JSMethodCanBeStatic
+  salePrices(productId) {
+    return SalePrice.findAll({
       where: { productId: productId },
       order: [['date', 'ASC']]
     });
