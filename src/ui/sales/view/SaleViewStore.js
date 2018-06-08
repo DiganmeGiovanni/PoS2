@@ -61,7 +61,7 @@ class SaleViewStore extends EventEmitter {
       SELECT\
         PROD.id,\
         PROD.name,\
-        SHE.self_consumption         AS self_consumption,\
+        SHE.self_consumption        AS self_consumption,\
         COUNT(*)                    AS quantity,\
         MU.name                     AS measurement_unit_name,\
         SALE_PRICE.price,\
@@ -76,7 +76,8 @@ class SaleViewStore extends EventEmitter {
       INNER JOIN sale_price SALE_PRICE\
         ON SHE.sale_price_id = SALE_PRICE.id\
       WHERE SHE.sale_id = :saleId\
-      GROUP BY SALE_PRICE.id, PROD.id\
+      GROUP BY PROD.id, SHE.self_consumption, SALE_PRICE.price\
+      ORDER BY PROD.name\
     ';
 
     return sequelize.query(sql, {
