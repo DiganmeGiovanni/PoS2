@@ -58,39 +58,42 @@ class PurchaseViewStore extends EventEmitter {
   // noinspection JSMethodCanBeStatic
   fetchContents(purchaseId) {
     let sql = '\
-      SELECT \
-        EXI.purchase_id                   AS existence_id, \
-        PURCHASE_PRICE.id                 AS purchase_price_id, \
-        PROD.name                         AS product_name, \
-        PURCHASE_PRICE.price              AS cost, \
-        PROV.name                         AS provider_name, \
-        COUNT(*)                          AS quantity,\
-        MU.name                           AS measurement_unit,\
-        SUM(\
-          CASE\
-            WHEN SHE.existence_id IS NULL THEN 0\
-            ELSE IFNULL(SHE.partial_quantity, 1)\
-          END)                            AS sold,\
-        COUNT(*) -\
-        SUM(\
-          CASE\
-            WHEN SHE.existence_id IS NULL THEN 0\
-            ELSE IFNULL(SHE.partial_quantity, 1)\
-          END)                            AS stock,\
-        PURCHASE_PRICE.price * COUNT(*)   AS total\
+      SELECT\
+        PRO.id,\
+        PROV.name                    AS provider_name,\
+        PRO.name                     AS product_name,\
+        COUNT(*)                     AS quantity,\
+        MU.name                      AS measurement_unit,\
+        IFNULL(CONSUMED.quantity, 0) AS sold,\
+        COUNT(*) - IFNULL(\
+          CONSUMED.quantity,\
+          0\
+        )                            AS stock,\
+        PP.price                     AS cost,\
+        COUNT(*) * PP.price          AS total\
       FROM existence EXI\
-      INNER JOIN product PROD\
-        ON EXI.product_id = PROD.id\
-      INNER JOIN purchase_price PURCHASE_PRICE\
-        ON EXI.purchase_price_id = PURCHASE_PRICE.id\
-      INNER JOIN provider PROV\
-        ON PROV.id = PURCHASE_PRICE.provider_id\
+      INNER JOIN product PRO\
+        ON PRO.id = EXI.product_id\
       INNER JOIN measurement_unit MU\
-        ON PROD.measurement_unit_id = MU.id\
-      LEFT JOIN sale_has_existence SHE\
-        ON EXI.id = SHE.existence_id\
+        ON MU.id = PRO.measurement_unit_id\
+      INNER JOIN purchase_price PP\
+        ON PP.id = EXI.purchase_price_id\
+      INNER JOIN provider PROV\
+        ON PP.provider_id = PROV.id\
+      LEFT JOIN (\
+            SELECT\
+              existence.product_id,\
+              SUM(IFNULL(partial_quantity, 1)) AS quantity\
+            FROM sale_has_existence\
+            INNER JOIN existence\
+              ON existence.id = sale_has_existence.existence_id\
+            WHERE existence.purchase_id = :purchaseId\
+            GROUP BY product_id\
+          ) CONSUMED\
+        ON CONSUMED.product_id = PRO.id\
       WHERE EXI.purchase_id = :purchaseId\
-      GROUP BY PURCHASE_PRICE.id, PROD.id, PROV.id';
+      GROUP BY PRO.id, PP.price\
+      ORDER BY PRO.name';
 
     return sequelize.query(sql, {
       type: Sequelize.QueryTypes.SELECT,
