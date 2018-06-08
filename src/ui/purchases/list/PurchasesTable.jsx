@@ -13,7 +13,7 @@ const PurchasesTable = ({ purchases, activePage, totalPages, navCb}) => {
     if (purchases.length === 0) {
       return (
         <tr>
-          <td colSpan={5} className="text-center">
+          <td colSpan={8} className="text-center">
             <i>No hay compras registradas</i>
           </td>
         </tr>
@@ -25,6 +25,7 @@ const PurchasesTable = ({ purchases, activePage, totalPages, navCb}) => {
         <td>{ purchase.id }</td>
         <td>{ moment(purchase.date).format('YYYY, MMMM DD') }</td>
         <td>{ moment(purchase.date).fromNow(true) }</td>
+        <td>{ purchase.provider_name }</td>
         <td className="text-right">
           { TextFormatter.asMoney(purchase.investment) }
         </td>
@@ -59,6 +60,7 @@ const PurchasesTable = ({ purchases, activePage, totalPages, navCb}) => {
             <th>#</th>
             <th>Fecha</th>
             <th>Fecha relativa</th>
+            <th>Proveedor</th>
             <th className="text-right">Pago como inversión</th>
             <th className="text-right">Pago como reinversión</th>
             <th className="text-right">Costo total</th>
