@@ -38,7 +38,7 @@ const SaleContent = ({ contents, isLoadingProducts }) => {
         <th>¿Autoconsumo?</th>
         <th className="text-right">Cantidad</th>
         <th>Unidad</th>
-        <th className="text-right">Precio C/U</th>
+        <th className="text-right">Precio unitario</th>
         <th className="text-right">Precio</th>
       </tr>
       </thead>

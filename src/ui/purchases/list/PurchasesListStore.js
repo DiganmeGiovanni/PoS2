@@ -38,14 +38,14 @@ class PurchasesListStore extends EventEmitter {
         purchase.date,\
         p.name                  AS provider_name\
       FROM purchase\
-      INNER JOIN existence e\
-        ON purchase.id = e.purchase_id\
+      INNER JOIN purchase_has_product php\
+        ON purchase.id = php.purchase_id\
       INNER JOIN purchase_price price\
-        ON e.purchase_price_id = price.id\
+        ON php.purchase_price_id = price.id\
       INNER JOIN provider p\
         ON price.provider_id = p.id\
-      GROUP BY purchase.id \
-      ORDER BY purchase.date DESC \
+      GROUP BY purchase.id\
+      ORDER BY purchase.date DESC\
     ';
 
     // Prepare count sql

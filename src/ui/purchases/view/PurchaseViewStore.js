@@ -60,40 +60,67 @@ class PurchaseViewStore extends EventEmitter {
     let sql = '\
       SELECT\
         PRO.id,\
-        PROV.name                    AS provider_name,\
-        PRO.name                     AS product_name,\
-        COUNT(*)                     AS quantity,\
-        MU.name                      AS measurement_unit,\
-        IFNULL(CONSUMED.quantity, 0) AS sold,\
-        COUNT(*) - IFNULL(\
-          CONSUMED.quantity,\
+        PROV.name                AS provider_name,\
+        PRO.name                 AS product_name,\
+        SUM(PHP.quantity)            AS quantity,\
+        MU.name                  AS measurement_unit,\
+        IFNULL(\
+          CASE WHEN (STOCK.quantity - SOLD.quantity < 1) THEN\
+            SUM(PHP.quantity)\
+          ELSE\
+            CASE WHEN (SUM(PHP.quantity) - (STOCK.quantity - SOLD.quantity)) < 0\
+              THEN 0\
+              ELSE SUM(PHP.quantity) - (STOCK.quantity - SOLD.quantity)\
+            END\
+          END,\
           0\
-        )                            AS stock,\
-        PP.price                     AS cost,\
-        COUNT(*) * PP.price          AS total\
-      FROM existence EXI\
+        )                        AS sold,\
+        IFNULL(\
+          CASE WHEN (STOCK.quantity - SOLD.quantity < 1) THEN\
+            0\
+          ELSE\
+            CASE WHEN (STOCK.quantity - SOLD.quantity) > SUM(PHP.quantity)\
+              THEN SUM(PHP.quantity)\
+              ELSE STOCK.quantity - SOLD.quantity\
+            END\
+          END,\
+          SUM(PHP.quantity)\
+        )                        AS stock,\
+        PP.price                 AS cost,\
+        SUM(PHP.quantity) * PP.price AS total\
+      FROM purchase_has_product PHP\
+      INNER JOIN purchase_price PP\
+        ON PP.id = PHP.purchase_price_id\
       INNER JOIN product PRO\
-        ON PRO.id = EXI.product_id\
+        ON PRO.id = PP.product_id\
       INNER JOIN measurement_unit MU\
         ON MU.id = PRO.measurement_unit_id\
-      INNER JOIN purchase_price PP\
-        ON PP.id = EXI.purchase_price_id\
       INNER JOIN provider PROV\
         ON PP.provider_id = PROV.id\
       LEFT JOIN (\
             SELECT\
-              existence.product_id,\
-              SUM(IFNULL(partial_quantity, 1)) AS quantity\
-            FROM sale_has_existence\
-            INNER JOIN existence\
-              ON existence.id = sale_has_existence.existence_id\
-            WHERE existence.purchase_id = :purchaseId\
+              product_id,\
+              SUM(quantity) AS quantity\
+            FROM purchase_has_product\
+            INNER JOIN purchase p on purchase_has_product.purchase_id = p.id\
+            WHERE p.id <= :purchaseId\
             GROUP BY product_id\
-          ) CONSUMED\
-        ON CONSUMED.product_id = PRO.id\
-      WHERE EXI.purchase_id = :purchaseId\
+          ) STOCK\
+        ON PRO.id = STOCK.product_id\
+      LEFT JOIN (\
+            SELECT\
+              price.product_id,\
+              SUM(quantity) AS quantity\
+            FROM sale_has_product\
+            INNER JOIN sale_price price\
+              on sale_has_product.sale_price_id = price.id\
+            GROUP BY price.product_id\
+          ) SOLD\
+        ON SOLd.product_id = PRO.id\
+      WHERE PHP.purchase_id = :purchaseId\
       GROUP BY PRO.id, PP.price\
-      ORDER BY PRO.name';
+      ORDER BY PRO.name\
+    ';
 
     return sequelize.query(sql, {
       type: Sequelize.QueryTypes.SELECT,

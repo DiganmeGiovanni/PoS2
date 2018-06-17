@@ -53,7 +53,7 @@ class ProductsListStore extends EventEmitter {
         BRA.name                    AS brand_name,\
         MU.name                     AS measurement_unit_name,\
         PROD.minimal_existences,\
-        IFNULL(EXISTENCES.stock, 0) AS stock,\
+        PROD.existences             AS stock,\
         IFNULL(SALES.quantity, 0)   AS sold\
       FROM product PROD\
       INNER JOIN brand BRA\
@@ -62,35 +62,11 @@ class ProductsListStore extends EventEmitter {
         ON MU.id = PROD.measurement_unit_id\
       LEFT JOIN (\
           SELECT\
-            existence.product_id,\
-            SUM(IFNULL(1 - CONSUMED.quantity, 1)) AS stock\
-          FROM existence\
-          INNER JOIN purchase p\
-            ON existence.purchase_id = p.id\
-          LEFT JOIN (\
-              SELECT existence_id, SUM(IFNULL(partial_quantity, 1)) AS quantity\
-              FROM sale_has_existence\
-              GROUP BY existence_id\
-            ) CONSUMED\
-            ON CONSUMED.existence_id = existence.id\
-          WHERE p.date < :date\
-          GROUP BY existence.product_id\
-        ) EXISTENCES\
-        ON EXISTENCES.product_id = PROD.id\
-      LEFT JOIN (\
-          SELECT\
-            EXI.product_id AS product_id,\
-            SUM(\
-              CASE WHEN SHE.existence_id IS NULL THEN 0\
-              ELSE IFNULL(SHE.partial_quantity, 1)\
-            END) AS quantity\
-          FROM existence EXI\
-          INNER JOIN purchase PUR\
-            ON PUR.id = EXI.purchase_id\
-          LEFT JOIN sale_has_existence SHE\
-            ON SHE.existence_id = EXI.id\
-          WHERE PUR.date < :date \
-          GROUP BY EXI.product_id\
+            sale_price.product_id,\
+            SUM(quantity) AS quantity\
+          FROM sale_price\
+          INNER JOIN sale_has_product s on sale_price.id = s.sale_price_id\
+          GROUP BY sale_price.product_id\
         ) SALES\
         ON SALES.product_id = PROD.id\
     ';
@@ -107,7 +83,6 @@ class ProductsListStore extends EventEmitter {
       .query(countSql, {
         type: Sequelize.QueryTypes.SELECT,
         replacements: {
-          date: moment(new Date()).utc().format('YYYY-MM-DD HH:mm:ss'),
           name: '%' + this.activePage.filters.name + '%'
         }
       })

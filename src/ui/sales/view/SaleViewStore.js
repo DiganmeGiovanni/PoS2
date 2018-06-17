@@ -61,22 +61,20 @@ class SaleViewStore extends EventEmitter {
       SELECT\
         PROD.id,\
         PROD.name,\
-        SHE.self_consumption                 AS self_consumption,\
-        SUM(IFNULL(SHE.partial_quantity, 1)) AS quantity,\
-        MU.name                              AS measurement_unit_name,\
+        SHP.self_consumption            AS self_consumption,\
+        SHP.quantity                    AS quantity,\
+        MU.name                         AS measurement_unit_name,\
         SALE_PRICE.price,\
-        SALE_PRICE.price * SUM(IFNULL(SHE.partial_quantity, 1)) AS total\
-      FROM sale_has_existence SHE\
-      INNER JOIN existence EXI\
-        ON EXI.id = SHE.existence_id\
+        SALE_PRICE.price * SHP.quantity AS total\
+      FROM sale_has_product SHP\
+      INNER JOIN sale_price SALE_PRICE\
+        ON SHP.sale_price_id = SALE_PRICE.id\
       INNER JOIN product PROD\
-        ON EXI.product_id = PROD.id\
+        ON SALE_PRICE.product_id = PROD.id\
       INNER JOIN measurement_unit MU\
         ON MU.id = PROD.measurement_unit_id\
-      INNER JOIN sale_price SALE_PRICE\
-        ON SHE.sale_price_id = SALE_PRICE.id\
-      WHERE SHE.sale_id = :saleId\
-      GROUP BY PROD.id, SHE.self_consumption, SALE_PRICE.price\
+      WHERE SHP.sale_id = :saleId\
+      GROUP BY PROD.id, SHP.self_consumption, SALE_PRICE.price\
       ORDER BY PROD.name\
     ';
 

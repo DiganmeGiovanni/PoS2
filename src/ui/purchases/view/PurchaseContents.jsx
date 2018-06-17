@@ -42,7 +42,7 @@ const PurchaseContents = ({ contents, isLoadingProducts }) => {
         <th>Unidad</th>
         <th className="text-right">Vendido</th>
         <th className="text-right">En stock (Esta compra)</th>
-        <th className="text-right">Costo C/U</th>
+        <th className="text-right">Costo unitario</th>
         <th className="text-right">Costo</th>
       </tr>
       </thead>
