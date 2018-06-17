@@ -43,28 +43,41 @@ const ProductsTable = ({ products, activePage, totalPages, navCallback, onFilter
         <table className="table table-striped">
           <thead>
             <tr>
-              <th>Código</th>
-              <th>Nombre</th>
-              <th>Marca</th>
-              <th>Unidad de medida</th>
-              <th className="text-right">Stock mínimo</th>
-              <th className="text-right">Stock</th>
-              <th className="text-right">Cantidad vendida</th>
-              <th>&nbsp;</th>
-            </tr>
-            <tr>
-              <th/>
               <th>
-                <input type="text"
-                       className="form-control"
-                       onChange={ onFilterNameChange }
+                <label className="control-label">Código</label>
+                <input type="text" className="form-control"/>
+              </th>
+              <th>
+                <label className="control-label">
+                  Nombre
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  onChange={ onFilterNameChange }
                 />
               </th>
-              <th/>
-              <th/>
-              <th/>
-              <th/>
-              <th/>
+              <th>
+                <label className="control-label">Marca</label>
+                <input type="text" className="form-control"/>
+              </th>
+              <th>
+                <label className="control-label">Unidad de medida</label>
+                <input type="text" className="form-control"/>
+              </th>
+              <th className="text-right">
+                <label className="control-label">Stock mínimo</label>
+                <input type="text" className="form-control"/>
+              </th>
+              <th className="text-right">
+                <label className="control-label">Stock</label>
+                <input type="text" className="form-control"/>
+              </th>
+              <th className="text-right">
+                <label className="control-label">Cantidad vendida</label>
+                <input type="text" className="form-control"/>
+              </th>
+              <th>&nbsp;</th>
             </tr>
           </thead>
           <tbody>{ makeTableBody() }</tbody>

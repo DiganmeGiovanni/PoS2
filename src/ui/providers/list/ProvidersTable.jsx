@@ -39,11 +39,8 @@ const ProvidersTable = ({ providers, activePage, totalPages, navCallback, onFilt
         <table className="table table-striped">
           <thead>
             <tr>
-              <th>#</th>
-              <th>Nombre</th>
-            </tr>
-            <tr>
               <th>
+                <label className="control-label">#</label>
                 <input
                   type="text"
                   className="form-control"
@@ -51,12 +48,14 @@ const ProvidersTable = ({ providers, activePage, totalPages, navCallback, onFilt
                 />
               </th>
               <th>
+                <label className="control-label">Nombre</label>
                 <input
                   type="text"
                   className="form-control"
                   onChange={ onFilterNameChange }
                 />
               </th>
+              <th/>
             </tr>
           </thead>
           <tbody>{makeTableBody()}</tbody>
