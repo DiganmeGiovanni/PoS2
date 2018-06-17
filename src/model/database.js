@@ -10,7 +10,7 @@ const sequelize = new Sequelize('pos_db', 'root', 'root', {
     idle: 10000,
   },
 
-  storage: 'pos_db.sqlite',
+  storage: 'pos.db.sqlite',
   define: {
     freezeTableName: true,
     timestamps: true,

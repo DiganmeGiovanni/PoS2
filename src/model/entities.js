@@ -89,7 +89,12 @@ const Product = sequelize.define('product', {
   },
   minimalExistences: {
     field: 'minimal_existences',
-    type: Sequelize.INTEGER,
+    type: Sequelize.DOUBLE,
+    defaultValue: 0,
+  },
+  existences: {
+    field: 'existences',
+    type: Sequelize.DOUBLE,
     defaultValue: 0,
   },
   brandId: {
@@ -190,21 +195,19 @@ const PurchasePrice = sequelize.define('purchase_price', {
 });
 
 // noinspection JSUnresolvedVariable
-const Existence = sequelize.define('existence', {
+const PurchaseHasProduct = sequelize.define('purchase_has_product', {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     primaryKey: true,
   },
-  code: {
-    type: Sequelize.STRING,
-  },
-  exhibitor: {
+  purchaseId: {
+    field: 'purchase_id',
     type: Sequelize.INTEGER,
-  },
-  disabledAt: {
-    field: 'disabled_at',
-    type: Sequelize.DATE,
+    references: {
+      model: Purchase,
+      key: 'id',
+    },
   },
   productId: {
     field: 'product_id',
@@ -222,14 +225,10 @@ const Existence = sequelize.define('existence', {
       key: 'id',
     },
   },
-  purchaseId: {
-    field: 'purchase_id',
-    type: Sequelize.INTEGER,
-    references: {
-      model: Purchase,
-      key: 'id',
-    },
-  },
+  quantity: {
+    field: 'quantity',
+    type: Sequelize.DOUBLE
+  }
 });
 
 // noinspection JSUnresolvedVariable, JSUnresolvedFunction
@@ -238,11 +237,6 @@ const Sale = sequelize.define('sale', {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     primaryKey: true,
-  },
-  selfConsumption: {
-    field: 'self_consumption',
-    type: Sequelize.BOOLEAN,
-    defaultValue: false
   },
   total: {
     type: Sequelize.DECIMAL(13, 2),
@@ -263,7 +257,7 @@ const SalePrice = sequelize.define('sale_price', {
   },
   price: {
     type: Sequelize.DECIMAL(13, 2),
-    allowNull: true,
+    allowNull: false,
   },
   date: {
     type: Sequelize.DATE,
@@ -280,30 +274,17 @@ const SalePrice = sequelize.define('sale_price', {
 });
 
 // noinspection JSUnresolvedVariable
-const SaleHasExistence = sequelize.define('sale_has_existence', {
+const SaleHasProduct = sequelize.define('sale_has_product', {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     primaryKey: true,
-  },
-  partialQuantity: {
-    field: 'partial_quantity',
-    type: Sequelize.DOUBLE,
-    defaultValue: 0
   },
   saleId: {
     field: 'sale_id',
     type: Sequelize.INTEGER,
     references: {
       model: Sale,
-      key: 'id',
-    },
-  },
-  existenceId: {
-    field: 'existence_id',
-    type: Sequelize.INTEGER,
-    references: {
-      model: Existence,
       key: 'id',
     },
   },
@@ -320,18 +301,24 @@ const SaleHasExistence = sequelize.define('sale_has_existence', {
     type: Sequelize.BOOLEAN,
     defaultValue: false
   },
+  quantity: {
+    field: 'quantity',
+    type: Sequelize.DOUBLE,
+    defaultValue: 1
+  },
 });
 
 
+//
 // Define all relationships between models
+
 Provider.hasMany(PurchasePrice, { foreignKey: 'provider_id' });
 PurchasePrice.belongsTo(Provider, { foreignKey: 'provider_id' });
 PurchasePrice.belongsTo(Product, { foreignKey: 'product_model_id' });
 PurchasePrice.belongsTo(MeasurementUnit, { foreignKey: 'measurement_unit_id' });
-PurchasePrice.hasMany(Existence, { foreignKey: 'purchase_price_id' });
 Brand.hasMany(Product, { foreignKey: 'brand_id' });
 Product.hasMany(PurchasePrice, { foreignKey: 'product_id' });
-Product.hasMany(Existence, { foreignKey: 'product_id' });
+Product.hasMany(PurchaseHasProduct, { foreignKey: 'product_id' });
 Product.hasMany(SalePrice, { foreignKey: 'product_id' });
 Product.hasMany(Equivalence, { foreignKey: 'product_id' });
 Product.belongsTo(MeasurementUnit, {
@@ -339,14 +326,13 @@ Product.belongsTo(MeasurementUnit, {
   foreignKey: 'measurement_unit_id'
 });
 Product.belongsTo(Brand, { foreignKey: 'brand_id' });
-Purchase.hasMany(Existence, { foreignKey: 'purchase_id' });
-Existence.belongsTo(PurchasePrice, { foreignKey: 'purchase_price_id' });
-Existence.belongsTo(Purchase, { foreignKey: 'purchase_id' });
-Existence.belongsTo(Product, { foreignKey: 'product_id' });
-SaleHasExistence.belongsTo(Existence, { foreignKey: 'existence_id' });
-SaleHasExistence.belongsTo(Sale, { foreignKey: 'sale_id' });
-SaleHasExistence.belongsTo(SalePrice, { foreignKey: 'sale_price_id' });
-Sale.hasMany(SaleHasExistence, { foreignKey: 'sale_id' });
+Purchase.hasMany(PurchaseHasProduct, { foreignKey: 'purchase_id' });
+PurchaseHasProduct.belongsTo(Product, { foreignKey: 'product_id' });
+PurchaseHasProduct.belongsTo(Purchase, { foreignKey: 'purchase_id' });
+PurchaseHasProduct.belongsTo(PurchasePrice, { foreignKey: 'purchase_price_id' });
+SaleHasProduct.belongsTo(Sale, { foreignKey: 'sale_id' });
+SaleHasProduct.belongsTo(SalePrice, { foreignKey: 'sale_price_id' });
+Sale.hasMany(SaleHasProduct, { foreignKey: 'sale_id' });
 SalePrice.belongsTo(Product, { foreignKey: 'product_id' });
 
 
@@ -358,21 +344,21 @@ MeasurementUnit.sync();
 Product.sync();
 Equivalence.sync();
 PurchasePrice.sync();
-Existence.sync();
+PurchaseHasProduct.sync();
 Sale.sync();
 SalePrice.sync();
-SaleHasExistence.sync();
+SaleHasProduct.sync();
 
 export {
   Provider,
   Brand,
   Purchase,
   MeasurementUnit,
-  Sale,
   Product,
   Equivalence,
   PurchasePrice,
-  Existence,
+  PurchaseHasProduct,
+  Sale,
   SalePrice,
-  SaleHasExistence,
+  SaleHasProduct,
 };
