@@ -11,8 +11,9 @@ import MUnitsCreate from './ui/m_unit/MUnitsCreate';
 import ProductsList from './ui/products/ProductsList';
 import ProductsCreate from './ui/products/ProductsCreate';
 import ProductView from './ui/products/view/ProductView';
-import ProvidersList from './ui/providers/ProvidersList';
-import ProvidersCreate from './ui/providers/ProvidersCreate';
+import ProvidersList from './ui/providers/list/ProvidersList';
+import ProviderCreate from './ui/providers/create/ProviderCreate';
+import ProviderUpdate from './ui/providers/update/ProviderUpdate';
 import PurchasePricesList from './ui/purchase_prices/PurchasePricesList';
 import PurchasePricesCreate from './ui/purchase_prices/PurchasePricesCreate'
 import Navbar from './ui/components/navbar/PNavbar';
@@ -101,8 +102,13 @@ export default class App extends React.Component {
           <Route
             exact
             path={'/providers/create'}
-            component={ProvidersCreate}
+            component={ProviderCreate}
             data={{ title: 'Punto de venta' }}
+          />
+          <Route
+            exact
+            path={'/providers/update/:providerId'}
+            component={ ProviderUpdate }
           />
           <Route
             exact

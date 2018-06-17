@@ -12,8 +12,22 @@ const ActionTypes = {
     FILTER_BY_NAME: 'products/filter_by_name'
   },
   PROVIDERS: {
-    LIST: 'providers/list',
-    PAGE: 'providers/page',
+    LIST: {
+      PAGE: 'providers/list/page',
+      FILTER_BY_NAME: 'providers/list/filter_by_name',
+      FILTER_BY_ID: 'providers/list/filter_by_id'
+    },
+    CREATE: {
+      ON_NAME_CHANGE: 'providers/create/on_name_change',
+      SAVE: 'providers/create/save',
+      SET_REDIRECT_AS_COMPLETED: 'providers/create/set_redirect_as_completed'
+    },
+    UPDATE: {
+      ON_ID_CHANGE: 'providers/update/on_id_change',
+      ON_NAME_CHANGE: 'providers/update/on_name_change',
+      SAVE: 'providers/update/save',
+      SET_REDIRECT_AS_COMPLETED: 'providers/update/set_redirect_as_completed'
+    }
   },
   PURCHASE: {
     ADD_CONTENT: 'purchase/add_content',

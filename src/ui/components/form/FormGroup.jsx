@@ -41,7 +41,7 @@ FormGroup.propTypes = {
   id: PropTypes.string,
   errMessage: PropTypes.string,
   handleChange: PropTypes.func.isRequired,
-  value: PropTypes.string,
+  inpProps: PropTypes.object,
 };
 
 FormGroup.defaultProps = {

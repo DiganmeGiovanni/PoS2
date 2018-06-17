@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import ProvidersTable from './ProvidersTable';
 import ProvidersListStore from './ProvidersListStore';
-import PoSActions from './../PoSActions';
+import PoSActions from '../../PoSActions';
 
 class ProvidersList extends React.Component {
   constructor(props) {
@@ -20,7 +20,7 @@ class ProvidersList extends React.Component {
 
   componentDidMount() {
     document.title = 'Proveedores';
-    PoSActions.provider.page(1, this.pageSize);
+    PoSActions.provider.list.page(1, this.pageSize);
   }
 
   componentWillUnmount() {
@@ -32,8 +32,16 @@ class ProvidersList extends React.Component {
     this.setState(ProvidersListStore.getState());
   }
 
+  static onFilterNameChange(e) {
+    PoSActions.provider.list.filterByName(e.target.value);
+  }
+
+  static onFilterIdChange(e) {
+    PoSActions.provider.list.filterById(e.target.value);
+  }
+
   navToPage(targetPage) {
-    PoSActions.provider.page(
+    PoSActions.provider.list.page(
       targetPage,
       this.pageSize,
     );
@@ -54,6 +62,8 @@ class ProvidersList extends React.Component {
           navCallback={this.navToPage}
           activePage={this.state.pageIdx}
           totalPages={this.state.pagesCount}
+          onFilterNameChange={ ProvidersList.onFilterNameChange }
+          onFilterIdChange={ ProvidersList.onFilterIdChange }
         />
       </div>
     );

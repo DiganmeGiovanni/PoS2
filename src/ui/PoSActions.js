@@ -42,13 +42,65 @@ const PoSActions = {
     }
   },
   provider: {
-    page(pageNumber, pageSize) {
-      PosDispatcher.dispatch({
-        type: ActionTypes.PROVIDERS.PAGE,
-        pageNumber,
-        pageSize,
-      });
+    list: {
+      page(pageNumber, pageSize) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PROVIDERS.LIST.PAGE,
+          pageNumber,
+          pageSize,
+        });
+      },
+      filterByName(name) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PROVIDERS.LIST.FILTER_BY_NAME,
+          name
+        })
+      },
+      filterById(id) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PROVIDERS.LIST.FILTER_BY_ID,
+          id
+        })
+      }
     },
+    create: {
+      onNameChange(name) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PROVIDERS.CREATE.ON_NAME_CHANGE,
+          name
+        })
+      },
+      save() {
+        PosDispatcher.dispatch({ type: ActionTypes.PROVIDERS.CREATE.SAVE });
+      },
+      setRedirectAsCompleted() {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PROVIDERS.CREATE.SET_REDIRECT_AS_COMPLETED
+        });
+      }
+    },
+    update: {
+      onIdChange(id) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PROVIDERS.UPDATE.ON_ID_CHANGE,
+          id
+        });
+      },
+      onNameChange(name) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PROVIDERS.UPDATE.ON_NAME_CHANGE,
+          name
+        })
+      },
+      save() {
+        PosDispatcher.dispatch({ type: ActionTypes.PROVIDERS.UPDATE.SAVE });
+      },
+      setRedirectAsCompleted() {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PROVIDERS.UPDATE.SET_REDIRECT_AS_COMPLETED
+        });
+      }
+    }
   },
   purchase: {
     create: {
