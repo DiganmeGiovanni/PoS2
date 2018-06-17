@@ -3,13 +3,65 @@ import PosDispatcher from './PoSDispatcher';
 
 const PoSActions = {
   brands: {
-    page(pageNumber, pageSize) {
-      PosDispatcher.dispatch({
-        type: ActionTypes.BRANDS.PAGE,
-        pageNumber,
-        pageSize,
-      });
+    list: {
+      page(pageNumber, pageSize) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.BRANDS.LIST.PAGE,
+          pageNumber,
+          pageSize,
+        });
+      },
+      filterByName(name) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.BRANDS.LIST.FILTER_BY_NAME,
+          name
+        })
+      },
+      filterById(id) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.BRANDS.LIST.FILTER_BY_ID,
+          id
+        })
+      }
     },
+    create: {
+      onNameChange(name) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.BRANDS.CREATE.ON_NAME_CHANGE,
+          name
+        })
+      },
+      save() {
+        PosDispatcher.dispatch({ type: ActionTypes.BRANDS.CREATE.SAVE });
+      },
+      setRedirectAsCompleted() {
+        PosDispatcher.dispatch({
+          type: ActionTypes.BRANDS.CREATE.SET_REDIRECT_AS_COMPLETED
+        });
+      }
+    },
+    update: {
+      onIdChange(id) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.BRANDS.UPDATE.ON_ID_CHANGE,
+          id
+        });
+      },
+      onNameChange(name) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.BRANDS.UPDATE.ON_NAME_CHANGE,
+          name
+        })
+      },
+      save() {
+        PosDispatcher.dispatch({ type: ActionTypes.BRANDS.UPDATE.SAVE });
+      },
+      setRedirectAsCompleted() {
+        PosDispatcher.dispatch({
+          type: ActionTypes.BRANDS.UPDATE.SET_REDIRECT_AS_COMPLETED
+        });
+      }
+    }
   },
   measurementUnits: {
     page(pageNumber, pageSize) {

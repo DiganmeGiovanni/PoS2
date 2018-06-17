@@ -1,6 +1,21 @@
 const ActionTypes = {
   BRANDS: {
-    PAGE: 'brands/page',
+    LIST: {
+      PAGE: 'brands/list/page',
+      FILTER_BY_NAME: 'brands/list/filter_by_name',
+      FILTER_BY_ID: 'brands/list/filter_by_id'
+    },
+    CREATE: {
+      ON_NAME_CHANGE: 'brands/create/on_name_change',
+      SAVE: 'brands/create/save',
+      SET_REDIRECT_AS_COMPLETED: 'brands/create/set_redirect_as_completed'
+    },
+    UPDATE: {
+      ON_ID_CHANGE: 'brands/update/on_id_change',
+      ON_NAME_CHANGE: 'brands/update/on_name_change',
+      SAVE: 'brands/update/save',
+      SET_REDIRECT_AS_COMPLETED: 'brands/update/set_redirect_as_completed'
+    }
   },
   MEASUREMENT_UNITS: {
     PAGE: 'measurement_units/page',

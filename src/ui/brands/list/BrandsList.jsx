@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import BrandsTable from './BrandsTable';
 import BrandsListStore from './BrandsListStore';
-import PoSActions from '../PoSActions';
+import PoSActions from '../../PoSActions';
 
 class BrandsList extends React.Component {
   constructor(props) {
@@ -20,7 +20,7 @@ class BrandsList extends React.Component {
 
   componentDidMount() {
     document.title = 'Marcas';
-    PoSActions.brands.page(1, this.pageSize);
+    PoSActions.brands.list.page(1, this.pageSize);
   }
 
   componentWillUnmount() {
@@ -32,8 +32,16 @@ class BrandsList extends React.Component {
     this.setState(BrandsListStore.getState());
   }
 
+  static onFilterNameChange(e) {
+    PoSActions.brands.list.filterByName(e.target.value);
+  }
+
+  static onFilterIdChange(e) {
+    PoSActions.brands.list.filterById(e.target.value);
+  }
+
   navToPage(targetPage) {
-    PoSActions.brands.page(
+    PoSActions.brands.list.page(
       targetPage,
       this.pageSize,
     );
@@ -54,6 +62,10 @@ class BrandsList extends React.Component {
           activePage={this.state.pageIdx}
           totalPages={this.state.pagesCount}
           navCallback={this.navToPage}
+          filterId={ this.state.filters.id }
+          filterName={ this.state.filters.name }
+          onFilterIdChange={ BrandsList.onFilterIdChange }
+          onFilterNameChange={ BrandsList.onFilterNameChange }
         />
       </div>
     );

@@ -4,8 +4,9 @@ import {
   Route,
 } from 'react-router-dom';
 
-import BrandsList from './ui/brands/BrandsList';
-import BrandsCreate from './ui/brands/BrandsCreate';
+import BrandsList from './ui/brands/list/BrandsList';
+import BrandCreate from './ui/brands/create/BrandCreate';
+import BrandUpdate from './ui/brands/update/BrandUpdate';
 import MUnitsList from './ui/m_unit/MUnitsList';
 import MUnitsCreate from './ui/m_unit/MUnitsCreate';
 import ProductsList from './ui/products/ProductsList';
@@ -40,18 +41,10 @@ export default class App extends React.Component {
             data={{ title: 'Punto de venta' }}
           />
 
-          <Route
-            exact
-            path={'/brands'}
-            component={BrandsList}
-            data={{ title: 'Punto de venta' }}
-          />
-          <Route
-            exact
-            path={'/brands/create'}
-            component={BrandsCreate}
-            data={{ title: 'Punto de venta' }}
-          />
+          <Route exact path={ '/brands' } component={ BrandsList }/>
+          <Route exact path={ '/brands/create' } component={ BrandCreate }/>
+          <Route exact path={ '/brand/:brandId/update' } component={ BrandUpdate }/>
+
           <Route
             exact
             path={'/measurement_units'}
