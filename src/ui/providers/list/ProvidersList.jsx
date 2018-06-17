@@ -62,6 +62,8 @@ class ProvidersList extends React.Component {
           navCallback={this.navToPage}
           activePage={this.state.pageIdx}
           totalPages={this.state.pagesCount}
+          filterId={ this.state.filters.id }
+          filterName={ this.state.filters.name }
           onFilterNameChange={ ProvidersList.onFilterNameChange }
           onFilterIdChange={ ProvidersList.onFilterIdChange }
         />

@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import Paginator from '../../components/paginated_table/Paginator';
 import { Link } from "react-router-dom";
 
-const ProvidersTable = ({ providers, activePage, totalPages, navCallback, onFilterIdChange, onFilterNameChange }) => {
+const ProvidersTable = ({ providers, activePage, totalPages, navCallback, filterId, filterName, onFilterIdChange,
+                          onFilterNameChange }) => {
   const makeTableBody = () => {
     if (providers.length === 0) {
       return (
@@ -45,6 +46,7 @@ const ProvidersTable = ({ providers, activePage, totalPages, navCallback, onFilt
                   type="text"
                   className="form-control"
                   onChange={ onFilterIdChange }
+                  value={ filterId }
                 />
               </th>
               <th>
@@ -53,6 +55,7 @@ const ProvidersTable = ({ providers, activePage, totalPages, navCallback, onFilt
                   type="text"
                   className="form-control"
                   onChange={ onFilterNameChange }
+                  value={ filterName }
                 />
               </th>
               <th/>
@@ -76,6 +79,8 @@ ProvidersTable.propTypes = {
   activePage: PropTypes.number.isRequired,
   totalPages: PropTypes.number.isRequired,
   navCallback: PropTypes.func.isRequired,
+  filterId: PropTypes.string.isRequired,
+  filterName: PropTypes.string.isRequired,
   onFilterIdChange: PropTypes.func.isRequired,
   onFilterNameChange: PropTypes.func.isRequired
 };
