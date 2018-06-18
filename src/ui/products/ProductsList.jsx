@@ -5,9 +5,6 @@ import ProductsListStore from './ProductsListStore';
 import PoSActions from './../PoSActions';
 import "moment/locale/es";
 
-const DatePicker = require('react-datetime');
-
-
 class ProductsList extends React.Component {
   constructor(props) {
     super(props);
@@ -56,34 +53,17 @@ class ProductsList extends React.Component {
   render() {
     return (
       <div className="container">
-        <h1>Productos</h1>
         <div className="row">
           <div className="col-sm-6">
+            <h1>Productos</h1>
+          </div>
+          <div className="col-sm-6 text-right padding-top-24">
             <Link to={'/products/create'} className={'btn btn-primary'}>
               Nuevo producto
             </Link>
           </div>
-          {/*<div className="col-sm-6">*/}
-            {/*<div className="form-group">*/}
-              {/*<label className="control-label">Stock hasta</label>*/}
-              {/*<br/>*/}
-              {/*<DatePicker*/}
-                {/*dateFormat="DD MMMM, YYYY"*/}
-                {/*dateTimeFormat=" HH:mm:ss"*/}
-                {/*locale="es"*/}
-                {/*viewMode="years"*/}
-                {/*closeOnSelect={ true }*/}
-                {/*closeOnTab={ true }*/}
-                {/*onChange={ this.handleEndDateChange }*/}
-                {/*value={ this.state.endDate }*/}
-              {/*/>*/}
-            {/*</div>*/}
-          {/*</div>*/}
         </div>
 
-
-        <br />
-        <br />
         <ProductsTable
           products={this.state.products}
           navCallback={this.navToPage}

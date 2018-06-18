@@ -8,7 +8,7 @@ const ProductsTable = ({ products, activePage, totalPages, navCallback, onFilter
     if (products.length === 0) {
       return (
         <tr>
-          <td colSpan={7} className={'text-center'}>
+          <td colSpan={8} className={'text-center'}>
             <i>No hay productos para mostrar</i>
           </td>
         </tr>
@@ -38,7 +38,7 @@ const ProductsTable = ({ products, activePage, totalPages, navCallback, onFilter
   };
 
   return (
-    <div className="row">
+    <div className="row padding-top-8">
       <div className="col-xs-12">
         <table className="table table-striped">
           <thead>
@@ -62,19 +62,19 @@ const ProductsTable = ({ products, activePage, totalPages, navCallback, onFilter
                 <input type="text" className="form-control"/>
               </th>
               <th>
-                <label className="control-label">Unidad de medida</label>
+                <label className="control-label">Unidad</label>
                 <input type="text" className="form-control"/>
               </th>
-              <th className="text-right">
+              <th className="text-right" style={{ width: '11%'}}>
                 <label className="control-label">Stock mínimo</label>
                 <input type="text" className="form-control"/>
               </th>
-              <th className="text-right">
+              <th className="text-right" style={{ width: '11%'}}>
                 <label className="control-label">Stock</label>
                 <input type="text" className="form-control"/>
               </th>
-              <th className="text-right">
-                <label className="control-label">Cantidad vendida</label>
+              <th className="text-right" style={{ width: '11%'}}>
+                <label className="control-label">Vendidos</label>
                 <input type="text" className="form-control"/>
               </th>
               <th>&nbsp;</th>
