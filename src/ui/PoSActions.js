@@ -64,13 +64,87 @@ const PoSActions = {
     }
   },
   measurementUnits: {
-    page(pageNumber, pageSize) {
-      PosDispatcher.dispatch({
-        type: ActionTypes.MEASUREMENT_UNITS.PAGE,
-        pageNumber,
-        pageSize,
-      });
+    list: {
+      page(pageNumber, pageSize) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.MEASUREMENT_UNITS.LIST.PAGE,
+          pageNumber,
+          pageSize,
+        });
+      },
+      filterById(id) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.MEASUREMENT_UNITS.LIST.FILTER_BY_ID,
+          id
+        })
+      },
+      filterByName(name) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.MEASUREMENT_UNITS.LIST.FILTER_BY_NAME,
+          name
+        })
+      },
+      filterByAbbr(abbr) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.MEASUREMENT_UNITS.LIST.FILTER_BY_ABBR,
+          abbr
+        })
+      }
     },
+    create: {
+      onNameChange(name) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.MEASUREMENT_UNITS.CREATE.ON_NAME_CHANGE,
+          name
+        })
+      },
+      onAbbrChange(abbr) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.MEASUREMENT_UNITS.CREATE.ON_ABBR_CHANGE,
+          abbr
+        })
+      },
+      save() {
+        PosDispatcher.dispatch({
+          type: ActionTypes.MEASUREMENT_UNITS.CREATE.SAVE
+        });
+      },
+      setRedirectAsCompleted() {
+        PosDispatcher.dispatch({
+          type: ActionTypes.MEASUREMENT_UNITS.CREATE.SET_REDIRECT_AS_COMPLETED
+        });
+      }
+    },
+    update: {
+      onIdChange(id) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.MEASUREMENT_UNITS.UPDATE.ON_ID_CHANGE,
+          id
+        });
+      },
+      onNameChange(name) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.MEASUREMENT_UNITS.UPDATE.ON_NAME_CHANGE,
+          name
+        })
+      },
+      onAbbrChange(abbr) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.MEASUREMENT_UNITS.UPDATE.ON_ABBR_CHANGE,
+          abbr
+        })
+      },
+      save() {
+        PosDispatcher.dispatch({
+          type: ActionTypes.MEASUREMENT_UNITS.UPDATE.SAVE
+        });
+      },
+      setRedirectAsCompleted() {
+        PosDispatcher.dispatch({
+          type: ActionTypes.MEASUREMENT_UNITS.UPDATE.SET_REDIRECT_AS_COMPLETED
+        });
+      }
+    }
   },
   products: {
     page(pageNumber, pageSize) {

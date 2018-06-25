@@ -7,7 +7,7 @@ import {
 import BrandsList from './ui/brands/list/BrandsList';
 import BrandCreate from './ui/brands/create/BrandCreate';
 import BrandUpdate from './ui/brands/update/BrandUpdate';
-import MUnitsList from './ui/m_unit/MUnitsList';
+import MUnitsList from './ui/m_unit/list/MUnitsList';
 import MUnitsCreate from './ui/m_unit/MUnitsCreate';
 import ProductsList from './ui/products/ProductsList';
 import ProductsCreate from './ui/products/ProductsCreate';

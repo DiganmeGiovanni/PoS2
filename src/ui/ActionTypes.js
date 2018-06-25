@@ -18,7 +18,25 @@ const ActionTypes = {
     }
   },
   MEASUREMENT_UNITS: {
-    PAGE: 'measurement_units/page',
+    LIST: {
+      PAGE: 'measurement_units/list/page',
+      FILTER_BY_NAME: 'measurement_units/list/filter_by_name',
+      FILTER_BY_ID: 'measurement_units/list/filter_by_id',
+      FILTER_BY_ABBR: 'measurement_units/list/filter_by_abbr'
+    },
+    CREATE: {
+      ON_NAME_CHANGE: 'measurement_units/create/on_name_change',
+      ON_ABBR_CHANGE: 'measurement_units/create/on_abbr_change',
+      SAVE: 'measurement_units/create/save',
+      SET_REDIRECT_AS_COMPLETED: 'measurement_units/create/set_redirect_as_completed'
+    },
+    UPDATE: {
+      ON_ID_CHANGE: 'measurement_units/update/on_id_change',
+      ON_NAME_CHANGE: 'measurement_units/update/on_name_change',
+      ON_ABBR_CHANGE: 'measurement_units/update/on_abbr_change',
+      SAVE: 'measurement_units/update/save',
+      SET_REDIRECT_AS_COMPLETED: 'measurement_units/update/set_redirect_as_completed'
+    }
   },
   PRODUCTS: {
     PAGE: 'products/page',
