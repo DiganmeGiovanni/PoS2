@@ -23,7 +23,7 @@ const MUnitsTable = ({ mUnits, activePage, totalPages, navCallback, filterId, on
         <td>{mUnit.name}</td>
         <td className="text-right">
           <Link
-            to={`/brand/${ mUnit.id }/update`}
+            to={`/measurement_unit/${ mUnit.id }/update`}
             title="Modificar unidad"
             className="btn btn-sm btn-default"
           >
