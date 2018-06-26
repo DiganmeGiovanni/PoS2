@@ -10,8 +10,8 @@ import BrandUpdate from './ui/brands/update/BrandUpdate';
 import MUnitsList from './ui/m_unit/list/MUnitsList';
 import MUnitsCreate from './ui/m_unit/create/MUnitsCreate';
 import MUnitsUpdate from './ui/m_unit/update/MUnitsUpdate';
-import ProductsList from './ui/products/ProductsList';
-import ProductsCreate from './ui/products/ProductsCreate';
+import ProductsList from './ui/products/list/ProductsList';
+import ProductsCreate from './ui/products/create/ProductsCreate';
 import ProductView from './ui/products/view/ProductView';
 import ProvidersList from './ui/providers/list/ProvidersList';
 import ProviderCreate from './ui/providers/create/ProviderCreate';
@@ -50,18 +50,8 @@ export default class App extends React.Component {
           <Route exact path={'/measurement_units/create'} component={MUnitsCreate}/>
           <Route exact path={'/measurement_unit/:measurementUnitId/update'} component={ MUnitsUpdate }/>
 
-          <Route
-            exact
-            path={'/products'}
-            component={ProductsList}
-            data={{ title: 'Punto de venta' }}
-          />
-          <Route
-            exact
-            path={'/products/create'}
-            component={ProductsCreate}
-            data={{ title: 'Punto de venta' }}
-          />
+          <Route exact path={'/products'} component={ProductsList}/>
+          <Route exact path={'/products/create'} component={ProductsCreate}/>
           <Route
             exact
             path={'/products/view/:productId'}

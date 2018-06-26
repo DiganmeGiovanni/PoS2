@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
-import PoSDispatcher from '../PoSDispatcher';
-import ActionTypes from '../ActionTypes';
-import sequelize from '../../model/database';
+import PoSDispatcher from '../../PoSDispatcher';
+import ActionTypes from '../../ActionTypes';
+import sequelize from '../../../model/database';
 import moment from "moment/moment";
 const Sequelize = require('sequelize');
 

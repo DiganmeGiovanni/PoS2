@@ -165,6 +165,55 @@ const PoSActions = {
         type: ActionTypes.PRODUCTS.FILTER_BY_NAME,
         name
       });
+    },
+
+    create: {
+      onBrandChange(brand) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PRODUCTS.CREATE.ON_BRAND_CHANGE,
+          brand
+        });
+      },
+      onMeasurementUnitChange(measurementUnit) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PRODUCTS.CREATE.ON_M_UNIT_CHANGE,
+          measurementUnit
+        });
+      },
+      onNameChange(name) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PRODUCTS.CREATE.ON_NAME_CHANGE,
+          name
+        });
+      },
+      onCodeChange(code) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PRODUCTS.CREATE.ON_CODE_CHANGE,
+          code
+        });
+      },
+      onDescriptionChange(description) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PRODUCTS.CREATE.ON_DESC_CHANGE,
+          description
+        });
+      },
+      onMinExistencesChange(minExistences) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PRODUCTS.CREATE.ON_MIN_EXISTENCES_CHANGE,
+          minExistences
+        });
+      },
+      save() {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PRODUCTS.CREATE.SAVE
+        });
+      },
+      setRedirectAsCompleted() {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PRODUCTS.CREATE.SET_REDIRECT_AS_COMPLETED,
+        });
+      }
     }
   },
   provider: {

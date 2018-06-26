@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import ProductsTable from './ProductsTable';
 import ProductsListStore from './ProductsListStore';
-import PoSActions from './../PoSActions';
+import PoSActions from '../../PoSActions';
 import "moment/locale/es";
 
 class ProductsList extends React.Component {

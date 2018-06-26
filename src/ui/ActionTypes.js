@@ -41,8 +41,18 @@ const ActionTypes = {
   PRODUCTS: {
     PAGE: 'products/page',
     SET_END_DATE: 'products/set_end_date',
+    FILTER_BY_NAME: 'products/filter_by_name',
 
-    FILTER_BY_NAME: 'products/filter_by_name'
+    CREATE: {
+      ON_BRAND_CHANGE: 'products/create/on_brand_change',
+      ON_M_UNIT_CHANGE: 'products/create/on_m_unit_change',
+      ON_NAME_CHANGE: 'products/create/on_name_change',
+      ON_CODE_CHANGE: 'products/create/on_code_change',
+      ON_DESC_CHANGE: 'products/create/on_desc_change',
+      ON_MIN_EXISTENCES_CHANGE: 'products/create/on_min_existences_change',
+      SAVE: 'products/create/save',
+      SET_REDIRECT_AS_COMPLETED: 'products/create/set_redirect_as_completed',
+    }
   },
   PROVIDERS: {
     LIST: {

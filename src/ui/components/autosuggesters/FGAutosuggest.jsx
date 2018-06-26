@@ -29,7 +29,7 @@ class FGAutosuggest extends React.Component {
   }
 
   renderError() {
-    if (this.props.errMessage == null) {
+    if (this.props.errMessage === null || !this.props.errMessage) {
       return '';
     }
 
@@ -39,7 +39,7 @@ class FGAutosuggest extends React.Component {
   }
 
   render() {
-    let fgClass = this.props.errMessage === null
+    let fgClass = this.props.errMessage === null || !this.props.errMessage
       ? 'form-group'
       : 'form-group has-error';
 
