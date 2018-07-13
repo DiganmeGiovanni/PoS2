@@ -1,5 +1,6 @@
 import ActionTypes from './ActionTypes';
 import PosDispatcher from './PoSDispatcher';
+import PoSDispatcher from './PoSDispatcher';
 
 const PoSActions = {
   brands: {
@@ -167,51 +168,69 @@ const PoSActions = {
       });
     },
 
-    create: {
+    upsert: {
+      onIdChange(id) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PRODUCTS.UPSERT.ON_ID_CHANGE,
+          id
+        });
+      },
       onBrandChange(brand) {
         PosDispatcher.dispatch({
-          type: ActionTypes.PRODUCTS.CREATE.ON_BRAND_CHANGE,
+          type: ActionTypes.PRODUCTS.UPSERT.ON_BRAND_CHANGE,
           brand
         });
       },
+      onBrandInpValueChange(value) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PRODUCTS.UPSERT.ON_BRAND_INP_VALUE_CHANGE,
+          value
+        })
+      },
       onMeasurementUnitChange(measurementUnit) {
         PosDispatcher.dispatch({
-          type: ActionTypes.PRODUCTS.CREATE.ON_M_UNIT_CHANGE,
+          type: ActionTypes.PRODUCTS.UPSERT.ON_M_UNIT_CHANGE,
           measurementUnit
+        });
+      },
+      onMeasurementUnitInpValueChange(value) {
+        PoSDispatcher.dispatch({
+          type: ActionTypes.PRODUCTS.UPSERT.ON_M_UNIT_INP_VALUE_CHANGE,
+          value
         });
       },
       onNameChange(name) {
         PosDispatcher.dispatch({
-          type: ActionTypes.PRODUCTS.CREATE.ON_NAME_CHANGE,
+          type: ActionTypes.PRODUCTS.UPSERT.ON_NAME_CHANGE,
           name
         });
       },
       onCodeChange(code) {
         PosDispatcher.dispatch({
-          type: ActionTypes.PRODUCTS.CREATE.ON_CODE_CHANGE,
+          type: ActionTypes.PRODUCTS.UPSERT.ON_CODE_CHANGE,
           code
         });
       },
       onDescriptionChange(description) {
         PosDispatcher.dispatch({
-          type: ActionTypes.PRODUCTS.CREATE.ON_DESC_CHANGE,
+          type: ActionTypes.PRODUCTS.UPSERT.ON_DESC_CHANGE,
           description
         });
       },
       onMinExistencesChange(minExistences) {
         PosDispatcher.dispatch({
-          type: ActionTypes.PRODUCTS.CREATE.ON_MIN_EXISTENCES_CHANGE,
+          type: ActionTypes.PRODUCTS.UPSERT.ON_MIN_EXISTENCES_CHANGE,
           minExistences
         });
       },
       save() {
         PosDispatcher.dispatch({
-          type: ActionTypes.PRODUCTS.CREATE.SAVE
+          type: ActionTypes.PRODUCTS.UPSERT.SAVE
         });
       },
       setRedirectAsCompleted() {
         PosDispatcher.dispatch({
-          type: ActionTypes.PRODUCTS.CREATE.SET_REDIRECT_AS_COMPLETED,
+          type: ActionTypes.PRODUCTS.UPSERT.SET_REDIRECT_AS_COMPLETED,
         });
       }
     }

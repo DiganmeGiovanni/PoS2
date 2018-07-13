@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import MeasurementUnitService from '../../../services/MeasurementUnitService';
-import FGAutosuggest from './FGAutosuggest';
+import TBAutosuggest from './TBAutosuggest';
 
 class MeasurementUnitAutosuggest extends React.Component {
   constructor() {
@@ -12,9 +12,16 @@ class MeasurementUnitAutosuggest extends React.Component {
     this.state = { value: '', suggestions: [] };
   }
 
-  // noinspection JSMethodCanBeStatic
-  getSuggestionValue(suggestion) {
+  static getSuggestionValue(suggestion) {
     return suggestion.name;
+  }
+
+  static renderSuggestion(suggestion) {
+    return (
+      <div className="suggestion-item">
+        { suggestion.name }
+      </div>
+    )
   }
 
   onSuggestionsFetchRequested({ value }) {
@@ -27,38 +34,29 @@ class MeasurementUnitAutosuggest extends React.Component {
     this.setState({ suggestions: [] });
   }
 
-  // noinspection JSMethodCanBeStatic
-  renderSuggestion(suggestion) {
-    return (
-      <div className="suggestion-item">
-        { suggestion.name }
-      </div>
-    )
-  }
-
   render() {
     return (
-      <FGAutosuggest
+      <TBAutosuggest
         label="Unidad de medida"
-        errMessage={ this.props.errMessage }
         suggestions={ this.state.suggestions }
         onSugFetchRequested={ this.onSuggestionsFetchRequested }
         onSugClearRequested={ this.onSuggestionsClearRequested }
-        onSugSelected={ this.props.onSuggestionSelected }
-        getSugValue={ this.getSuggestionValue }
-        renderSug={ this.renderSuggestion }
+        onSugSelected={ this.props.onMeasurementUnitSelected }
+        getSugValue={ MeasurementUnitAutosuggest.getSuggestionValue }
+        renderSug={ MeasurementUnitAutosuggest.renderSuggestion }
+        value={ this.props.value }
+        onValueChange={ this.props.onValueChange }
+        error={ this.props.error }
       />
-    )
+    );
   }
 }
 
 MeasurementUnitAutosuggest.propTypes = {
-  onSuggestionSelected: PropTypes.func.isRequired,
-  errMessage: PropTypes.string,
-};
-
-MeasurementUnitAutosuggest.defaultProps = {
-  errMessage: null
+  onMeasurementUnitSelected: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
+  onValueChange: PropTypes.func.isRequired,
+  error: PropTypes.string,
 };
 
 export default MeasurementUnitAutosuggest

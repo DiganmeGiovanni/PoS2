@@ -4,7 +4,9 @@ import FormGroup from '../components/form/FormGroup';
 import BrandsAutosuggest from "../components/autosuggesters/BrandsAutosuggest";
 import MeasurementUnitAutosuggest from "../components/autosuggesters/MeasurementUnitAutosuggest";
 
-const ProductForm = ({ brandErr, onBrandChange, measurementUnitErr, onMeasurementUnitChange,
+const ProductForm = ({ brandErr, onBrandChange, onBrandAutosuggestValueChange, brandAutosuggestValue,
+                       measurementUnitErr, onMeasurementUnitChange, onMeasurementUnitAutosuggestValueChange,
+                       measurementUnitAutosuggestValue,
                         name, nameErr, onNameChange, code, codeErr, onCodeChange,
                         description, descriptionErr, onDescriptionChange,
                         minExistences, minExistencesErr, onMinExistencesChange,
@@ -15,13 +17,18 @@ const ProductForm = ({ brandErr, onBrandChange, measurementUnitErr, onMeasuremen
         <div className="col-sm-6">
           <BrandsAutosuggest
             onBrandSelected={ onBrandChange }
-            errMessage={ brandErr }
+            error={ brandErr }
+            onValueChange={ onBrandAutosuggestValueChange }
+            value={ brandAutosuggestValue }
           />
+
         </div>
         <div className="col-sm-6">
           <MeasurementUnitAutosuggest
-            onSuggestionSelected={ onMeasurementUnitChange }
-            errMessage={ measurementUnitErr }
+            onMeasurementUnitSelected={ onMeasurementUnitChange }
+            error={ measurementUnitErr }
+            onValueChange={ onMeasurementUnitAutosuggestValueChange }
+            value={ measurementUnitAutosuggestValue }
           />
         </div>
       </div>
@@ -95,9 +102,13 @@ const ProductForm = ({ brandErr, onBrandChange, measurementUnitErr, onMeasuremen
 ProductForm.propTypes = {
   brandErr: PropTypes.string.isRequired,
   onBrandChange: PropTypes.func.isRequired,
+  onBrandAutosuggestValueChange: PropTypes.func.isRequired,
+  brandAutosuggestValue: PropTypes.string.isRequired,
 
   measurementUnitErr: PropTypes.string.isRequired,
   onMeasurementUnitChange: PropTypes.func.isRequired,
+  onMeasurementUnitAutosuggestValueChange: PropTypes.func.isRequired,
+  measurementUnitAutosuggestValue: PropTypes.string.isRequired,
 
   name: PropTypes.string.isRequired,
   nameErr: PropTypes.string.isRequired,

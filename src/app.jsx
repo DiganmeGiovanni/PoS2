@@ -11,7 +11,8 @@ import MUnitsList from './ui/m_unit/list/MUnitsList';
 import MUnitsCreate from './ui/m_unit/create/MUnitsCreate';
 import MUnitsUpdate from './ui/m_unit/update/MUnitsUpdate';
 import ProductsList from './ui/products/list/ProductsList';
-import ProductsCreate from './ui/products/create/ProductsCreate';
+import ProductsCreate from './ui/products/upsert/ProductsCreate';
+import ProductUpdate from './ui/products/upsert/ProductUpdate';
 import ProductView from './ui/products/view/ProductView';
 import ProvidersList from './ui/providers/list/ProvidersList';
 import ProviderCreate from './ui/providers/create/ProviderCreate';
@@ -52,11 +53,13 @@ export default class App extends React.Component {
 
           <Route exact path={'/products'} component={ProductsList}/>
           <Route exact path={'/products/create'} component={ProductsCreate}/>
+          <Route exact path={'/product/:productId/update'} component={ProductUpdate}/>
           <Route
             exact
             path={'/products/view/:productId'}
             component={ ProductView }
           />
+
           <Route
             exact
             path={'/purchase_prices/:pModelId'}

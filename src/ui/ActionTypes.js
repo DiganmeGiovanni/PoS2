@@ -43,16 +43,19 @@ const ActionTypes = {
     SET_END_DATE: 'products/set_end_date',
     FILTER_BY_NAME: 'products/filter_by_name',
 
-    CREATE: {
-      ON_BRAND_CHANGE: 'products/create/on_brand_change',
-      ON_M_UNIT_CHANGE: 'products/create/on_m_unit_change',
-      ON_NAME_CHANGE: 'products/create/on_name_change',
-      ON_CODE_CHANGE: 'products/create/on_code_change',
-      ON_DESC_CHANGE: 'products/create/on_desc_change',
-      ON_MIN_EXISTENCES_CHANGE: 'products/create/on_min_existences_change',
-      SAVE: 'products/create/save',
-      SET_REDIRECT_AS_COMPLETED: 'products/create/set_redirect_as_completed',
-    }
+    UPSERT: {
+      ON_ID_CHANGE: 'products/upsert/on_id_change',
+      ON_BRAND_CHANGE: 'products/upsert/on_brand_change',
+      ON_BRAND_INP_VALUE_CHANGE: 'products/upsert/on_brand_inp_value_change',
+      ON_M_UNIT_CHANGE: 'products/upsert/on_m_unit_change',
+      ON_M_UNIT_INP_VALUE_CHANGE: 'products/upsert/on_m_unit_inp_value_change',
+      ON_NAME_CHANGE: 'products/upsert/on_name_change',
+      ON_CODE_CHANGE: 'products/upsert/on_code_change',
+      ON_DESC_CHANGE: 'products/upsert/on_desc_change',
+      ON_MIN_EXISTENCES_CHANGE: 'products/upsert/on_min_existences_change',
+      SAVE: 'products/upsert/save',
+      SET_REDIRECT_AS_COMPLETED: 'products/upsert/set_redirect_as_completed',
+    },
   },
   PROVIDERS: {
     LIST: {
