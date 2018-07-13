@@ -24,7 +24,7 @@ const ProductsTable = ({ products, activePage, totalPages, navCallback, onFilter
         <td className="text-right">{ product.minimal_existences }</td>
         <td className="text-right">{ product.stock }</td>
         <td className="text-right">{ product.sold }</td>
-        <td className="text-center">
+        <td className="text-right" style={{ minWidth: '120px'}}>
           <Link to={`/products/view/${ product.id }`}
                 title="Detalles"
                 className="btn btn-sm btn-default text-center"
