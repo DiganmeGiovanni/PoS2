@@ -27,39 +27,36 @@ class PNavbar extends React.Component {
           <Nav>
             <NavItem
               componentClass={ Link }
+              href={'/products'}
+              to={'/products'}
+              active={location.pathname === '/products'}
+            >
+              Inventario
+            </NavItem>
+            <NavItem
+              componentClass={Link}
+              href={'/brands'}
+              to={'/brands'}
+              active={location.pathname === '/brands'}
+            >
+              Marcas
+            </NavItem>
+            <NavItem
+              componentClass={Link}
+              href={'/measurement_units'}
+              to={'/measurement_units'}
+              active={location.pathname === '/measurement_units'}
+            >
+              Unidades de medida
+            </NavItem>
+            <NavItem
+              componentClass={ Link }
               href={'/providers'}
               to={'/providers'}
               active={location.pathname === '/providers'}
             >
               Proveedores
             </NavItem>
-            <NavDropdown title="Inventario" id="nav-inventory">
-              <MenuItem
-                componentClass={Link}
-                href={'/products'}
-                to={'/products'}
-                active={location.pathname === '/products'}
-              >
-                Productos
-              </MenuItem>
-              <MenuItem divider />
-              <MenuItem
-                componentClass={Link}
-                href={'/brands'}
-                to={'/brands'}
-                active={location.pathname === '/brands'}
-              >
-                Marcas
-              </MenuItem>
-              <MenuItem
-                componentClass={Link}
-                href={'/measurement_units'}
-                to={'/measurement_units'}
-                active={location.pathname === '/measurement_units'}
-              >
-                Unidades de medida
-              </MenuItem>
-            </NavDropdown>
             <NavItem
               componentClass={ Link }
               href={'/purchases'}
