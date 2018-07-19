@@ -296,6 +296,103 @@ const PoSActions = {
       }
     }
   },
+  purchases: {
+    upsert: {
+      onDateChange(date) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.UPSERT.ON_DATE_CHANGE,
+          date
+        });
+      },
+      onInvestmentChange(investment) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.UPSERT.ON_INVESTMENT_CHANGE,
+          investment
+        });
+      },
+      onReinvestmentChange(reinvestment) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.UPSERT.ON_REINVESTMENT_CHANGE,
+          reinvestment
+        });
+      },
+      onTotalPaidChange(totalPaid) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.UPSERT.ON_TOTAL_PAID_CHANGE,
+          totalPaid
+        });
+      },
+      onProductValueChange(value) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.UPSERT.ON_PROD_VALUE_CHANGE,
+          value
+        }); 
+      },
+      onProductSelected(product) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.UPSERT.ON_PROD_SELECTED,
+          product
+        });
+      },
+      onQuantityChange(quantity) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.UPSERT.ON_QUANTITY_CHANGE,
+          quantity
+        });
+      },
+      onProviderValueChange(value) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.UPSERT.ON_PROVIDER_VALUE_CHANGE,
+          value
+        });
+      },
+      onProviderSelected(provider) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.UPSERT.ON_PROVIDER_SELECTED,
+          provider
+        });
+      },
+      onCostChange(cost) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.UPSERT.ON_COST_CHANGE,
+          cost
+        });
+      },
+      onPriceChange(price) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.UPSERT.ON_PRICE_CHANGE,
+          price
+        });
+      },
+      onAddProductClicked() {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.UPSERT.ON_ADD_PRODUCT_CLICKED
+        });
+      },
+      deleteContent(index) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.UPSERT.ON_DELETE_CONTENT_CLICKED,
+          index
+        });
+      },
+      editContent(index) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.UPSERT.ON_EDIT_CONTENT_CLICKED,
+          index
+        });
+      },
+      onSaveClicked() {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.UPSERT.ON_SAVE_CLICKED
+        });
+      },
+      setRedirectAsCompleted() {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.UPSERT.SET_REDIRECT_AS_COMPLETED
+        });
+      }
+    }
+  },
   purchase: {
     create: {
       addProduct(product, provider, quantity, cost, price) {

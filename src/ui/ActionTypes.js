@@ -87,6 +87,26 @@ const ActionTypes = {
     LIST: 'purchase/list',
     FETCH: 'purchase/fetch',
   },
+  PURCHASES: {
+    UPSERT: {
+      ON_DATE_CHANGE: 'purchase/upsert/on_date_change',
+      ON_INVESTMENT_CHANGE: 'purchase/upsert/on_investment_change',
+      ON_REINVESTMENT_CHANGE: 'purchase/upsert/on_reinvestment_change',
+      ON_TOTAL_PAID_CHANGE: 'purchase/upsert/on_total_paid_change',
+      ON_PROD_VALUE_CHANGE: 'purchase/upsert/on_product_value_change',
+      ON_PROD_SELECTED: 'purchase/upsert/on_product_selected',
+      ON_QUANTITY_CHANGE: 'purchase/upsert/on_quantity_change',
+      ON_PROVIDER_VALUE_CHANGE: 'purchase/upsert/on_provider_value_change',
+      ON_PROVIDER_SELECTED: 'purchase/upsert/on_provider_selected',
+      ON_COST_CHANGE: 'purchase/upsert/on_cost_change',
+      ON_PRICE_CHANGE: 'purchase/upsert/on_price_change',
+      ON_ADD_PRODUCT_CLICKED: 'purchase/upsert/on_add_product_clicked',
+      ON_EDIT_CONTENT_CLICKED: 'purchase/upsert/on_edit_content',
+      ON_DELETE_CONTENT_CLICKED: 'purchase/upsert/on_delete_content',
+      ON_SAVE_CLICKED: 'purchase/upsert/on_save_clicked',
+      SET_REDIRECT_AS_COMPLETED: 'purchase/upsert/set_redirect_as_completed'
+    }
+  },
   PURCHASE_PRICES: {
     FETCH_P_MODEL: 'purchase_prices/fetch_p_model'
   },
