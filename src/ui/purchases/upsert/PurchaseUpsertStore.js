@@ -2,6 +2,7 @@ import { EventEmitter } from "events";
 import PoSDispatcher from "../../PoSDispatcher";
 import ActionTypes from "../../ActionTypes";
 import ProductService from "../../../services/ProductService";
+import PurchaseService from "../../../services/PurchaseService";
 import DValidator from '../../../services/ValidatorService';
 import sequelize from '../../../model/database';
 import {Purchase, PurchaseHasProduct, PurchasePrice, SalePrice} from "../../../model/entities";
@@ -17,6 +18,7 @@ class PurchaseUpsertStore extends EventEmitter {
   static initialState(redirectToList) {
     return {
       redirectToList: !!redirectToList,
+      id: null,
       contents: [],
       total: 0,
       date: new Date(),
@@ -60,6 +62,47 @@ class PurchaseUpsertStore extends EventEmitter {
 
   setRedirectAsCompleted() {
     this.state.redirectToList = false;
+  }
+
+  onIdChange(purchaseId) {
+
+    // If purchaseId is undefined and previously was not undefined, reset it
+    if (!purchaseId && this.state.id) {
+      this.state = PurchaseUpsertStore.initialState(false);
+      this.emitChange();
+      return;
+    }
+
+    this.state.id = purchaseId;
+    PurchaseService.findOne(purchaseId).then(purchase => {
+      this.state.date = new Date(purchase.date);
+      this.state.investment.value = purchase.investment + "";
+      this.state.reinvestment.value = purchase.reinvestment + "";
+
+      let totalPaid = purchase.investment + purchase.reinvestment;
+      this.state.totalPaid = totalPaid + "";
+
+      PurchaseService.findPurchaseHasProducts(purchaseId).then(hasProducts => {
+        for (let hasProduct of hasProducts) {
+          this.state.total += hasProduct.purchasePrice.price * hasProduct.quantity;
+
+          // noinspection JSUnfilteredForInLoop
+          this.state.contents.push({
+            product: {
+              value: hasProduct.product,
+              inpValue: hasProduct.product.name,
+              error: ''
+            },
+            quantity: { value: hasProduct.quantity + "", error: '' },
+            cost: { value: hasProduct.purchasePrice.price + "", error: '' },
+            lastCost: { value: 0 },
+            price: { value: '', error: '' }
+          });
+        }
+
+        this.emitChange();
+      });
+    });
   }
 
   onDateChange(date) {
@@ -378,6 +421,10 @@ class PurchaseUpsertStore extends EventEmitter {
 const instance = new PurchaseUpsertStore();
 instance.dispatchToken = PoSDispatcher.register(action => {
   switch (action.type) {
+    case ActionTypes.PURCHASES.UPSERT.ON_ID_CHANGE:
+      instance.onIdChange(action.purchaseId);
+      break;
+
     case ActionTypes.PURCHASES.UPSERT.ON_DATE_CHANGE:
       instance.onDateChange(action.date);
       break;

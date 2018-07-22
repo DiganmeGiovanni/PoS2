@@ -89,19 +89,11 @@ export default class App extends React.Component {
             path={'/providers/update/:providerId'}
             component={ ProviderUpdate }
           />
-          <Route
-            exact
-            path={'/purchases'}
-            component={PurchasesList}
-            data={{ title: 'Punto de venta' }}
-          />
-          <Route
-            exact
-            path={'/purchase/:purchaseId'}
-            component={PurchaseView}
-            data={{ title: 'Punto de venta' }}
-          />
+
+          <Route exact path={'/purchases'} component={PurchasesList}/>
+          <Route exact path={'/purchase/:purchaseId'} component={PurchaseView}/>
           <Route exact path={'/purchases/create'} component={ PurchaseUpsert }/>
+          <Route exact path={'/purchase/:purchaseId/update'} component={ PurchaseUpsert }/>
 
           <Route
             exact

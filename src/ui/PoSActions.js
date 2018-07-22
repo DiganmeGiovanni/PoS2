@@ -298,6 +298,12 @@ const PoSActions = {
   },
   purchases: {
     upsert: {
+      onIdChange(purchaseId) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.UPSERT.ON_ID_CHANGE,
+          purchaseId
+        });
+      },
       onDateChange(date) {
         PosDispatcher.dispatch({
           type: ActionTypes.PURCHASES.UPSERT.ON_DATE_CHANGE,

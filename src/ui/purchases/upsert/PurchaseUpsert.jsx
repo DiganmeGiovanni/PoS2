@@ -10,12 +10,15 @@ class PurchaseUpsert extends React.Component {
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
-    
+
+    this.purchaseId = this.props.match.params.purchaseId;
     this.state = PurchaseUpsertStore.getState();
+    console.log('Purchase is: ' + this.purchaseId);
   }
 
   componentDidMount() {
     document.title = 'Registrar compra';
+    PoSActions.purchases.upsert.onIdChange(this.purchaseId);
   }
 
   componentDidUpdate() {
@@ -102,7 +105,7 @@ class PurchaseUpsert extends React.Component {
   render() {
     return (
       <div className="container">
-        <h1>Registrar compra</h1>
+        <h1>{ this.state.id !== null ? 'Modificar compra' : 'Registrar compra' }</h1>
         <br/>
 
         <PurchaseForm

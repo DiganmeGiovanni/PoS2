@@ -77,6 +77,7 @@ const ActionTypes = {
   },
   PURCHASES: {
     UPSERT: {
+      ON_ID_CHANGE: 'purchase/upsert/on_id_change',
       ON_DATE_CHANGE: 'purchase/upsert/on_date_change',
       ON_INVESTMENT_CHANGE: 'purchase/upsert/on_investment_change',
       ON_REINVESTMENT_CHANGE: 'purchase/upsert/on_reinvestment_change',

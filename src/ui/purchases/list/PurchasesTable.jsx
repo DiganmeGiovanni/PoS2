@@ -42,8 +42,15 @@ const PurchasesTable = ({ purchases, activePage, totalPages, navCb,
             .asMoney(purchase.investment + purchase.reinvestment)
           }
         </td>
-        <td className="text-center">
-          <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <td className="text-right" style={{ width: '100px' }}>
+          <Link
+            to={`/purchase/${ purchase.id }/update`}
+            title="Modificar compra"
+            className="btn btn-sm btn-default"
+          >
+            <span className="glyphicon glyphicon-pencil"/>
+          </Link>
+          <span>&nbsp;&nbsp;</span>
           <Link
             to={`/purchase/${ purchase.id }`}
             title="Ver contenido"

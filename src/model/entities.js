@@ -327,9 +327,14 @@ Product.belongsTo(MeasurementUnit, {
 });
 Product.belongsTo(Brand, { foreignKey: 'brand_id' });
 Purchase.hasMany(PurchaseHasProduct, { foreignKey: 'purchase_id' });
-PurchaseHasProduct.belongsTo(Product, { foreignKey: 'product_id' });
+PurchaseHasProduct.belongsTo(Product, {
+  as: 'product',
+  foreignKey: 'product_id' });
 PurchaseHasProduct.belongsTo(Purchase, { foreignKey: 'purchase_id' });
-PurchaseHasProduct.belongsTo(PurchasePrice, { foreignKey: 'purchase_price_id' });
+PurchaseHasProduct.belongsTo(PurchasePrice, {
+  as: 'purchasePrice',
+  foreignKey: 'purchase_price_id'
+});
 SaleHasProduct.belongsTo(Sale, { foreignKey: 'sale_id' });
 SaleHasProduct.belongsTo(SalePrice, { foreignKey: 'sale_price_id' });
 Sale.hasMany(SaleHasProduct, { foreignKey: 'sale_id' });

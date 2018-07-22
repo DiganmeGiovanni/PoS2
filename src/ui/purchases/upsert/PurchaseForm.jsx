@@ -49,8 +49,8 @@ const PurchaseForm = ({ date, onDateChange,
               name="payment_investment"
               type="text"
               handleChange={ onInvestmentChange }
-              value={ investment }
               errMessage={ investmentError }
+              inpProps={{ value: investment }}
             />
           </div>
 
@@ -60,8 +60,8 @@ const PurchaseForm = ({ date, onDateChange,
               name="payment_reinvestment"
               type="text"
               handleChange={ onReinvestmentChange }
-              value={ reinvestment }
               errMessage={ reinvestmentError }
+              inpProps={{ value: reinvestment }}
             />
           </div>
         </div>
