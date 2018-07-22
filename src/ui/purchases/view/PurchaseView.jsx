@@ -24,7 +24,7 @@ class PurchaseView extends React.Component {
 
   componentDidMount() {
     document.title = 'Detalles de compra';
-    PoSActions.purchase.list.fetch(this.purchaseId);
+    PoSActions.purchases.fetch(this.purchaseId);
   }
 
   componentWillUnmount() {

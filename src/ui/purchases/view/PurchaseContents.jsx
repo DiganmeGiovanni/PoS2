@@ -14,8 +14,8 @@ const PurchaseContents = ({ contents, isLoadingProducts }) => {
       )
     }
 
-    return contents.map(product => (
-      <tr key={`pc-${ product.purchase_price_id }-${ product.existence_id }`}>
+    return contents.map((product, idx) => (
+      <tr key={`pc-${ idx }`}>
         <td>{ product.provider_name }</td>
         <td>{ product.product_name }</td>
         <td className="text-right">{ product.quantity }</td>

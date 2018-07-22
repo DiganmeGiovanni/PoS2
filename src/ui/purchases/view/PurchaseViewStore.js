@@ -134,7 +134,7 @@ class PurchaseViewStore extends EventEmitter {
 const storeInstance = new PurchaseViewStore();
 storeInstance.dispatchToken = PoSDispatcher.register(action => {
   switch (action.type) {
-    case ActionTypes.PURCHASE.FETCH:
+    case ActionTypes.PURCHASES.FETCH:
       storeInstance.fetchPurchase(action.purchaseId);
       break;
   }

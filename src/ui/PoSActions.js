@@ -400,18 +400,18 @@ const PoSActions = {
           pageSize
         })
       },
-      fetch(purchaseId) {
-        PosDispatcher.dispatch({
-          type: ActionTypes.PURCHASES.LIST.FETCH,
-          purchaseId
-        });
-      },
       onFilterProviderChange(filter) {
         PosDispatcher.dispatch({
           type: ActionTypes.PURCHASES.LIST.ON_FILTER_PROVIDER_CHANGE,
           filter
         });
       }
+    },
+    fetch(purchaseId) {
+      PosDispatcher.dispatch({
+        type: ActionTypes.PURCHASES.FETCH,
+        purchaseId
+      });
     },
   },
   purchasePrices: {
