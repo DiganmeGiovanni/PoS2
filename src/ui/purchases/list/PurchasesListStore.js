@@ -13,7 +13,10 @@ class PurchasesListStore extends EventEmitter {
     this.activePage = {
       purchases: [],
       pageIdx: 0,
-      pagesCount: 0
+      pagesCount: 0,
+      filters: {
+        provider: ''
+      }
     };
   }
 
@@ -27,6 +30,10 @@ class PurchasesListStore extends EventEmitter {
 
   removeChangeListener(callback) {
     this.removeListener(this.CHANGE_EVENT, callback);
+  }
+
+  getState() {
+    return this.activePage;
   }
 
   page(pageNumber, pageSize) {
@@ -44,9 +51,9 @@ class PurchasesListStore extends EventEmitter {
         ON php.purchase_price_id = price.id\
       INNER JOIN provider p\
         ON price.provider_id = p.id\
-      GROUP BY purchase.id\
-      ORDER BY purchase.date DESC\
     ';
+    sql = this.appendConditions(sql);
+    sql += ' GROUP BY purchase.id ORDER BY purchase.date DESC ';
 
     // Prepare count sql
     let countSql = `SELECT COUNT(*) AS count FROM (${ sql }) SQ1`;
@@ -55,7 +62,13 @@ class PurchasesListStore extends EventEmitter {
     sql += ' LIMIT :offset, :limit';
 
     // Get count
-    sequelize.query(countSql, { type: Sequelize.QueryTypes.SELECT })
+    sequelize
+      .query(countSql, {
+        type: Sequelize.QueryTypes.SELECT,
+        replacements: {
+          provider: '%' + this.activePage.filters.provider + '%'
+        }
+      })
       .then(result => {
         this.activePage.pagesCount = Math.ceil(result[0].count / pageSize);
 
@@ -65,6 +78,7 @@ class PurchasesListStore extends EventEmitter {
             replacements: {
               offset: (pageNumber - 1) * pageSize,
               limit: pageSize,
+              provider: '%' + this.activePage.filters.provider + '%'
             }
           })
           .then(purchases => {
@@ -81,16 +95,31 @@ class PurchasesListStore extends EventEmitter {
       });
   }
 
-  getState() {
-    return this.activePage;
+  appendConditions(sql) {
+    sql += ' WHERE 1 = 1 ';
+
+    if (this.activePage.filters.provider !== '') {
+      sql += " WHERE p.name LIKE :provider "
+    }
+
+    return sql;
+  }
+
+  filterByProvider(provider) {
+    this.activePage.filters.provider = provider;
+    this.page(1, 20);
   }
 }
 
 const storeInstance = new PurchasesListStore();
 storeInstance.dispatchToken = PoSDispatcher.register(action => {
   switch (action.type) {
-    case ActionTypes.PURCHASE.LIST:
+    case ActionTypes.PURCHASES.LIST.LIST:
       storeInstance.page(action.pageNumber, action.pageSize);
+      break;
+
+    case ActionTypes.PURCHASES.LIST.ON_FILTER_PROVIDER_CHANGE:
+      storeInstance.filterByProvider(action.provider);
       break;
   }
 });

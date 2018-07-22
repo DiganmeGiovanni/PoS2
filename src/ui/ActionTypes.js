@@ -75,18 +75,6 @@ const ActionTypes = {
       SET_REDIRECT_AS_COMPLETED: 'providers/update/set_redirect_as_completed'
     }
   },
-  PURCHASE: {
-    ADD_CONTENT: 'purchase/add_content',
-    CHANGE_PAYMENT_AS_REINVESTMENT: 'purchase/change_reinvestment',
-    CHANGE_PAYMENT_AS_INVESTMENT: 'purchase/change_investment',
-    CHANGE_TOTAL_PAID: 'purchase/change_total_paid',
-    CHANGE_DATE: 'purchase/change_date',
-    SAVE: 'purchase/save',
-    SET_REDIRECT_AS_COMPLETED: 'purchase/set_redirect_as_completed',
-
-    LIST: 'purchase/list',
-    FETCH: 'purchase/fetch',
-  },
   PURCHASES: {
     UPSERT: {
       ON_DATE_CHANGE: 'purchase/upsert/on_date_change',
@@ -105,7 +93,12 @@ const ActionTypes = {
       ON_DELETE_CONTENT_CLICKED: 'purchase/upsert/on_delete_content',
       ON_SAVE_CLICKED: 'purchase/upsert/on_save_clicked',
       SET_REDIRECT_AS_COMPLETED: 'purchase/upsert/set_redirect_as_completed'
-    }
+    },
+    LIST: {
+      ON_FILTER_PROVIDER_CHANGE: 'purchase/list/on_filter_provider_change',
+      LIST: 'purchase/list/list'
+    },
+    FETCH: 'purchase/list/fetch',
   },
   PURCHASE_PRICES: {
     FETCH_P_MODEL: 'purchase_prices/fetch_p_model'

@@ -20,7 +20,7 @@ class PurchasesList extends React.Component {
 
   componentDidMount() {
     document.title = 'Compras';
-    PoSActions.purchase.list.page(1, this.pageSize);
+    PoSActions.purchases.list.page(1, this.pageSize);
   }
 
   componentWillUnmount() {
@@ -33,27 +33,41 @@ class PurchasesList extends React.Component {
   }
 
   navToPage(targetPage) {
-    PoSActions.purchase.list.page(
+    PoSActions.purchases.list.page(
       targetPage,
       this.pageSize
     )
   }
 
+  static onFilterDateChange(moment) {
+    console.log('Date filter updated to: ' + moment.toDate());
+  }
+
+  static onFilterProviderChange(e) {
+    PoSActions.purchases.list.onFilterProviderChange(e.target.value);
+  }
+
   render() {
     return (
       <div className="container">
-        <h1>Compras</h1>
-        <Link to={'/purchases/create'} className="btn btn-primary">
-          Nueva compra
-        </Link>
+        <div className="row">
+          <div className="col-sm-6">
+            <h1>Compras</h1>
+          </div>
+          <div className="col-sm-6 text-right padding-top-24">
+            <Link to={'/purchases/create'} className="btn btn-primary">
+              Nueva compra
+            </Link>
+          </div>
+        </div>
 
-        <br/>
-        <br/>
         <PurchasesTable
           purchases={ this.state.purchases }
           activePage={ this.state.pageIdx }
           totalPages={ this.state.pagesCount }
           navCb={ this.navToPage }
+          onFilterDateChange={ PurchasesList.onFilterDateChange }
+          onFilterProviderChange={ PurchasesList.onFilterProviderChange }
         />
       </div>
     );

@@ -391,65 +391,25 @@ const PoSActions = {
           type: ActionTypes.PURCHASES.UPSERT.SET_REDIRECT_AS_COMPLETED
         });
       }
-    }
-  },
-  purchase: {
-    create: {
-      addProduct(product, provider, quantity, cost, price) {
-        PosDispatcher.dispatch({
-          type: ActionTypes.PURCHASE.ADD_CONTENT,
-          product,
-          provider,
-          quantity,
-          cost,
-          price
-        });
-      },
-      changeDate(date) {
-        PosDispatcher.dispatch({
-          type: ActionTypes.PURCHASE.CHANGE_DATE,
-          date
-        });
-      },
-      changePaymentReinvestment(amount) {
-        PosDispatcher.dispatch({
-          type: ActionTypes.PURCHASE.CHANGE_PAYMENT_AS_REINVESTMENT,
-          amount: amount
-        });
-      },
-      changePaymentInvestment(amount) {
-        PosDispatcher.dispatch({
-          type: ActionTypes.PURCHASE.CHANGE_PAYMENT_AS_INVESTMENT,
-          amount: amount
-        });
-      },
-      changeTotalPaid(amount) {
-        PosDispatcher.dispatch({
-          type: ActionTypes.PURCHASE.CHANGE_TOTAL_PAID,
-          amount: amount
-        })
-      },
-      save() {
-        PosDispatcher.dispatch({ type: ActionTypes.PURCHASE.SAVE });
-      },
-      setRedirectAsCompleted() {
-        PosDispatcher.dispatch({
-          type: ActionTypes.PURCHASE.SET_REDIRECT_AS_COMPLETED
-        });
-      }
     },
     list: {
       page(pageNumber, pageSize) {
         PosDispatcher.dispatch({
-          type: ActionTypes.PURCHASE.LIST,
+          type: ActionTypes.PURCHASES.LIST.LIST,
           pageNumber,
           pageSize
         })
       },
       fetch(purchaseId) {
         PosDispatcher.dispatch({
-          type: ActionTypes.PURCHASE.FETCH,
+          type: ActionTypes.PURCHASES.LIST.FETCH,
           purchaseId
+        });
+      },
+      onFilterProviderChange(filter) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.LIST.ON_FILTER_PROVIDER_CHANGE,
+          filter
         });
       }
     },
