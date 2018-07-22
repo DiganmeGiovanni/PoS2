@@ -313,7 +313,10 @@ const SaleHasProduct = sequelize.define('sale_has_product', {
 // Define all relationships between models
 
 Provider.hasMany(PurchasePrice, { foreignKey: 'provider_id' });
-PurchasePrice.belongsTo(Provider, { foreignKey: 'provider_id' });
+PurchasePrice.belongsTo(Provider, {
+  as: 'provider',
+  foreignKey: 'provider_id'
+});
 PurchasePrice.belongsTo(Product, { foreignKey: 'product_model_id' });
 PurchasePrice.belongsTo(MeasurementUnit, { foreignKey: 'measurement_unit_id' });
 Brand.hasMany(Product, { foreignKey: 'brand_id' });

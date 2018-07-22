@@ -102,10 +102,31 @@ class PurchaseUpsert extends React.Component {
     PoSActions.purchases.upsert.onSaveClicked();
   }
 
+  _renderTitle() {
+    if (this.state.id !== null) {
+      return (
+        <div className="row">
+          <div className="col-xs-12">
+            <h1 className="margin-bottom-0">Modificar compra</h1>
+            <h4 className="margin-top-4">#{ this.state.id }</h4>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="row">
+          <div className="col-xs-12">
+            <h1>Registrar compra</h1>
+          </div>
+        </div>
+      )
+    }
+  }
+
   render() {
     return (
       <div className="container">
-        <h1>{ this.state.id !== null ? 'Modificar compra' : 'Registrar compra' }</h1>
+        { this._renderTitle() }
         <br/>
 
         <PurchaseForm

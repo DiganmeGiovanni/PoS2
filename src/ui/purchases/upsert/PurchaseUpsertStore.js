@@ -83,6 +83,9 @@ class PurchaseUpsertStore extends EventEmitter {
       this.state.totalPaid = totalPaid + "";
 
       PurchaseService.findPurchaseHasProducts(purchaseId).then(hasProducts => {
+        this.state.provider.value = hasProducts[0].purchasePrice.provider;
+        this.state.provider.inpValue = this.state.provider.value.name;
+
         for (let hasProduct of hasProducts) {
           this.state.total += hasProduct.purchasePrice.price * hasProduct.quantity;
 
@@ -100,7 +103,16 @@ class PurchaseUpsertStore extends EventEmitter {
           });
         }
 
-        this.emitChange();
+        PurchaseService.retrieveLastCostAndPrice(
+          this.state.contents,
+          this.state.provider.value,
+          this.state.date
+        ).then(() => {
+          this.emitChange();
+        }).catch(err => {
+          console.error('Retrieve of last cost and price has fallen');
+          console.error(err);
+        });
       });
     });
   }
@@ -227,11 +239,29 @@ class PurchaseUpsertStore extends EventEmitter {
           date: this.state.date
         };
 
-        return Purchase
-          .create(purchaseValues, { transaction: transaction })
-          .then(purchase => {
-            return this._saveContents(purchase, transaction);
+        // Update existant purchase
+        if (this.state.id !== null) {
+          return PurchaseService.deleteContents(this.state.id).then(() => {
+            return PurchaseService.findOne(this.state.id).then(purchase => {
+              purchase.reinvestment = this.state.reinvestment.value;
+              purchase.investment = this.state.investment.value;
+              purchase.date = this.state.date;
+
+              return purchase.save().then(purchase => {
+                return this._saveContents(purchase, transaction);
+              })
+            });
           });
+        }
+
+        // Create new purchase
+        else {
+          return Purchase
+            .create(purchaseValues, {transaction: transaction})
+            .then(purchase => {
+              return this._saveContents(purchase, transaction);
+            });
+        }
       }).then(() => {
         this.state = PurchaseUpsertStore.initialState(true);
         this.emitChange();
