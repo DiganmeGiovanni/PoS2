@@ -443,12 +443,56 @@ const PoSActions = {
         })
       },
     },
-    fetch(purchaseId) {
-      PosDispatcher.dispatch({
-        type: ActionTypes.PURCHASES.FETCH,
-        purchaseId
-      });
-    },
+    view: {
+      fetch(purchaseId) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.VIEW.FETCH,
+          purchaseId
+        });
+      },
+      onFilterProductChange(product) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.VIEW.ON_FILTER_PRODUCT_CHANGE,
+          product
+        })
+      },
+      onFilterQuantityChange(quantity) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.VIEW.ON_FILTER_QUANTITY_CHANGE,
+          quantity
+        })
+      },
+      onFilterMeasurementUnitChange(measurementUnitId) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.VIEW.ON_FILTER_M_UNIT_CHANGE,
+          measurementUnitId
+        })
+      },
+      onFilterSoldChange(sold) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.VIEW.ON_FILTER_SOLD_CHANGE,
+          sold
+        })
+      },
+      onFilterStockChange(stock) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.VIEW.ON_FILTER_STOCK_CHANGE,
+          stock
+        })
+      },
+      onFilterUnitCostChange(unitCost) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.VIEW.ON_FILTER_UNIT_COST_CHANGE,
+          unitCost
+        })
+      },
+      onFilterCostChange(cost) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.VIEW.ON_FILTER_COST_CHANGE,
+          cost
+        })
+      },
+    }
   },
   purchasePrices: {
     fetchProductModel(pModelId) {

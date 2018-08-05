@@ -24,7 +24,7 @@ class PurchaseView extends React.Component {
 
   componentDidMount() {
     document.title = 'Detalles de compra';
-    PoSActions.purchases.fetch(this.purchaseId);
+    PoSActions.purchases.view.fetch(this.purchaseId);
   }
 
   componentWillUnmount() {
@@ -33,6 +33,30 @@ class PurchaseView extends React.Component {
 
   onChange() {
     this.setState(PurchaseViewStore.getState());
+  }
+
+  static onFilterProductChange(e) {
+    PoSActions.purchases.view.onFilterProductChange(e.target.value);
+  }
+
+  static onFilterQuantityChange(e) {
+    PoSActions.purchases.view.onFilterQuantityChange(e.target.value);
+  }
+
+  static onFilterSoldChange(e) {
+    PoSActions.purchases.view.onFilterSoldChange(e.target.value);
+  }
+
+  static onFilterStockChange(e) {
+    PoSActions.purchases.view.onFilterStockChange(e.target.value);
+  }
+
+  static onFilterUnitCostChange(e) {
+    PoSActions.purchases.view.onFilterUnitCostChange(e.target.value);
+  }
+
+  static onFilterCostChange(e) {
+    PoSActions.purchases.view.onFilterCostChange(e.target.value);
   }
 
   renderDetails() {
@@ -47,24 +71,47 @@ class PurchaseView extends React.Component {
     return (
       <div className="row">
         <div className="col-sm-3">
+          <label className="control-label">No. Compra:</label>
+          <br/>
+          <span>{ this.state.purchase.id }</span>
+        </div>
+
+        <div className="col-sm-3">
           <label className="control-label">Fecha:</label>
           <br/>
           <span>{ moment(this.state.purchase.date).format('DD MMMM, YYYY') }</span>
         </div>
 
         <div className="col-sm-3">
+          <label className="control-label">Fecha relativa:</label>
+          <br/>
+          <span>{ moment(this.state.purchase.date).format('DD MMMM, YYYY') }</span>
+        </div>
+
+        <div className="col-sm-3">
+          <label className="control-label">Proveedor:</label>
+          <br/>
+          <span>
+            { this.state.contents.length > 0
+                ? this.state.contents[0].provider_name
+                : ''
+            }
+          </span>
+        </div>
+
+        <div className="col-sm-3 padding-top-16">
           <label className="control-label">Inversión</label>
           <br/>
           <span>{ TextFormatter.asMoney(this.state.purchase.investment) }</span>
         </div>
 
-        <div className="col-sm-3">
+        <div className="col-sm-3 padding-top-16">
           <label className="control-label">Reinversión</label>
           <br/>
           <span>{ TextFormatter.asMoney(this.state.purchase.reinvestment) }</span>
         </div>
 
-        <div className="col-sm-3">
+        <div className="col-sm-3 padding-top-16">
           <label className="control-label">Total</label>
           <br/>
           <span>{ TextFormatter.asMoney(
@@ -93,12 +140,18 @@ class PurchaseView extends React.Component {
 
         <div className="panel panel-default">
           <div className="panel-heading">
-            <h4 className="panel-title">Contenido</h4>
+            <h4 className="panel-title">Contenido de la compra</h4>
           </div>
           <div className="panel-body">
             <PurchaseContents
               contents={ this.state.contents }
               isLoadingProducts={ this.state.isLoadingProducts }
+              onFilterProductChange={ PurchaseView.onFilterProductChange }
+              onFilterQuantityChange={ PurchaseView.onFilterQuantityChange }
+              onFilterSoldChange={ PurchaseView.onFilterSoldChange }
+              onFilterStockChange={ PurchaseView.onFilterStockChange }
+              onFilterUnitCostChange={ PurchaseView.onFilterUnitCostChange }
+              onFilterCostChange={ PurchaseView.onFilterCostChange }
             />
           </div>
         </div>

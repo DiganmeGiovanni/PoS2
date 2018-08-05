@@ -104,7 +104,16 @@ const ActionTypes = {
       ON_FILTER_TOTAL_CHANGE: 'puchases/list/on_filter_total_change',
       LIST: 'purchase/list/list'
     },
-    FETCH: 'purchase/list/fetch',
+    VIEW: {
+      FETCH: 'purchase/view/fetch',
+      ON_FILTER_PRODUCT_CHANGE: 'purchase/view/on_filter_product_change',
+      ON_FILTER_QUANTITY_CHANGE: 'purchase/view/on_filter_quantity_change',
+      ON_FILTER_M_UNIT_CHANGE: 'purchase/view/on_filter_measurement_unit_change',
+      ON_FILTER_SOLD_CHANGE: 'purchase/view/on_filter_sold_change',
+      ON_FILTER_STOCK_CHANGE: 'purchase/view/on_filter_stock_change',
+      ON_FILTER_UNIT_COST_CHANGE: 'purchase/view/on_filter_unit_cost_change',
+      ON_FILTER_COST_CHANGE: 'purchase/view/on_filter_cost_change'
+    }
   },
   PURCHASE_PRICES: {
     FETCH_P_MODEL: 'purchase_prices/fetch_p_model'

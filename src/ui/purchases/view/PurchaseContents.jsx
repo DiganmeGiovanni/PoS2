@@ -2,7 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TextFormatter from '../../../services/TextFormatter';
 
-const PurchaseContents = ({ contents, isLoadingProducts }) => {
+const PurchaseContents = ({ contents, isLoadingProducts,
+                            onFilterProductChange,
+                            onFilterQuantityChange,
+                            onFilterSoldChange,
+                            onFilterStockChange,
+                            onFilterUnitCostChange,
+                            onFilterCostChange
+                          }) => {
   const makeTableBody = () => {
     if (isLoadingProducts) {
       return (
@@ -16,7 +23,6 @@ const PurchaseContents = ({ contents, isLoadingProducts }) => {
 
     return contents.map((product, idx) => (
       <tr key={`pc-${ idx }`}>
-        <td>{ product.provider_name }</td>
         <td>{ product.product_name }</td>
         <td className="text-right">{ product.quantity }</td>
         <td>{ product.measurement_unit }</td>
@@ -36,14 +42,34 @@ const PurchaseContents = ({ contents, isLoadingProducts }) => {
     <table className="table table-striped">
       <thead>
       <tr>
-        <th>Proveedor</th>
-        <th>Producto</th>
-        <th className="text-right">Cantidad</th>
-        <th>Unidad</th>
-        <th className="text-right">Vendido</th>
-        <th className="text-right">En stock (Esta compra)</th>
-        <th className="text-right">Costo unitario</th>
-        <th className="text-right">Costo</th>
+        <th>
+          <label className="control-label">Producto</label>
+          <input type="text" className='form-control' onChange={ onFilterProductChange }/>
+        </th>
+        <th className="text-right" style={{ width: '106px'}}>
+          <label className="control-label">Cantidad</label>
+          <input type="text" className='form-control' onChange={ onFilterQuantityChange }/>
+        </th>
+        <th>
+          <label className="control-label">Unidad</label>
+          <input type="text" className='form-control' disabled/>
+        </th>
+        <th className="text-right" style={{ width: '106px'}}>
+          <label className="control-label">Vendido</label>
+          <input type="text" className='form-control' onChange={ onFilterSoldChange }/>
+        </th>
+        <th className="text-right" style={{ width: '200px'}}>
+          <label className="control-label">En stock (Esta compra)</label>
+          <input type="text" className='form-control' onChange={ onFilterStockChange }/>
+        </th>
+        <th className="text-right">
+          <label className="control-label">Costo unitario</label>
+          <input type="text" className='form-control' onChange={ onFilterUnitCostChange }/>
+        </th>
+        <th className="text-right">
+          <label className="control-label">Costo</label>
+          <input type="text" className='form-control' onChange={ onFilterCostChange }/>
+        </th>
       </tr>
       </thead>
       <tbody>{ makeTableBody() }</tbody>
@@ -53,7 +79,14 @@ const PurchaseContents = ({ contents, isLoadingProducts }) => {
 
 PurchaseContents.propTypes = {
   contents: PropTypes.array.isRequired,
-  isLoadingProducts: PropTypes.bool.isRequired
+  isLoadingProducts: PropTypes.bool.isRequired,
+
+  onFilterProductChange: PropTypes.func.isRequired,
+  onFilterQuantityChange: PropTypes.func.isRequired,
+  onFilterSoldChange: PropTypes.func.isRequired,
+  onFilterStockChange: PropTypes.func.isRequired,
+  onFilterUnitCostChange: PropTypes.func.isRequired,
+  onFilterCostChange: PropTypes.func.isRequired,
 };
 
 export default PurchaseContents;
