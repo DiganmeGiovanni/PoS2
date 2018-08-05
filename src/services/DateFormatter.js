@@ -2,7 +2,7 @@
 class DateFormatter {
 
   /**
-   *
+   * Returns given date formatted as 'yyyy-mm-dd'
    * @param {Date} value
    * @returns {string}
    */
