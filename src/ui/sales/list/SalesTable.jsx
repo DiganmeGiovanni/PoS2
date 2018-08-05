@@ -43,7 +43,7 @@ const SalesTable = ({ sales, activePage, totalPages, navCb}) => {
   };
 
   return (
-    <div className="row">
+    <div className="row padding-top-8">
       <div className="col-xs-12">
         <table className="table table-striped">
           <thead>

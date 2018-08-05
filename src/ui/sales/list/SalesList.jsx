@@ -42,13 +42,17 @@ class SalesList extends React.Component {
   render() {
     return (
       <div className="container">
-        <h1>Ventas</h1>
-        <Link to={'/sales/create'} className="btn btn-primary">
-          Nueva venta
-        </Link>
+        <div className="row">
+          <div className="col-sm-6">
+            <h1>Ventas</h1>
+          </div>
+          <div className="col-sm-6 text-right padding-top-24">
+            <Link to={'/sales/create'} className="btn btn-primary">
+              Nueva venta
+            </Link>
+          </div>
+        </div>
 
-        <br/>
-        <br/>
         <SalesTable
           sales={ this.state.sales }
           activePage={ this.state.pageIdx }
