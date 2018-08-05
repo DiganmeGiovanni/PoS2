@@ -4,7 +4,7 @@
 :root {
   --color-blue-dark: #001D2F;
   --color-white-tenue: #DDDDDD;
-  --color-red: #E94867;
+  --color-red: #FF5A60;
   --color-green: #00B894;
 
   --table-header-bg: #353b48;
@@ -135,7 +135,7 @@ body {
 .btn-primary:active,
 .btn-primary:focus,
 .btn-primary:hover {
-  background: #FF5A60 !important;
+  background: var(--color-red) !important;
   border: none;
   /*border: 1px solid #333333 !important;*/
   /*!*border-radius: 10px !important;*!*/
@@ -162,4 +162,22 @@ body {
   outline: none !important;
   padding: 8px 24px !important;
   letter-spacing: 0.6px;
+}
+
+/*****************************************************/
+/** RDT Picker */
+
+.rdt table thead {
+  background: var(--table-header-fg) !important;
+  font-weight: bold;
+}
+
+.rdt table thead > tr > th,
+.rdt table tbody > tr > td {
+  color: var(--color-blue-dark);
+}
+
+.rdtPicker td.rdtActive,
+.rdtPicker td.rdtActive:hover {
+  background-color: var(--color-red);
 }

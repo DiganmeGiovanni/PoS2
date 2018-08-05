@@ -96,7 +96,12 @@ const ActionTypes = {
       SET_REDIRECT_AS_COMPLETED: 'purchase/upsert/set_redirect_as_completed'
     },
     LIST: {
-      ON_FILTER_PROVIDER_CHANGE: 'purchase/list/on_filter_provider_change',
+      ON_FILTER_ID_CHANGE: 'puchases/list/on_filter_id_change',
+      ON_FILTER_DATE_CHANGE: 'purchases/list/on_filter_date_change',
+      ON_FILTER_PROVIDER_CHANGE: 'purchases/list/on_filter_provider_change',
+      ON_FILTER_INVESTMENT_CHANGE: 'puchases/list/on_filter_investment_change',
+      ON_FILTER_REINVESTMENT_CHANGE: 'puchases/list/on_filter_reinvestment_change',
+      ON_FILTER_TOTAL_CHANGE: 'puchases/list/on_filter_total_change',
       LIST: 'purchase/list/list'
     },
     FETCH: 'purchase/list/fetch',

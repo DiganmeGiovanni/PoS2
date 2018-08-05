@@ -406,12 +406,42 @@ const PoSActions = {
           pageSize
         })
       },
-      onFilterProviderChange(filter) {
+      onFilterIdChange(id) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.LIST.ON_FILTER_ID_CHANGE,
+          id
+        })
+      },
+      onFilterDateChange(date) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.LIST.ON_FILTER_DATE_CHANGE,
+          date
+        })
+      },
+      onFilterProviderChange(provider) {
         PosDispatcher.dispatch({
           type: ActionTypes.PURCHASES.LIST.ON_FILTER_PROVIDER_CHANGE,
-          filter
+          provider
         });
-      }
+      },
+      onFilterInvestmentChange(investment) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.LIST.ON_FILTER_INVESTMENT_CHANGE,
+          investment
+        })
+      },
+      onFilterReinvestmentChange(reinvestment) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.LIST.ON_FILTER_REINVESTMENT_CHANGE,
+          reinvestment
+        })
+      },
+      onFilterTotalChange(total) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.PURCHASES.LIST.ON_FILTER_TOTAL_CHANGE,
+          total
+        })
+      },
     },
     fetch(purchaseId) {
       PosDispatcher.dispatch({

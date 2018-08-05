@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PurchasesTable from "./PurchasesTable";
 import PoSActions from "../../PoSActions";
 import PurchasesListStore from './PurchasesListStore';
+import moment from 'moment/moment';
 
 class PurchasesList extends React.Component {
   constructor(props) {
@@ -39,12 +40,29 @@ class PurchasesList extends React.Component {
     )
   }
 
-  static onFilterDateChange(moment) {
-    console.log('Date filter updated to: ' + moment.toDate());
+  static onFilterIdChange(e) {
+    PoSActions.purchases.list.onFilterIdChange(e.target.value);
+  }
+
+  static onFilterDateChange(aMoment) {
+    const filterValue = moment.isMoment(aMoment) ? aMoment.toDate() : '';
+    PoSActions.purchases.list.onFilterDateChange(filterValue);
   }
 
   static onFilterProviderChange(e) {
     PoSActions.purchases.list.onFilterProviderChange(e.target.value);
+  }
+
+  static onFilterInvestmentChange(e) {
+    PoSActions.purchases.list.onFilterInvestmentChange(e.target.value);
+  }
+
+  static onFilterReinvestmentChange(e) {
+    PoSActions.purchases.list.onFilterReinvestmentChange(e.target.value);
+  }
+
+  static onFilterTotalChange(e) {
+    PoSActions.purchases.list.onFilterTotalChange(e.target.value);
   }
 
   render() {
@@ -66,8 +84,12 @@ class PurchasesList extends React.Component {
           activePage={ this.state.pageIdx }
           totalPages={ this.state.pagesCount }
           navCb={ this.navToPage }
+          onFilterIdChange={ PurchasesList.onFilterIdChange }
           onFilterDateChange={ PurchasesList.onFilterDateChange }
           onFilterProviderChange={ PurchasesList.onFilterProviderChange }
+          onFilterInvestmentChange={ PurchasesList.onFilterInvestmentChange }
+          onFilterReinvestmentChange={ PurchasesList.onFilterReinvestmentChange }
+          onFilterTotalChange={ PurchasesList.onFilterTotalChange }
         />
       </div>
     );

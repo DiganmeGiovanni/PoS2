@@ -10,8 +10,12 @@ import 'moment/locale/es';
 moment.locale('es');
 
 const PurchasesTable = ({ purchases, activePage, totalPages, navCb,
+                          onFilterIdChange,
                           onFilterDateChange,
-                          onFilterProviderChange }) => {
+                          onFilterProviderChange,
+                          onFilterInvestmentChange,
+                          onFilterReinvestmentChange,
+                          onFilterTotalChange }) => {
   const makeTableBody = () => {
     if (purchases.length === 0) {
       return (
@@ -74,7 +78,7 @@ const PurchasesTable = ({ purchases, activePage, totalPages, navCb,
               <input
                 type="text"
                 className="form-control"
-                onChange={ onFilterProviderChange }
+                onChange={ onFilterIdChange }
               />
             </th>
             <th>
@@ -82,7 +86,7 @@ const PurchasesTable = ({ purchases, activePage, totalPages, navCb,
                 Fecha
               </label>
               <DatePicker
-                dateFormat="DD MMMM, YYYY"
+                dateFormat="YYYY, MMMM DD"
                 timeFormat={ false }
                 locale="es"
                 viewMode="years"
@@ -95,14 +99,10 @@ const PurchasesTable = ({ purchases, activePage, totalPages, navCb,
               <label className="control-label">
                 Fecha relativa
               </label>
-              <DatePicker
-                dateFormat="DD MMMM, YYYY"
-                timeFormat={ false }
-                locale="es"
-                viewMode="years"
-                closeOnSelect={ true }
-                closeOnTab={ true }
-                onChange={ onFilterDateChange }
+              <input
+                type="text"
+                className="form-control"
+                disabled
               />
             </th>
             <th>
@@ -118,7 +118,7 @@ const PurchasesTable = ({ purchases, activePage, totalPages, navCb,
               <input
                 type="text"
                 className="form-control"
-                onChange={ onFilterProviderChange }
+                onChange={ onFilterInvestmentChange }
               />
             </th>
             <th className="text-right">
@@ -126,7 +126,7 @@ const PurchasesTable = ({ purchases, activePage, totalPages, navCb,
               <input
                 type="text"
                 className="form-control"
-                onChange={ onFilterProviderChange }
+                onChange={ onFilterReinvestmentChange }
               />
             </th>
             <th className="text-right">
@@ -134,7 +134,7 @@ const PurchasesTable = ({ purchases, activePage, totalPages, navCb,
               <input
                 type="text"
                 className="form-control"
-                onChange={ onFilterProviderChange }
+                onChange={ onFilterTotalChange }
               />
             </th>
             <th>&nbsp;</th>
@@ -159,8 +159,12 @@ PurchasesTable.propTypes = {
   totalPages: PropTypes.number.isRequired,
   navCb: PropTypes.func.isRequired,
 
+  onFilterIdChange: PropTypes.func.isRequired,
   onFilterDateChange: PropTypes.func.isRequired,
-  onFilterProviderChange: PropTypes.func.isRequired
+  onFilterProviderChange: PropTypes.func.isRequired,
+  onFilterInvestmentChange: PropTypes.func.isRequired,
+  onFilterReinvestmentChange: PropTypes.func.isRequired,
+  onFilterTotalChange: PropTypes.func.isRequired,
 };
 
 export default PurchasesTable;
