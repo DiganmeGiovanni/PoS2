@@ -130,6 +130,12 @@ const ActionTypes = {
       ON_SAVE_CLICKED: 'sales/create/on_save_clicked',
       ON_CONTENT_DELETE_CLICKED: 'sales/create/on_content_delete_clicked',
     },
+    LIST: {
+      ALL: 'sales/list/all',
+      ON_FILTER_ID_CHANGE: 'sales/list/on_filter_id_change',
+      ON_FILTER_DATE_CHANGE: 'sales/list/on_filter_date_change',
+      ON_FILTER_TOTAL_CHANGE: 'sales/list/on_filter_total_change',
+    },
 
     ADD_CONTENT: 'sales/add_content',
     CHANGE_DATE: 'sales/change_date',
@@ -137,7 +143,6 @@ const ActionTypes = {
     SAVE: 'sales/save',
     SET_REDIRECT_AS_COMPLETED: 'sales/set_redirect_as_completed',
 
-    LIST: 'sales/list',
     FETCH: 'sales/fetch'
   }
 };

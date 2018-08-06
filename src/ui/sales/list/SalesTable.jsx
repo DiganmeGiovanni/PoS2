@@ -5,10 +5,17 @@ import TextFormatter from '../../../services/TextFormatter';
 import moment from 'moment';
 import 'moment/locale/es';
 import { Link } from "react-router-dom";
+import DateFormatter from "../../../services/DateFormatter";
 
+const DatePicker = require('react-datetime');
 moment.locale('es');
 
-const SalesTable = ({ sales, activePage, totalPages, navCb}) => {
+const SalesTable = ({ sales, activePage, totalPages, navCb,
+                      onFilterIdChange,
+                      onFilterDateChange,
+                      onFilterTotalChange,
+                    }) => {
+
   const makeTableBody = () => {
     if (sales.length === 0) {
       return (
@@ -20,26 +27,30 @@ const SalesTable = ({ sales, activePage, totalPages, navCb}) => {
       );
     }
 
-    return sales.map(sale => (
-      <tr key={`sale-${ sale.id }`}>
-        <td>{ sale.id }</td>
-        <td>{ moment(sale.date).format('YYYY, MMMM DD') }</td>
-        <td>{ moment(sale.date).fromNow(true) }</td>
+    return sales.map(sale => {
+      const date = DateFormatter.parse(sale.date);
+      const saleMoment = moment(date);
+      saleMoment.add(-5, 'hours');
+
+      return <tr key={`sale-${ sale.id }`}>
+        <td>{sale.id}</td>
+        <td>{ saleMoment.format('YYYY, MMMM DD') }</td>
+        <td>{ saleMoment.fromNow(true) }</td>
         <td className="text-right">
-          { TextFormatter.asMoney(sale.total) }
+          {TextFormatter.asMoney(sale.total)}
         </td>
-        <td className="text-center">
+        <td className="text-right">
           <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
           <Link
             to={`/sale/${ sale.id }`}
             title="Ver contenido"
             className="btn btn-sm btn-default"
           >
-            <span className="glyphicon glyphicon-eye-open" />
+            <span className="glyphicon glyphicon-eye-open"/>
           </Link>
         </td>
       </tr>
-    ))
+    })
   };
 
   return (
@@ -48,10 +59,30 @@ const SalesTable = ({ sales, activePage, totalPages, navCb}) => {
         <table className="table table-striped">
           <thead>
           <tr>
-            <th>#</th>
-            <th>Fecha</th>
-            <th>Fecha relativa</th>
-            <th className="text-right">Total</th>
+            <th>
+              <label className="control-label">#</label>
+              <input type="text" className="form-control" onChange={ onFilterIdChange }/>
+            </th>
+            <th>
+              <label className="control-label">Fecha</label>
+              <DatePicker
+                dateFormat="YYYY, MMMM DD"
+                timeFormat={ false }
+                locale="es"
+                viewMode="years"
+                closeOnSelect={ true }
+                closeOnTab={ true }
+                onChange={ onFilterDateChange }
+              />
+            </th>
+            <th>
+              <label className="control-label">Fecha relativa</label>
+              <input type="text" className="form-control" disabled/>
+            </th>
+            <th className="text-right">
+              <label className="control-label">Total</label>
+              <input type="text" className="form-control" onChange={ onFilterTotalChange }/>
+            </th>
             <th>&nbsp;</th>
           </tr>
           </thead>
@@ -73,6 +104,10 @@ SalesTable.propTypes = {
   activePage: PropTypes.number.isRequired,
   totalPages: PropTypes.number.isRequired,
   navCb: PropTypes.func.isRequired,
+
+  onFilterIdChange: PropTypes.func.isRequired,
+  onFilterDateChange: PropTypes.func.isRequired,
+  onFilterTotalChange: PropTypes.func.isRequired
 };
 
 export default SalesTable;

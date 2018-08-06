@@ -3,6 +3,7 @@ import SalesListStore from './SalesListStore';
 import PoSActions from "../../PoSActions";
 import SalesTable from "./SalesTable";
 import { Link } from 'react-router-dom';
+import moment from "moment";
 
 class SalesList extends React.Component {
   constructor(props) {
@@ -39,6 +40,19 @@ class SalesList extends React.Component {
     )
   }
 
+  static onFilterIdChange(e) {
+    PoSActions.sales.list.onFilterIdChange(e.target.value);
+  }
+
+  static onFilterDateChange(aMoment) {
+    const filterValue = moment.isMoment(aMoment) ? aMoment.toDate() : '';
+    PoSActions.sales.list.onFilterDateChange(filterValue);
+  }
+
+  static onFilterTotalChange(e) {
+    PoSActions.sales.list.onFilterTotalChange(e.target.value);
+  }
+
   render() {
     return (
       <div className="container">
@@ -58,6 +72,9 @@ class SalesList extends React.Component {
           activePage={ this.state.pageIdx }
           totalPages={ this.state.pagesCount }
           navCb={ this.navToPage }
+          onFilterIdChange={ SalesList.onFilterIdChange }
+          onFilterDateChange={ SalesList.onFilterDateChange }
+          onFilterTotalChange={ SalesList.onFilterTotalChange }
         />
       </div>
     );

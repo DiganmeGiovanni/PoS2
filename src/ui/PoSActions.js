@@ -512,31 +512,16 @@ const PoSActions = {
           price
         });
       },
-      changeDate(date) {
-        PosDispatcher.dispatch({
-          type: ActionTypes.SALES.CHANGE_DATE,
-          date
-        });
-      },
-      changeSelfConsumption(selfConsumption) {
-        PosDispatcher.dispatch({
-          type: ActionTypes.SALES.CHANGE_SELF_CONSUMPTION,
-          selfConsumption
-        });
-      },
       save() {
         PosDispatcher.dispatch({
           type: ActionTypes.SALES.SAVE
         });
       },
-
       setRedirectAsCompleted() {
         PosDispatcher.dispatch({
           type: ActionTypes.SALES.SET_REDIRECT_AS_COMPLETED
         });
       },
-
-      // New actions
       onDateChange(date) {
         PosDispatcher.dispatch({
           type: ActionTypes.SALES.CREATE.ON_DATE_CHANGE,
@@ -593,7 +578,7 @@ const PoSActions = {
     list: {
       page(pageNumber, pageSize) {
         PosDispatcher.dispatch({
-          type: ActionTypes.SALES.LIST,
+          type: ActionTypes.SALES.LIST.ALL,
           pageNumber,
           pageSize
         });
@@ -603,7 +588,25 @@ const PoSActions = {
           type: ActionTypes.SALES.FETCH,
           saleId
         });
-      }
+      },
+      onFilterIdChange(id) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.SALES.LIST.ON_FILTER_ID_CHANGE,
+          id
+        })
+      },
+      onFilterDateChange(date) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.SALES.LIST.ON_FILTER_DATE_CHANGE,
+          date
+        })
+      },
+      onFilterTotalChange(total) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.SALES.LIST.ON_FILTER_TOTAL_CHANGE,
+          total
+        })
+      },
     }
   }
 };
