@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 
 const DatePicker = require('react-datetime');
 import 'moment/locale/es';
+import DateFormatter from "../../../services/DateFormatter";
 moment.locale('es');
 
 const PurchasesTable = ({ purchases, activePage, totalPages, navCb,
@@ -28,12 +29,14 @@ const PurchasesTable = ({ purchases, activePage, totalPages, navCb,
     }
 
     return purchases.map(purchase => {
-      let date = new Date(purchase.date);
+      const date = DateFormatter.parse(purchase.date);
+      const purchaseMoment = moment(date);
+      purchaseMoment.add(-5, 'hours');
 
       return <tr key={`purchase-${ purchase.id }`}>
         <td>{purchase.id}</td>
-        <td>{moment(date).format('YYYY, MMMM DD')}</td>
-        <td>{moment(date).fromNow(true)}</td>
+        <td>{ purchaseMoment.format('YYYY, MMMM DD') }</td>
+        <td>{ purchaseMoment.fromNow(true) }</td>
         <td>{purchase.provider_name}</td>
         <td className="text-right">
           {TextFormatter.asMoney(purchase.investment)}
