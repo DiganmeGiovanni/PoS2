@@ -60,32 +60,30 @@ const SaleContents = ({ contents, total, error, onContentDeleteClicked }) => {
       <div className="panel-body">
         { renderError() }
 
-        <div className="table-responsive">
-          <table className="table table-striped">
-            <thead>
-            <tr>
-              <th>Producto</th>
-              <th>¿Autoconsumo?</th>
-              <th className="text-right">Cantidad</th>
-              <th>Unidad</th>
-              <th className="text-right">Precio c/u</th>
-              <th className="text-right">Precio</th>
-              <th/>
-            </tr>
-            </thead>
-            <tbody>
-              { renderContents() }
-            </tbody>
-            <tfoot>
-            <tr>
-              <td className="text-right" colSpan="6">
-                <b>{ TextFormatter.asMoney(total) }</b>
-              </td>
-              <td>&nbsp;</td>
-            </tr>
-            </tfoot>
-          </table>
-        </div>
+        <table className="table table-striped">
+          <thead>
+          <tr>
+            <th>Producto</th>
+            <th>¿Autoconsumo?</th>
+            <th className="text-right">Cantidad</th>
+            <th>Unidad</th>
+            <th className="text-right">Precio c/u</th>
+            <th className="text-right">Precio</th>
+            <th/>
+          </tr>
+          </thead>
+          <tbody>
+            { renderContents() }
+          </tbody>
+          <tfoot>
+          <tr>
+            <td className="text-right" colSpan="6">
+              <b>{ TextFormatter.asMoney(total) }</b>
+            </td>
+            <td>&nbsp;</td>
+          </tr>
+          </tfoot>
+        </table>
       </div>
     </div>
   )

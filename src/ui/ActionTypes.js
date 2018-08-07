@@ -119,7 +119,7 @@ const ActionTypes = {
     FETCH_P_MODEL: 'purchase_prices/fetch_p_model'
   },
   SALES: {
-    CREATE: {
+    UPSERT: {
       ON_DATE_CHANGE: 'sales/create/on_date_change',
       ON_PRODUCT_AUTO_COMPLETE_VALUE_CHANGE: 'sales/create/on_product_ac_change',
       ON_PRODUCT_SELECTED: 'sales/create/on_product_selected',
@@ -129,6 +129,7 @@ const ActionTypes = {
       ON_ADD_PRODUCT_CLICKED: 'sales/create/on_add_product_clicked',
       ON_SAVE_CLICKED: 'sales/create/on_save_clicked',
       ON_CONTENT_DELETE_CLICKED: 'sales/create/on_content_delete_clicked',
+      ON_CONTENT_EDIT_CLICKED: 'sales/create/on_content_edit_clicked'
     },
     LIST: {
       ALL: 'sales/list/all',
@@ -137,12 +138,7 @@ const ActionTypes = {
       ON_FILTER_TOTAL_CHANGE: 'sales/list/on_filter_total_change',
     },
 
-    ADD_CONTENT: 'sales/add_content',
-    CHANGE_DATE: 'sales/change_date',
-    CHANGE_SELF_CONSUMPTION: 'sales/self_consumption',
-    SAVE: 'sales/save',
     SET_REDIRECT_AS_COMPLETED: 'sales/set_redirect_as_completed',
-
     FETCH: 'sales/fetch'
   }
 };

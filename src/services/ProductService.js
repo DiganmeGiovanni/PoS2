@@ -1,6 +1,7 @@
 import {Brand, MeasurementUnit, Product, PurchasePrice, SalePrice} from '../model/entities';
 import sequelize from '../model/database';
 import moment from 'moment';
+import DateFormatter from "./DateFormatter";
 const Sequelize = require('sequelize');
 
 class ProductService {
@@ -142,38 +143,58 @@ class ProductService {
 
   /**
    * Calculates the available stock for a product on specified date
-   * by checking all no consumed existences and partially consumed
-   * existences
+   * purchases and sales until given date.
+   *
    * @param {number} productId - Id of product
-   * @param {string} date - Date in which to calculate existences
+   * @param {Date} date - Date in which to calculate existences
    * @param {Function} [cb] - Callback for query promise
    * @returns {Promise}
    */
   stockCount(productId, date, cb) {
-    let sql = '\
+    const sqlStock = "\
       SELECT\
-        existence.product_id,\
-        SUM(IFNULL(1 - CONSUMED.quantity, 1)) AS stock\
-      FROM existence\
-        INNER JOIN purchase p\
-          ON existence.purchase_id = p.id\
-        LEFT JOIN (\
-            SELECT existence_id, SUM(IFNULL(partial_quantity, 1)) AS quantity\
-            FROM sale_has_existence\
-            GROUP BY existence_id\
-          ) CONSUMED\
-          ON CONSUMED.existence_id = existence.id\
-      WHERE existence.product_id = :productId\
-        AND p.date < :date\
-    ';
+        PRO.id                        AS product_id,\
+        IFNULL(PURCHASES.quantity, 0) AS purchased,\
+        IFNULL(SALES.sold, 0)         AS sold\
+      FROM product PRO\
+      LEFT JOIN (\
+            SELECT\
+              PHP.product_id,\
+              SUM(PHP.quantity) AS quantity\
+            FROM purchase_has_product PHP\
+            INNER JOIN purchase PUR\
+            ON PUR.id = PHP.purchase_id\
+            WHERE strftime('%Y-%m-%d', datetime(PUR.date, '-5 hours')) <= :formattedDate1\
+            GROUP BY PHP.product_id\
+          ) PURCHASES\
+        ON PURCHASES.product_id = PRO.id\
+      \
+      LEFT JOIN (\
+            SELECT\
+              SP.product_id,\
+              SUM(SHP.quantity) AS sold\
+            FROM sale_has_product SHP\
+            INNER JOIN sale SAL\
+              ON SAL.id = SHP.sale_id\
+            INNER JOIN sale_price SP\
+              ON SP.id = SHP.sale_price_id\
+            WHERE strftime('%Y-%m-%d', datetime(SAL.date, '-5 hours')) <= :formattedDate2\
+            GROUP BY SP.product_id\
+          ) SALES\
+        ON SALES.product_id = PRO.id\
+      WHERE PRO.id = :productId\
+    ";
 
-    let promise = sequelize.query(sql, {
+    const formattedDate = DateFormatter.asDateOnly(date);
+    let promise = sequelize
+      .query(sqlStock, {
         type: Sequelize.QueryTypes.SELECT,
         replacements: {
-          date: moment(date).utc().format('YYYY-MM-DD HH:mm:ss'),
-          productId: productId
+          productId: productId,
+          formattedDate1: formattedDate,
+          formattedDate2: formattedDate
         }
-    });
+      });
 
     if (typeof cb !== "undefined") {
       promise

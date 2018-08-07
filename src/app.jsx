@@ -24,7 +24,7 @@ import PurchasesList from "./ui/purchases/list/PurchasesList";
 import PurchaseUpsert from './ui/purchases/upsert/PurchaseUpsert';
 import PurchaseView from "./ui/purchases/view/PurchaseView";
 import SalesList from "./ui/sales/list/SalesList";
-import CreateSale from "./ui/sales/create/CreateSale";
+import SaleUpsert from './ui/sales/upsert/SaleUpsert';
 import SaleView from "./ui/sales/view/SaleView";
 import Welcome from "./ui/home/Welcome";
 
@@ -95,22 +95,12 @@ export default class App extends React.Component {
           <Route exact path={'/purchases/create'} component={ PurchaseUpsert }/>
           <Route exact path={'/purchase/:purchaseId/update'} component={ PurchaseUpsert }/>
 
-          <Route
-            exact
-            path={'/sales'}
-            component={ SalesList }
-            data={{ title: 'Punto de venta' }}
-          />
+          <Route exact path={'/sales'} component={ SalesList }/>
+          <Route exact path={'/sales/create'} component={ SaleUpsert }/>
           <Route
             exact
             path={'/sale/:saleId'}
             component={ SaleView }
-            data={{ title: 'Punto de venta' }}
-          />
-          <Route
-            exact
-            path={'/sales/create'}
-            component={ CreateSale }
             data={{ title: 'Punto de venta' }}
           />
         </div>

@@ -503,18 +503,10 @@ const PoSActions = {
     }
   },
   sales: {
-    create: {
-      addProduct(product, quantity, price) {
-        PosDispatcher.dispatch({
-          type: ActionTypes.SALES.ADD_CONTENT,
-          product,
-          quantity,
-          price
-        });
-      },
+    upsert: {
       save() {
         PosDispatcher.dispatch({
-          type: ActionTypes.SALES.SAVE
+          type: ActionTypes.SALES.UPSERT.ON_SAVE_CLICKED
         });
       },
       setRedirectAsCompleted() {
@@ -524,53 +516,53 @@ const PoSActions = {
       },
       onDateChange(date) {
         PosDispatcher.dispatch({
-          type: ActionTypes.SALES.CREATE.ON_DATE_CHANGE,
+          type: ActionTypes.SALES.UPSERT.ON_DATE_CHANGE,
           date
         });
       },
       onProductAutoCompleteValueChange(value) {
         PosDispatcher.dispatch({
-          type: ActionTypes.SALES.CREATE.ON_PRODUCT_AUTO_COMPLETE_VALUE_CHANGE,
+          type: ActionTypes.SALES.UPSERT.ON_PRODUCT_AUTO_COMPLETE_VALUE_CHANGE,
           value
         });
       },
       onProductSelected(product) {
         PosDispatcher.dispatch({
-          type: ActionTypes.SALES.CREATE.ON_PRODUCT_SELECTED,
+          type: ActionTypes.SALES.UPSERT.ON_PRODUCT_SELECTED,
           product
         });
       },
       onQuantityChange(value) {
         PosDispatcher.dispatch({
-          type: ActionTypes.SALES.CREATE.ON_QUANTITY_CHANGE,
+          type: ActionTypes.SALES.UPSERT.ON_QUANTITY_CHANGE,
           value
         });
       },
       onSelfConsumptionChange(value) {
         PosDispatcher.dispatch({
-          type: ActionTypes.SALES.CREATE.ON_SELF_CONSUMPTION_CHANGE,
+          type: ActionTypes.SALES.UPSERT.ON_SELF_CONSUMPTION_CHANGE,
           value
         });
       },
       onPriceChange(value) {
         PosDispatcher.dispatch({
-          type: ActionTypes.SALES.CREATE.ON_PRICE_CHANGE,
+          type: ActionTypes.SALES.UPSERT.ON_PRICE_CHANGE,
           value
         })
       },
       onAddProductClicked() {
         PosDispatcher.dispatch({
-          type: ActionTypes.SALES.CREATE.ON_ADD_PRODUCT_CLICKED
+          type: ActionTypes.SALES.UPSERT.ON_ADD_PRODUCT_CLICKED
         })
       },
       onSaveClicked() {
         PosDispatcher.dispatch({
-          type: ActionTypes.SALES.CREATE.ON_SAVE_CLICKED
+          type: ActionTypes.SALES.UPSERT.ON_SAVE_CLICKED
         });
       },
       onContentDeleteClicked(index) {
         PosDispatcher.dispatch({
-          type: ActionTypes.SALES.CREATE.ON_CONTENT_DELETE_CLICKED,
+          type: ActionTypes.SALES.UPSERT.ON_CONTENT_DELETE_CLICKED,
           index
         })
       }
