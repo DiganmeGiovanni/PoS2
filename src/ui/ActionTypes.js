@@ -120,16 +120,17 @@ const ActionTypes = {
   },
   SALES: {
     UPSERT: {
-      ON_DATE_CHANGE: 'sales/create/on_date_change',
-      ON_PRODUCT_AUTO_COMPLETE_VALUE_CHANGE: 'sales/create/on_product_ac_change',
-      ON_PRODUCT_SELECTED: 'sales/create/on_product_selected',
-      ON_QUANTITY_CHANGE: 'sales/create/on_quantity_change',
-      ON_SELF_CONSUMPTION_CHANGE: 'sales/create/on_self_consumption_change',
-      ON_PRICE_CHANGE: 'sales/create/on_price_change',
-      ON_ADD_PRODUCT_CLICKED: 'sales/create/on_add_product_clicked',
-      ON_SAVE_CLICKED: 'sales/create/on_save_clicked',
-      ON_CONTENT_DELETE_CLICKED: 'sales/create/on_content_delete_clicked',
-      ON_CONTENT_EDIT_CLICKED: 'sales/create/on_content_edit_clicked'
+      ON_ID_CHANGE: 'sales/upsert/on_id_change',
+      ON_DATE_CHANGE: 'sales/upsert/on_date_change',
+      ON_PRODUCT_AUTO_COMPLETE_VALUE_CHANGE: 'sales/upsert/on_product_ac_change',
+      ON_PRODUCT_SELECTED: 'sales/upsert/on_product_selected',
+      ON_QUANTITY_CHANGE: 'sales/upsert/on_quantity_change',
+      ON_SELF_CONSUMPTION_CHANGE: 'sales/upsert/on_self_consumption_change',
+      ON_PRICE_CHANGE: 'sales/upsert/on_price_change',
+      ON_ADD_PRODUCT_CLICKED: 'sales/upsert/on_add_product_clicked',
+      ON_SAVE_CLICKED: 'sales/upsert/on_save_clicked',
+      ON_CONTENT_DELETE_CLICKED: 'sales/upsert/on_content_delete_clicked',
+      ON_CONTENT_EDIT_CLICKED: 'sales/upsert/on_content_edit_clicked'
     },
     LIST: {
       ALL: 'sales/list/all',

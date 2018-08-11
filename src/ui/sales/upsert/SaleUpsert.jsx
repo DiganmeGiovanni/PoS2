@@ -16,7 +16,13 @@ class SaleUpsert extends React.Component {
   }
 
   componentDidMount() {
-    document.title = 'Registrar venta';
+    if (this.saleId) {
+      document.title = "Modificar venta";
+    } else {
+      document.title = "Registrar venta";
+    }
+
+    PoSActions.sales.upsert.onIdChange(this.saleId);
   }
 
   componentDidUpdate() {
@@ -175,7 +181,7 @@ class SaleUpsert extends React.Component {
             <button className="btn btn-success"
                     onClick={ SaleUpsert.onSaveClicked }
             >
-              <span>Crear venta</span>
+              <span>{ this.state.id ? 'Modificar venta' : 'Crear venta' }</span>
             </button>
           </div>
         </div>

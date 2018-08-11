@@ -97,6 +97,7 @@ export default class App extends React.Component {
 
           <Route exact path={'/sales'} component={ SalesList }/>
           <Route exact path={'/sales/create'} component={ SaleUpsert }/>
+          <Route exact path={'/sale/:saleId/update'} component={ SaleUpsert } />
           <Route
             exact
             path={'/sale/:saleId'}

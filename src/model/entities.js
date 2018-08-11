@@ -339,9 +339,9 @@ PurchaseHasProduct.belongsTo(PurchasePrice, {
   foreignKey: 'purchase_price_id'
 });
 SaleHasProduct.belongsTo(Sale, { foreignKey: 'sale_id' });
-SaleHasProduct.belongsTo(SalePrice, { foreignKey: 'sale_price_id' });
+SaleHasProduct.belongsTo(SalePrice, { as: 'salePrice', foreignKey: 'sale_price_id' });
 Sale.hasMany(SaleHasProduct, { foreignKey: 'sale_id' });
-SalePrice.belongsTo(Product, { foreignKey: 'product_id' });
+SalePrice.belongsTo(Product, { as: 'product', foreignKey: 'product_id' });
 
 
 // Sync all models against database

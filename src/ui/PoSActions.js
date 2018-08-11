@@ -514,6 +514,12 @@ const PoSActions = {
           type: ActionTypes.SALES.SET_REDIRECT_AS_COMPLETED
         });
       },
+      onIdChange(saleId) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.SALES.UPSERT.ON_ID_CHANGE,
+          saleId
+        });
+      },
       onDateChange(date) {
         PosDispatcher.dispatch({
           type: ActionTypes.SALES.UPSERT.ON_DATE_CHANGE,

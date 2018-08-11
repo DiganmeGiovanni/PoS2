@@ -4,6 +4,7 @@ import ActionTypes from '../../ActionTypes';
 import ProductService from '../../../services/ProductService';
 import sequelize from '../../../model/database';
 import {Sale, SaleHasExistence, SaleHasProduct, SalePrice} from "../../../model/entities";
+import SaleService from "../../../services/SaleService";
 
 class SaleUpsertStore extends EventEmitter {
   constructor() {
@@ -103,6 +104,35 @@ class SaleUpsertStore extends EventEmitter {
       this.resetProductForm();
       this.emitChange();
     }
+  }
+
+  onIdChange(saleId) {
+
+    // If sale id is undefined and previously was not undefined, reset it
+    if (!saleId && this.state.id) {
+      this.state = SaleUpsertStore.initialState(false);
+      this.emitChange();
+      return;
+    }
+
+    this.state.id = saleId;
+    SaleService.findOne(saleId).then(sale => {
+      this.state.date = new Date(sale.date);
+      this.state.total = sale.total;
+
+      SaleService.findSaleHasProducts(saleId).then(hasProducts => {
+        for (let hasProduct of hasProducts) {
+          this.state.contents.push({
+            product: hasProduct.salePrice.product,
+            quantity: hasProduct.quantity,
+            price: hasProduct.salePrice.price,
+            selfConsumption: hasProduct.selfConsumption
+          });
+        }
+
+        this.emitChange();
+      });
+    });
   }
 
   onDateChange(date) {
@@ -217,10 +247,28 @@ class SaleUpsertStore extends EventEmitter {
             total: this.state.total
           };
 
-          return Sale.create(saleData, { transaction: transaction })
-            .then(sale => {
-              return this._saveContents(sale, transaction);
-            });
+          // Update existing sale
+          if (this.state.id !== null) {
+            return SaleService.deleteContents(this.state.id).then(() => {
+              return SaleService.findOne(this.state.id).then(sale => {
+                sale.date = this.state.date;
+                sale.total = this.state.total;
+
+                return sale.save({ transaction: transaction }).then(sale => {
+                  return this._saveContents(sale, transaction);
+                })
+              })
+            })
+          }
+
+          // Create new sale
+          else {
+            return Sale
+              .create(saleData, { transaction: transaction })
+              .then(sale => {
+                return this._saveContents(sale, transaction);
+              });
+          }
         })
         .then(() => this.reset(true))
         .catch(err => {
@@ -463,6 +511,10 @@ class SaleUpsertStore extends EventEmitter {
 const storeInstance = new SaleUpsertStore();
 storeInstance.dispatchToken = PoSDispatcher.register(action => {
   switch (action.type) {
+    case ActionTypes.SALES.UPSERT.ON_ID_CHANGE:
+      storeInstance.onIdChange(action.saleId);
+      break;
+
     case ActionTypes.SALES.UPSERT.ON_DATE_CHANGE:
       storeInstance.onDateChange(action.date);
       break;

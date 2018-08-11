@@ -40,13 +40,20 @@ const SalesTable = ({ sales, activePage, totalPages, navCb,
           {TextFormatter.asMoney(sale.total)}
         </td>
         <td className="text-right">
-          <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
           <Link
             to={`/sale/${ sale.id }`}
             title="Ver contenido"
             className="btn btn-sm btn-default"
           >
             <span className="glyphicon glyphicon-eye-open"/>
+          </Link>
+          <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <Link
+            to={`/sale/${ sale.id }/update`}
+            title="Modificar venta"
+            className="btn btn-sm btn-default"
+          >
+            <span className="glyphicon glyphicon-pencil"/>
           </Link>
         </td>
       </tr>
