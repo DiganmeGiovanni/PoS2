@@ -71,7 +71,7 @@ class ProductsListStore extends EventEmitter {
         BRA.name                    AS brand_name,\
         MU.name                     AS measurement_unit_name,\
         PROD.minimal_existences,\
-        PROD.existences             AS stock,\
+        ROUND(PROD.existences, 2)   AS stock,\
         IFNULL(SALES.quantity, 0)   AS sold\
       FROM product PROD\
       INNER JOIN brand BRA\

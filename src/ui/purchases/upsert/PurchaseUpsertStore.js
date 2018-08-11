@@ -305,7 +305,7 @@ class PurchaseUpsertStore extends EventEmitter {
                   productId,
                   purchase.id,
                   purchasePrice.id,
-                  content.quantity.value,
+                  content.quantity.value * 1,
                   transaction
                 );
               });
@@ -317,7 +317,7 @@ class PurchaseUpsertStore extends EventEmitter {
               productId,
               purchase.id,
               lastPrice.id,
-              content.quantity.value,
+              content.quantity.value * 1,
               transaction
             );
           }
