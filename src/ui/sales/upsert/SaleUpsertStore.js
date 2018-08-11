@@ -109,7 +109,7 @@ class SaleUpsertStore extends EventEmitter {
   onIdChange(saleId) {
 
     // If sale id is undefined and previously was not undefined, reset it
-    if (!saleId && this.state.id) {
+    if (!saleId) {
       this.state = SaleUpsertStore.initialState(false);
       this.emitChange();
       return;

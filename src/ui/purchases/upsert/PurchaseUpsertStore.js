@@ -67,7 +67,7 @@ class PurchaseUpsertStore extends EventEmitter {
   onIdChange(purchaseId) {
 
     // If purchaseId is undefined and previously was not undefined, reset it
-    if (!purchaseId && this.state.id) {
+    if (!purchaseId) {
       this.state = PurchaseUpsertStore.initialState(false);
       this.emitChange();
       return;
