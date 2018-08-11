@@ -161,10 +161,28 @@ const PoSActions = {
         endDate
       });
     },
+    filterByCode(code) {
+      PosDispatcher.dispatch({
+        type: ActionTypes.PRODUCTS.FILTER_BY_CODE,
+        code
+      });
+    },
     filterByName(name) {
       PosDispatcher.dispatch({
         type: ActionTypes.PRODUCTS.FILTER_BY_NAME,
         name
+      });
+    },
+    filterByBrand(brand) {
+      PosDispatcher.dispatch({
+        type: ActionTypes.PRODUCTS.FILTER_BY_BRAND,
+        brand
+      });
+    },
+    filterByMeasurementUnit(measurementUnit) {
+      PosDispatcher.dispatch({
+        type: ActionTypes.PRODUCTS.FILTER_BY_MEASUREMENT_UNIT,
+        measurementUnit
       });
     },
 

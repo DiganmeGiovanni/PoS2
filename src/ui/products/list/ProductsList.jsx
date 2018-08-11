@@ -38,9 +38,20 @@ class ProductsList extends React.Component {
     PoSActions.products.setEndDate(endDate);
   }
 
-  // noinspection JSMethodCanBeStatic
-  onFilterNameChange(e) {
+  static onFilterCodeChange(e) {
+    PoSActions.products.filterByCode(e.target.value);
+  }
+
+  static onFilterNameChange(e) {
     PoSActions.products.filterByName(e.target.value);
+  }
+
+  static onFilterBrandChange(e) {
+    PoSActions.products.filterByBrand(e.target.value);
+  }
+
+  static onFilterMeasurementUnitChange(e) {
+    PoSActions.products.filterByMeasurementUnit(e.target.value);
   }
 
   navToPage(targetPage) {
@@ -69,7 +80,10 @@ class ProductsList extends React.Component {
           navCallback={this.navToPage}
           activePage={this.state.pageIdx}
           totalPages={this.state.pagesCount}
-          onFilterNameChange={ this.onFilterNameChange }
+          onFilterCodeChange={ ProductsList.onFilterCodeChange }
+          onFilterNameChange={ ProductsList.onFilterNameChange }
+          onFilterBrandChange={ ProductsList.onFilterBrandChange }
+          onFilterMeasurementUnitChange={ ProductsList.onFilterMeasurementUnitChange }
         />
       </div>
     );

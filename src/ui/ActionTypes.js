@@ -41,7 +41,10 @@ const ActionTypes = {
   PRODUCTS: {
     PAGE: 'products/page',
     SET_END_DATE: 'products/set_end_date',
+    FILTER_BY_CODE: 'products/filter_by_code',
     FILTER_BY_NAME: 'products/filter_by_name',
+    FILTER_BY_BRAND: 'products/filter_by_brand',
+    FILTER_BY_MEASUREMENT_UNIT: 'products/filter_by_measurement_unit',
 
     UPSERT: {
       ON_ID_CHANGE: 'products/upsert/on_id_change',

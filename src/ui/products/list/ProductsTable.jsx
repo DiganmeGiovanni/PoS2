@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import Paginator from '../../components/paginated_table/Paginator';
 import { Link } from "react-router-dom";
 
-const ProductsTable = ({ products, activePage, totalPages, navCallback, onFilterNameChange }) => {
+const ProductsTable = ({ products, activePage, totalPages, navCallback,
+                         onFilterCodeChange,
+                         onFilterNameChange,
+                         onFilterBrandChange,
+                         onFilterMeasurementUnitChange
+                      }) => {
   const makeTableBody = () => {
     if (products.length === 0) {
       return (
@@ -52,12 +57,14 @@ const ProductsTable = ({ products, activePage, totalPages, navCallback, onFilter
             <tr>
               <th>
                 <label className="control-label">Código</label>
-                <input type="text" className="form-control"/>
+                <input
+                  type="text"
+                  className="form-control"
+                  onChange={ onFilterCodeChange }
+                />
               </th>
               <th>
-                <label className="control-label">
-                  Nombre
-                </label>
+                <label className="control-label">Nombre</label>
                 <input
                   type="text"
                   className="form-control"
@@ -66,23 +73,31 @@ const ProductsTable = ({ products, activePage, totalPages, navCallback, onFilter
               </th>
               <th>
                 <label className="control-label">Marca</label>
-                <input type="text" className="form-control"/>
+                <input
+                  type="text"
+                  className="form-control"
+                  onChange={ onFilterBrandChange }
+                />
               </th>
               <th>
                 <label className="control-label">Unidad</label>
-                <input type="text" className="form-control"/>
+                <input
+                  type="text"
+                  className="form-control"
+                  onChange={ onFilterMeasurementUnitChange }
+                />
               </th>
               <th className="text-right" style={{ width: '11%'}}>
                 <label className="control-label">Stock mínimo</label>
-                <input type="text" className="form-control"/>
+                <input type="text" className="form-control" disabled/>
               </th>
               <th className="text-right" style={{ width: '11%'}}>
                 <label className="control-label">Stock</label>
-                <input type="text" className="form-control"/>
+                <input type="text" className="form-control" disabled/>
               </th>
               <th className="text-right" style={{ width: '11%'}}>
                 <label className="control-label">Vendidos</label>
-                <input type="text" className="form-control"/>
+                <input type="text" className="form-control" disabled/>
               </th>
               <th>&nbsp;</th>
             </tr>
@@ -105,7 +120,11 @@ ProductsTable.propTypes = {
   activePage: PropTypes.number.isRequired,
   totalPages: PropTypes.number.isRequired,
   navCallback: PropTypes.func.isRequired,
-  onFilterNameChange: PropTypes.func.isRequired
+
+  onFilterCodeChange: PropTypes.func.isRequired,
+  onFilterNameChange: PropTypes.func.isRequired,
+  onFilterBrandChange: PropTypes.func.isRequired,
+  onFilterMeasurementUnitChange: PropTypes.func.isRequired
 };
 
 export default ProductsTable;
