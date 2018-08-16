@@ -623,6 +623,50 @@ const PoSActions = {
           total
         })
       },
+    },
+    view: {
+      fetch(saleId) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.SALES.VIEW.FETCH,
+          saleId
+        })
+      },
+      onFilterProductChange(product) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.SALES.VIEW.ON_FILTER_PRODUCT_CHANGE,
+          product
+        })
+      },
+      onFilterSelfConsumptionChange(selfConsumption) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.SALES.VIEW.ON_FILTER_SELF_CONSUMPTION_CHANGE,
+          selfConsumption
+        })
+      },
+      onFilterQuantityChange(quantity) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.SALES.VIEW.ON_FILTER_QUANTITY_CHANGE,
+          quantity
+        })
+      },
+      onFilterMUnitChange(mUnit) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.SALES.VIEW.ON_FILTER_M_UNIT_CHANGE,
+          mUnit
+        })
+      },
+      onFilterUnitPriceChange(unitPrice) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.SALES.VIEW.ON_FILTER_UNIT_PRICE_CHANGE,
+          unitPrice
+        })
+      },
+      onFilterPriceChange(price) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.SALES.VIEW.ON_FILTER_PRICE_CHANGE,
+          price
+        })
+      },
     }
   }
 };

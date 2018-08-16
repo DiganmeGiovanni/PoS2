@@ -141,9 +141,17 @@ const ActionTypes = {
       ON_FILTER_DATE_CHANGE: 'sales/list/on_filter_date_change',
       ON_FILTER_TOTAL_CHANGE: 'sales/list/on_filter_total_change',
     },
+    VIEW: {
+      FETCH: 'sales/view/fetch',
+      ON_FILTER_PRODUCT_CHANGE: 'sales/view/on_filter_product_change',
+      ON_FILTER_SELF_CONSUMPTION_CHANGE: 'sales/view/on_filter_self_consumption_change',
+      ON_FILTER_QUANTITY_CHANGE: 'sales/view/on_filter_quantity_change',
+      ON_FILTER_M_UNIT_CHANGE: 'sales/view/on_filter_m_unit_change',
+      ON_FILTER_UNIT_PRICE_CHANGE: 'sales/view/on_filter_unit_price_change',
+      ON_FILTER_PRICE_CHANGE: 'sales/view/on_filter_price_change',
+    },
 
     SET_REDIRECT_AS_COMPLETED: 'sales/set_redirect_as_completed',
-    FETCH: 'sales/fetch'
   }
 };
 

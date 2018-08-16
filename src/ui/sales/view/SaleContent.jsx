@@ -2,7 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TextFormatter from '../../../services/TextFormatter';
 
-const SaleContent = ({ contents, isLoadingProducts }) => {
+const SaleContent = ({ contents, isLoadingProducts,
+                       onFilterByProductChange,
+                       onFilterBySelfConsumptionChange,
+                       onFilterByQuantityChange,
+                       onFilterByMUnitChange,
+                       onFilterByUnitPriceChange,
+                       onFilterByPriceChange
+                   }) => {
   const makeTableBody = () => {
     if (isLoadingProducts) {
       return (
@@ -34,12 +41,34 @@ const SaleContent = ({ contents, isLoadingProducts }) => {
     <table className="table table-striped">
       <thead>
       <tr>
-        <th>Producto</th>
-        <th>¿Autoconsumo?</th>
-        <th className="text-right">Cantidad</th>
-        <th>Unidad</th>
-        <th className="text-right">Precio unitario</th>
-        <th className="text-right">Precio</th>
+        <th>
+          <label className="control-label">Producto</label>
+          <input type="text" className='form-control' onChange={ onFilterByProductChange }/>
+        </th>
+        <th>
+          <label className="control-label">¿Autoconsumo?</label>
+          <select onChange={ onFilterBySelfConsumptionChange } className="form-control">
+            <option value="">Todos</option>
+            <option value="1">Si</option>
+            <option value="0">No</option>
+          </select>
+        </th>
+        <th className="text-right">
+          <label className="control-label">Cantidad</label>
+          <input type="text" className='form-control' onChange={ onFilterByQuantityChange }/>
+        </th>
+        <th>
+          <label className="control-label">Unidad</label>
+          <input type="text" className='form-control' onChange={ onFilterByMUnitChange }/>
+        </th>
+        <th className="text-right">
+          <label className="control-label">Precio unitario</label>
+          <input type="text" className='form-control' onChange={ onFilterByUnitPriceChange }/>
+        </th>
+        <th className="text-right">
+          <label className="control-label">Precio</label>
+          <input type="text" className='form-control' onChange={ onFilterByPriceChange }/>
+        </th>
       </tr>
       </thead>
       <tbody>{ makeTableBody() }</tbody>
