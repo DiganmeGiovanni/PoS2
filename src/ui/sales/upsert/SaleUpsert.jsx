@@ -1,8 +1,8 @@
 import React from "react";
 import SaleUpsertStore from './SaleUpsertStore';
 import PoSActions from "../../PoSActions";
-import SaleProductForm from "../create/SaleProductForm";
-import SaleContents from "../create/SaleContents";
+import SaleProductForm from "./SaleProductForm";
+import SaleContents from "./SaleContents";
 
 const DatePicker = require('react-datetime');
 
