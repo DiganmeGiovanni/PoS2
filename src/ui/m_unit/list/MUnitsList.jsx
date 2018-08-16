@@ -54,13 +54,17 @@ class MUnitsList extends React.Component {
   render() {
     return (
       <div className="container">
-        <h1>Unidades de medida</h1>
-        <Link to={'/measurement_units/create'} className={'btn btn-primary'}>
-          Nueva unidad
-        </Link>
+        <div className="row">
+          <div className="col-sm-6">
+            <h1>Unidades de medida</h1>
+          </div>
+          <div className="col-sm-6 text-right padding-top-24">
+            <Link to={'/measurement_units/create'} className={'btn btn-primary'}>
+              Nueva unidad
+            </Link>
+          </div>
+        </div>
 
-        <br />
-        <br />
         <MUnitsTable
           mUnits={this.state.mUnits}
           navCallback={this.navToPage}

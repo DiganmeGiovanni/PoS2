@@ -50,13 +50,17 @@ class ProvidersList extends React.Component {
   render() {
     return (
       <div className="container">
-        <h1>Proveedores</h1>
-        <Link to={'/providers/create'} className={'btn btn-primary'}>
-          Nuevo proveedor
-        </Link>
+        <div className="row">
+          <div className="col-sm-6">
+            <h1>Proveedores</h1>
+          </div>
+          <div className="col-sm-6 text-right padding-top-24">
+            <Link to={'/providers/create'} className={'btn btn-primary'}>
+              Nuevo proveedor
+            </Link>
+          </div>
+        </div>
 
-        <br />
-        <br />
         <ProvidersTable
           providers={this.state.providers}
           navCallback={this.navToPage}

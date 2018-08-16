@@ -50,13 +50,17 @@ class BrandsList extends React.Component {
   render() {
     return (
       <div className="container">
-        <h1>Marcas</h1>
-        <Link to={'/brands/create'} className={'btn btn-primary'}>
-          Nueva marca
-        </Link>
+        <div className="row">
+          <div className="col-sm-6">
+            <h1>Marcas</h1>
+          </div>
+          <div className="col-sm-6 text-right padding-top-24">
+            <Link to={'/brands/create'} className={'btn btn-primary'}>
+              Nueva marca
+            </Link>
+          </div>
+        </div>
 
-        <br />
-        <br />
         <BrandsTable
           brands={this.state.brands}
           activePage={this.state.pageIdx}

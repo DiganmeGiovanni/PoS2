@@ -35,7 +35,7 @@ const ProvidersTable = ({ providers, activePage, totalPages, navCallback, filter
   };
 
   return (
-    <div className="row">
+    <div className="row padding-top-8">
       <div className="col-xs-12">
         <table className="table table-striped">
           <thead>
