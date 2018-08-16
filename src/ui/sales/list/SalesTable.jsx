@@ -12,8 +12,11 @@ moment.locale('es');
 
 const SalesTable = ({ sales, activePage, totalPages, navCb,
                       onFilterIdChange,
+                      filterId,
                       onFilterDateChange,
+                      filterDate,
                       onFilterTotalChange,
+                      filterTotal
                     }) => {
 
   const makeTableBody = () => {
@@ -47,7 +50,7 @@ const SalesTable = ({ sales, activePage, totalPages, navCb,
           >
             <span className="glyphicon glyphicon-eye-open"/>
           </Link>
-          <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <span>&nbsp;&nbsp;</span>
           <Link
             to={`/sale/${ sale.id }/update`}
             title="Modificar venta"
@@ -68,7 +71,11 @@ const SalesTable = ({ sales, activePage, totalPages, navCb,
           <tr>
             <th>
               <label className="control-label">#</label>
-              <input type="text" className="form-control" onChange={ onFilterIdChange }/>
+              <input type="text"
+                     className="form-control"
+                     onChange={ onFilterIdChange }
+                     value={ filterId }
+              />
             </th>
             <th>
               <label className="control-label">Fecha</label>
@@ -80,6 +87,7 @@ const SalesTable = ({ sales, activePage, totalPages, navCb,
                 closeOnSelect={ true }
                 closeOnTab={ true }
                 onChange={ onFilterDateChange }
+                value={ filterDate }
               />
             </th>
             <th>
@@ -88,7 +96,11 @@ const SalesTable = ({ sales, activePage, totalPages, navCb,
             </th>
             <th className="text-right">
               <label className="control-label">Total</label>
-              <input type="text" className="form-control" onChange={ onFilterTotalChange }/>
+              <input type="text"
+                     className="form-control"
+                     onChange={ onFilterTotalChange }
+                     value={ filterTotal }
+              />
             </th>
             <th>&nbsp;</th>
           </tr>

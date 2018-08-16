@@ -73,8 +73,11 @@ class SalesList extends React.Component {
           totalPages={ this.state.pagesCount }
           navCb={ this.navToPage }
           onFilterIdChange={ SalesList.onFilterIdChange }
+          filterId={ this.state.filters.id }
           onFilterDateChange={ SalesList.onFilterDateChange }
+          filterDate={ this.state.filters.date }
           onFilterTotalChange={ SalesList.onFilterTotalChange }
+          filterTotal={ this.state.filters.total }
         />
       </div>
     );

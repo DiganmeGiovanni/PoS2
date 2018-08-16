@@ -85,11 +85,17 @@ class PurchasesList extends React.Component {
           totalPages={ this.state.pagesCount }
           navCb={ this.navToPage }
           onFilterIdChange={ PurchasesList.onFilterIdChange }
+          filterId={ this.state.filters.id }
           onFilterDateChange={ PurchasesList.onFilterDateChange }
+          filterDate={ this.state.filters.date }
           onFilterProviderChange={ PurchasesList.onFilterProviderChange }
+          filterProvider={ this.state.filters.provider }
           onFilterInvestmentChange={ PurchasesList.onFilterInvestmentChange }
+          filterInvestment={ this.state.filters.investment }
           onFilterReinvestmentChange={ PurchasesList.onFilterReinvestmentChange }
+          filterReinvestment={ this.state.filters.reinvestment }
           onFilterTotalChange={ PurchasesList.onFilterTotalChange }
+          filterTotal={ this.state.filters.total }
         />
       </div>
     );

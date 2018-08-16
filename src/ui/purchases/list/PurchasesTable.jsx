@@ -12,11 +12,18 @@ moment.locale('es');
 
 const PurchasesTable = ({ purchases, activePage, totalPages, navCb,
                           onFilterIdChange,
+                          filterId,
                           onFilterDateChange,
+                          filterDate,
                           onFilterProviderChange,
+                          filterProvider,
                           onFilterInvestmentChange,
+                          filterInvestment,
                           onFilterReinvestmentChange,
-                          onFilterTotalChange }) => {
+                          filterReinvestment,
+                          onFilterTotalChange,
+                          filterTotal,
+                        }) => {
   const makeTableBody = () => {
     if (purchases.length === 0) {
       return (
@@ -51,19 +58,19 @@ const PurchasesTable = ({ purchases, activePage, totalPages, navCb,
         </td>
         <td className="text-right" style={{ width: '100px' }}>
           <Link
-            to={`/purchase/${ purchase.id }/update`}
-            title="Modificar compra"
-            className="btn btn-sm btn-default"
-          >
-            <span className="glyphicon glyphicon-pencil"/>
-          </Link>
-          <span>&nbsp;&nbsp;</span>
-          <Link
             to={`/purchase/${ purchase.id }`}
             title="Ver contenido"
             className="btn btn-sm btn-default"
           >
             <span className="glyphicon glyphicon-eye-open"/>
+          </Link>
+          <span>&nbsp;&nbsp;</span>
+          <Link
+            to={`/purchase/${ purchase.id }/update`}
+            title="Modificar compra"
+            className="btn btn-sm btn-default"
+          >
+            <span className="glyphicon glyphicon-pencil"/>
           </Link>
         </td>
       </tr>
@@ -82,6 +89,7 @@ const PurchasesTable = ({ purchases, activePage, totalPages, navCb,
                 type="text"
                 className="form-control"
                 onChange={ onFilterIdChange }
+                value={ filterId }
               />
             </th>
             <th>
@@ -96,6 +104,7 @@ const PurchasesTable = ({ purchases, activePage, totalPages, navCb,
                 closeOnSelect={ true }
                 closeOnTab={ true }
                 onChange={ onFilterDateChange }
+                value={ filterDate }
               />
             </th>
             <th>
@@ -114,6 +123,7 @@ const PurchasesTable = ({ purchases, activePage, totalPages, navCb,
                 type="text"
                 className="form-control"
                 onChange={ onFilterProviderChange }
+                value={ filterProvider }
               />
             </th>
             <th className="text-right">
@@ -122,6 +132,7 @@ const PurchasesTable = ({ purchases, activePage, totalPages, navCb,
                 type="text"
                 className="form-control"
                 onChange={ onFilterInvestmentChange }
+                value={ filterInvestment }
               />
             </th>
             <th className="text-right">
@@ -130,6 +141,7 @@ const PurchasesTable = ({ purchases, activePage, totalPages, navCb,
                 type="text"
                 className="form-control"
                 onChange={ onFilterReinvestmentChange }
+                value={ filterReinvestment }
               />
             </th>
             <th className="text-right">
@@ -138,6 +150,7 @@ const PurchasesTable = ({ purchases, activePage, totalPages, navCb,
                 type="text"
                 className="form-control"
                 onChange={ onFilterTotalChange }
+                value={ filterTotal }
               />
             </th>
             <th>&nbsp;</th>
