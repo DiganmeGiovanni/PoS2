@@ -31,16 +31,14 @@ const SalesTable = ({ sales, activePage, totalPages, navCb,
     }
 
     return sales.map(sale => {
-      const date = DateFormatter.parse(sale.date);
-      const saleMoment = moment(date);
-      saleMoment.add(-5, 'hours');
+      const saleMoment = moment(sale.date).local(true);
 
       return <tr key={`sale-${ sale.id }`}>
-        <td>{sale.id}</td>
-        <td>{ saleMoment.format('YYYY, MMMM DD') }</td>
+        <td>{ sale.id }</td>
+        <td>{ saleMoment.format('DD MMMM, YYYY') }</td>
         <td>{ saleMoment.fromNow(true) }</td>
         <td className="text-right">
-          {TextFormatter.asMoney(sale.total)}
+          { TextFormatter.asMoney(sale.total) }
         </td>
         <td className="text-right">
           <Link

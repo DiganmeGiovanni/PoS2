@@ -36,9 +36,7 @@ const PurchasesTable = ({ purchases, activePage, totalPages, navCb,
     }
 
     return purchases.map(purchase => {
-      const date = DateFormatter.parse(purchase.date);
-      const purchaseMoment = moment(date);
-      purchaseMoment.add(-5, 'hours');
+      const purchaseMoment = moment(purchase.date).local();
 
       return <tr key={`purchase-${ purchase.id }`}>
         <td>{purchase.id}</td>
