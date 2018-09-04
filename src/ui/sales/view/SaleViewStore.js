@@ -78,11 +78,11 @@ class SaleViewStore extends EventEmitter {
       SELECT\
         PROD.id,\
         PROD.name,\
-        SHP.self_consumption            AS self_consumption,\
-        SHP.quantity                    AS quantity,\
-        MU.name                         AS measurement_unit_name,\
+        SHP.self_consumption                 AS self_consumption,\
+        SUM(SHP.quantity)                    AS quantity,\
+        MU.name                              AS measurement_unit_name,\
         SALE_PRICE.price,\
-        SALE_PRICE.price * SHP.quantity AS total\
+        SALE_PRICE.price * SUM(SHP.quantity) AS total\
       FROM sale_has_product SHP\
       INNER JOIN sale_price SALE_PRICE\
         ON SHP.sale_price_id = SALE_PRICE.id\
