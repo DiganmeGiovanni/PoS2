@@ -277,6 +277,30 @@ class ProductService {
         console.error('Purchases history could not be retrieved: ' + err);
       });
   }
+
+  salesHistory(productId, cb) {
+    let sql = '\
+      SELECT\
+        SP.product_id        AS product_id,\
+        SAL.id               AS sale_id,\
+        SHP.self_consumption AS self_consumption,\
+        SAL.date             AS date,\
+        ROUND(SP.price, 2)   AS price\
+      FROM sale_has_product SHP\
+      INNER JOIN sale SAL\
+        ON SAL.id = SHP.sale_id\
+      INNER JOIN sale_price SP\
+        ON SP.id = SHP.sale_price_id\
+      WHERE SP.product_id = :productId\
+      ORDER BY SAL.date DESC\
+    ';
+
+    sequelize.query(sql, { replacements: { productId: productId }})
+      .then(cb)
+      .catch(err => {
+        console.error('Sales history could not be retrieved: ' + err);
+      });
+  }
 }
 
 const instance = new ProductService();

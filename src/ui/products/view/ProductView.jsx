@@ -3,6 +3,7 @@ import LabelValue from '../../components/LabelValue';
 import ProductService from '../../../services/ProductService';
 import TextFormatter from '../../../services/TextFormatter';
 import PurchasesHistory from './PurchasesHistory';
+import SalesHistory from './SalesHistory';
 
 const moment = require('moment');
 import 'moment/locale/es';
@@ -33,39 +34,6 @@ class ProductView extends React.Component {
         });
       });
     });
-  }
-
-  renderPurchasePricesRows() {
-    return this.state.purchasePrices.map((pPrice, idx) => (
-      <tr key={`pp-${ idx }`}>
-        <td>{ moment(pPrice.date).format('YYYY-MM-DD hh:mm a') }</td>
-        <td className="text-right">
-          { TextFormatter.asMoney(pPrice.price) }
-        </td>
-      </tr>
-    ))
-  }
-
-  renderSalePricesRows() {
-    let rows = [];
-    let currentPrice = -1;
-
-    for (let i = 0; i < this.state.salePrices.length; i++) {
-      let sPrice = this.state.salePrices[i];
-      if (sPrice.price !== currentPrice) {
-        currentPrice = sPrice.price;
-        rows.push(
-          <tr key={`sp-${ i }`}>
-            <td>{ moment(sPrice.date).format('YYYY-MM-DD hh:mm a') }</td>
-            <td className="text-right">
-              { TextFormatter.asMoney(sPrice.price) }
-            </td>
-          </tr>
-        );
-      }
-    }
-
-    return rows;
   }
 
   renderDetails() {
@@ -150,20 +118,10 @@ class ProductView extends React.Component {
           <div className="col-sm-6">
             <div className="panel panel-default">
               <div className="panel-heading">
-                <h5 className="panel-title">Historial de precios de venta</h5>
+                <h5 className="panel-title">Historial de ventas</h5>
               </div>
-              <div className="panel-body">
-                <table className="table table-striped">
-                  <thead>
-                  <tr>
-                    <th>Fecha</th>
-                    <th className="text-right">Precio</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  { this.renderSalePricesRows() }
-                  </tbody>
-                </table>
+              <div className="panel-body" style={{ maxHeight: '500px', overflowY: 'auto'}}>
+                <SalesHistory productId={ this.state.productId }/>
               </div>
             </div>
           </div>
