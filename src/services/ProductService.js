@@ -251,6 +251,32 @@ class ProductService {
       return promise;
     }
   }
+
+  purchasesHistory(productId, cb) {
+    let sql = '\
+      SELECT\
+        PHP.product_id     AS product_id,\
+        PUR.id             AS purchase_id,\
+        PRO.name           AS provider_name,\
+        PUR.date           AS date,\
+        ROUND(PP.price, 2) AS price\
+      FROM purchase_has_product PHP\
+      INNER JOIN purchase PUR\
+        ON PUR.id = PHP.purchase_id\
+      INNER JOIN purchase_price PP\
+        ON PP.id = PHP.purchase_price_id\
+      INNER JOIn provider PRO\
+        ON PRO.id = PP.provider_id\
+      WHERE PP.product_id = :productId\
+      ORDER BY PUR.date DESC\
+    ';
+
+    sequelize.query(sql, { replacements: { productId: productId }})
+      .then(cb)
+      .catch(err => {
+        console.error('Purchases history could not be retrieved: ' + err);
+      });
+  }
 }
 
 const instance = new ProductService();

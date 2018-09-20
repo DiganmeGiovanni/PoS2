@@ -2,6 +2,7 @@ import React from 'react';
 import LabelValue from '../../components/LabelValue';
 import ProductService from '../../../services/ProductService';
 import TextFormatter from '../../../services/TextFormatter';
+import PurchasesHistory from './PurchasesHistory';
 
 const moment = require('moment');
 import 'moment/locale/es';
@@ -138,20 +139,10 @@ class ProductView extends React.Component {
           <div className="col-sm-6">
             <div className="panel panel-default">
               <div className="panel-heading">
-                <h5 className="panel-title">Historial de precios de compra</h5>
+                <h5 className="panel-title">Historial de compras</h5>
               </div>
               <div className="panel-body">
-                <table className="table table-striped">
-                  <thead>
-                  <tr>
-                    <th>Fecha</th>
-                    <th className="text-right">Precio</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  { this.renderPurchasePricesRows() }
-                  </tbody>
-                </table>
+                <PurchasesHistory productId={ this.state.productId }/>
               </div>
             </div>
           </div>
