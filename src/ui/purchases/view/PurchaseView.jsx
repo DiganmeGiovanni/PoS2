@@ -6,6 +6,7 @@ import TextFormatter from '../../../services/TextFormatter';
 import moment from 'moment';
 import 'moment/locale/es';
 import PurchaseContents from "./PurchaseContents";
+import GoBackTitle from "../../components/GoBackTitle";
 
 moment.locale('es');
 
@@ -126,7 +127,10 @@ class PurchaseView extends React.Component {
   render() {
     return (
       <div className="container">
-        <h1 className="margin-bottom-0">Detalles de compra</h1>
+        <GoBackTitle
+          title="Detalles de la compra"
+          history={ this.props.history }
+        />
         <h4 className="margin-top-4"># { this.purchaseId }</h4>
 
         <div className="panel panel-default margin-top-32">

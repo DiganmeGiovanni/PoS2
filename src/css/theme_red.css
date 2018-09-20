@@ -15,6 +15,13 @@ body {
   font-family: 'Lato', 'Calibri', 'sans-serif';
 }
 
+/*****************************************************/
+/** Reusable utils */
+
+.color-red {
+  color: var(--color-red);
+}
+
 
 /*****************************************************/
 /** Navbar */

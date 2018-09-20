@@ -5,6 +5,7 @@ import TextFormatter from '../../../services/TextFormatter';
 import moment from 'moment';
 import 'moment/locale/es';
 import SaleContent from "./SaleContent";
+import GoBackTitle from "../../components/GoBackTitle";
 
 moment.locale('es');
 
@@ -87,7 +88,10 @@ class SaleView extends React.Component {
   render() {
     return (
       <div className="container">
-        <h1 className="margin-bottom-0">Detalles de venta</h1>
+        <GoBackTitle
+          title="Detalles de la venta"
+          history={ this.props.history }
+        />
         <h4 className="margin-top-4"># { this.saleId }</h4>
 
         <div className="panel panel-default margin-top-32">

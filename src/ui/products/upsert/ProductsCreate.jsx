@@ -2,6 +2,7 @@ import React from 'react';
 import ProductForm from '../ProductForm';
 import ProductUpsertStore from './ProductUpsertStore';
 import PoSActions from '../../PoSActions';
+import GoBackTitle from "../../components/GoBackTitle";
 
 class ProductsCreate extends React.Component {
   constructor(props) {
@@ -75,7 +76,10 @@ class ProductsCreate extends React.Component {
     return (
       <div className="container">
         <div className="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
-          <h1>Nuevo producto</h1>
+          <GoBackTitle
+            title="Nuevo producto"
+            history={ this.props.history }
+          />
           <br />
           <br />
 

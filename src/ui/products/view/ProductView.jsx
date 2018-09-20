@@ -1,7 +1,7 @@
 import React from 'react';
 import LabelValue from '../../components/LabelValue';
 import ProductService from '../../../services/ProductService';
-import TextFormatter from '../../../services/TextFormatter';
+import GoBackTitle from '../../components/GoBackTitle';
 import PurchasesHistory from './PurchasesHistory';
 import SalesHistory from './SalesHistory';
 
@@ -99,7 +99,10 @@ class ProductView extends React.Component {
   render() {
     return (
       <div className="container">
-        <h1>Detalles de producto</h1>
+        <GoBackTitle
+          title="Detalles de producto"
+          history={ this.props.history }
+        />
         <h3 className="margin-top-4">{ this.state.product.name }</h3>
 
         { this.renderDetails() }
