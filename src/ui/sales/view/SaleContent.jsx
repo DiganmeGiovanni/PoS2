@@ -23,6 +23,9 @@ const SaleContent = ({ contents, isLoadingProducts,
 
     return contents.map((product, idx) => (
       <tr key={ idx }>
+        <td>
+          <input type="checkbox"/>
+        </td>
         <td>{ product.name }</td>
         <td>{ product.self_consumption ? 'Si' : 'No' }</td>
         <td className="text-right">{ product.quantity }</td>
@@ -41,6 +44,7 @@ const SaleContent = ({ contents, isLoadingProducts,
     <table className="table table-striped">
       <thead>
       <tr>
+        <th/>
         <th>
           <label className="control-label">Producto</label>
           <input type="text" className='form-control' onChange={ onFilterByProductChange }/>
