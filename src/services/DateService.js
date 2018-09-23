@@ -11,9 +11,11 @@ class DateService {
    * "datetime(purchase_date, 'localtime')"
    *
    * @param {string} field Fields to transform from UTC to local
+   * @param {boolean} removeHours - If true, the hours part will be removed from generated
+   *                                datetime
    */
-  static fromSQLiteUtcToLocal(field) {
-    return `datetime(${field}, 'localtime')`
+  static fromSQLiteUtcToLocal(field, removeHours) {
+    return `${removeHours ? 'date' : 'datetime'}(${field}, 'localtime')`
   }
 
   /**

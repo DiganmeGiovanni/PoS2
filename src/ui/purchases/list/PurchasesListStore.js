@@ -4,6 +4,7 @@ import ActionTypes from '../../ActionTypes';
 import {Existence, Provider, Purchase, PurchasePrice} from "../../../model/entities";
 import sequelize from '../../../model/database';
 import DateFormatter from "../../../services/DateFormatter";
+import DateService from "../../../services/DateService";
 const Sequelize = require('sequelize');
 
 class PurchasesListStore extends EventEmitter {
@@ -119,7 +120,7 @@ class PurchasesListStore extends EventEmitter {
     }
 
     if (this.activePage.filters.date !== '') {
-      sql += " AND strftime('%Y-%m-%d', datetime(purchase.date, '-5 hours')) = :formattedDate"
+      sql += ` AND ${ DateService.fromSQLiteUtcToLocal('purchase.date', true) } = :formattedDate`;
     }
 
     if (this.activePage.filters.provider !== '') {

@@ -152,7 +152,7 @@ class ProductService {
    * @returns {Promise}
    */
   stockCount(productId, date, cb) {
-    const sqlStock = "\
+    const sqlStock = `\
       SELECT\
         PRO.id                        AS product_id,\
         IFNULL(PURCHASES.quantity, 0) AS purchased,\
@@ -165,7 +165,7 @@ class ProductService {
             FROM purchase_has_product PHP\
             INNER JOIN purchase PUR\
             ON PUR.id = PHP.purchase_id\
-            WHERE strftime('%Y-%m-%d', datetime(PUR.date, '-5 hours')) <= :formattedDate1\
+            WHERE ${ DateService.fromSQLiteUtcToLocal('PUR.date', true) } <= :formattedDate1\
             GROUP BY PHP.product_id\
           ) PURCHASES\
         ON PURCHASES.product_id = PRO.id\
@@ -179,12 +179,12 @@ class ProductService {
               ON SAL.id = SHP.sale_id\
             INNER JOIN sale_price SP\
               ON SP.id = SHP.sale_price_id\
-            WHERE strftime('%Y-%m-%d', datetime(SAL.date, '-5 hours')) <= :formattedDate2\
+            WHERE ${ DateService.fromSQLiteUtcToLocal('SAL.date', true) } <= :formattedDate2\
             GROUP BY SP.product_id\
           ) SALES\
         ON SALES.product_id = PRO.id\
       WHERE PRO.id = :productId\
-    ";
+    `;
 
     const formattedDate = DateFormatter.asDateOnly(date);
     let promise = sequelize

@@ -109,7 +109,7 @@ class SalesListStore extends EventEmitter {
     }
 
     if (this.activePage.filters.date !== '') {
-      sql += ' AND strftime(\'%Y-%m-%d\', datetime(date, \'-5 hours\')) = :formattedDate';
+      sql += ` AND ${ DateService.fromSQLiteUtcToLocal('date', true) } = :formattedDate`;
     }
 
     if (this.activePage.filters.total !== '') {
