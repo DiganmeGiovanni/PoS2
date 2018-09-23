@@ -4,16 +4,16 @@ class DateService {
 
   /**
    * Generates a SQL fragment that transforms given field
-   * from UTC to local time (Subtracts 5 hours).
+   * from UTC to local time (Subtracts 5 hours or 6 based on CDT/CST).
    *
    * For example, if given field is 'purchase_date', returned
    * statement will be:
-   * "strftime('%Y-%m-%d %H:%M:%S', datetime(purchase_date, '-5 hours'))"
+   * "datetime(purchase_date, 'localtime')"
    *
    * @param {string} field Fields to transform from UTC to local
    */
   static fromSQLiteUtcToLocal(field) {
-    return `strftime('%Y-%m-%d %H:%M:%S', datetime(${field}, '-5 hours'))`
+    return `datetime(${field}, 'localtime')`
   }
 
   /**
