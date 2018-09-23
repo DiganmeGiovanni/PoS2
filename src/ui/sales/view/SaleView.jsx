@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import PoSActions from '../../PoSActions';
 import SaleViewStore from './SaleViewStore';
 import TextFormatter from '../../../services/TextFormatter';
@@ -87,7 +88,7 @@ class SaleView extends React.Component {
 
   render() {
     return (
-      <div className="container">
+      <div className={ this.props.embeddedMode ? '' : 'container' }>
         <GoBackTitle
           title="Detalles de la venta"
           history={ this.props.history }
@@ -124,5 +125,13 @@ class SaleView extends React.Component {
     );
   }
 }
+
+SaleView.propTypes = {
+  embeddedMode: PropTypes.bool
+};
+
+SaleView.defaultProps = {
+  embeddedMode: false
+};
 
 export default SaleView;

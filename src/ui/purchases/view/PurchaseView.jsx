@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import PoSActions from "../../PoSActions";
 import PurchaseViewStore from "../../purchases/view/PurchaseViewStore";
 import TextFormatter from '../../../services/TextFormatter';
@@ -126,7 +127,7 @@ class PurchaseView extends React.Component {
 
   render() {
     return (
-      <div className="container">
+      <div className={this.props.embeddedMode ? '' : 'container'}>
         <GoBackTitle
           title="Detalles de la compra"
           history={ this.props.history }
@@ -163,5 +164,13 @@ class PurchaseView extends React.Component {
     );
   }
 }
+
+PurchaseView.propTypes = {
+  embeddedMode: PropTypes.bool
+};
+
+PurchaseView.defaultProps = {
+  embeddedMode: false
+};
 
 export default PurchaseView;

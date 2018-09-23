@@ -1,5 +1,15 @@
+import moment from 'moment';
+
 
 class DateFormatter {
+
+  static forHumans(date, hideHours) {
+    if (hideHours) {
+      return moment(date).format('DD MMMM, YYYY');
+    } else {
+      return moment(date).format('DD MMMM, YYYY hh:mm a')
+    }
+  }
 
   /**
    * Returns given date formatted as 'yyyy-mm-dd'

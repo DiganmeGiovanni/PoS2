@@ -668,6 +668,58 @@ const PoSActions = {
         })
       },
     }
+  },
+
+  reports: {
+    pAudit: {
+      onProductAutoCompleteValueChange(value) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.REPORTS.PAUDIT.ON_PRODUCT_AUTO_COMPLETE_VALUE_CHANGE,
+          value
+        })
+      },
+      onProductSelected(product) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.REPORTS.PAUDIT.ON_PRODUCT_SELECTED,
+          product
+        })
+      },
+      onStartDateChange(date) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.REPORTS.PAUDIT.ON_START_DATE_CHANGE,
+          date
+        })
+      },
+      onEndDateChange(date) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.REPORTS.PAUDIT.ON_END_DATE_CHANGE,
+          date
+        })
+      },
+      onOperationsTypeChange(operationsType) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.REPORTS.PAUDIT.ON_OPERATIONS_TYPE_CHANGE,
+          operationsType,
+        })
+      },
+      onGenerateReportClicked() {
+        PosDispatcher.dispatch({
+          type: ActionTypes.REPORTS.PAUDIT.ON_GENERATE_REPORT_CLICKED
+        })
+      },
+      onViewDetailsClicked(operationType, operationId) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.REPORTS.PAUDIT.ON_VIEW_DETAIL_CLICKED,
+          operationType,
+          operationId
+        })
+      },
+      onDetailsModalCloseClicked() {
+        PosDispatcher.dispatch({
+          type: ActionTypes.REPORTS.PAUDIT.ON_DETAIL_MODAL_CLOSE_CLICKED
+        })
+      }
+    }
   }
 };
 

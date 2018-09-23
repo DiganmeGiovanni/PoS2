@@ -1,6 +1,10 @@
 import React from 'react';
 
 const GoBackTitle = ({ title, history }) => {
+  if (!history) {
+    return <h1>{ title }</h1>
+  }
+
   return (
     <h1>
       <small

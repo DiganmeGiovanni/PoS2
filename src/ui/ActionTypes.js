@@ -152,6 +152,19 @@ const ActionTypes = {
     },
 
     SET_REDIRECT_AS_COMPLETED: 'sales/set_redirect_as_completed',
+  },
+
+  REPORTS: {
+    PAUDIT: {
+      ON_PRODUCT_AUTO_COMPLETE_VALUE_CHANGE: 'reports/product/audit/ac_value_change',
+      ON_PRODUCT_SELECTED: 'reports/product/audit/on_product_selected',
+      ON_START_DATE_CHANGE: 'reports/product/audit/on_start_date_change',
+      ON_END_DATE_CHANGE: 'reports/product/audit/on_end_date_change',
+      ON_OPERATIONS_TYPE_CHANGE: 'reports/product/audit/on_operations_type_change',
+      ON_GENERATE_REPORT_CLICKED: 'reports/product/audit/on_operations_report_clicked',
+      ON_VIEW_DETAIL_CLICKED: 'reports/product/audit/on_view_detail_clicked',
+      ON_DETAIL_MODAL_CLOSE_CLICKED: 'reports/product/audit/on_detail_modal_close_clicked'
+    }
   }
 };
 

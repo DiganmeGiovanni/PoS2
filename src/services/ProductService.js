@@ -2,6 +2,7 @@ import {Brand, MeasurementUnit, Product, PurchasePrice, SalePrice} from '../mode
 import sequelize from '../model/database';
 import moment from 'moment';
 import DateFormatter from "./DateFormatter";
+import DateService from "./DateService";
 const Sequelize = require('sequelize');
 
 class ProductService {
@@ -299,6 +300,170 @@ class ProductService {
       .then(cb)
       .catch(err => {
         console.error('Sales history could not be retrieved: ' + err);
+      });
+  }
+
+  auditProduct(productId, startDate, endDate, operationType, cb) {
+    let fPurchaseDate = DateService.fromSQLiteUtcToLocal('PUR.date');
+    let fSaleDate = DateService.fromSQLiteUtcToLocal('SAL.date');
+    let fStartDate = DateService.formatForSQLQuery(startDate, false);
+    let fEndDate = DateService.formatForSQLQuery(endDate, true);
+
+    let sql = `
+      SELECT * FROM (
+        SELECT
+          'Compra'                          AS type,
+          PUR.id                            AS operation_id,
+          ${ fPurchaseDate }                AS date,
+          PHP.quantity                      AS quantity,
+          MU.name                           AS unit,
+          ROUND(PP.price, 2)                AS unit_price,
+          ROUND(PP.price * PHP.quantity, 2) AS price
+        FROM purchase_has_product PHP
+        INNER JOIN purchase PUR
+          ON PUR.id = PHP.purchase_id
+        INNER JOIN purchase_price PP
+          ON PP.id = PHP.purchase_price_id
+        INNER JOIN measurement_unit MU
+          ON MU.id = PP.measurement_unit_id
+        INNER JOIN provider PRO
+          ON PRO.id = PP.provider_id
+        WHERE PP.product_id = :productId
+          AND ${ fPurchaseDate }
+                  BETWEEN :startDate
+                  AND :endDate
+      
+        UNION SELECT
+          'Venta'                           AS type,
+          SAL.id                            AS operation_id,
+          ${ fSaleDate }                    AS date,
+          SHP.quantity                      AS quantity,
+          MU.name                           AS unit,
+          ROUND(SP.price, 2)                AS unit_price,
+          ROUND(SP.price * SHP.quantity, 2) AS price
+        FROM sale_has_product SHP
+        INNER JOIN sale SAL
+          ON SAL.id = SHP.sale_id
+        INNER JOIN sale_price SP
+          ON SP.id = SHP.sale_price_id
+        INNER JOIN product PRO
+          ON PRO.id = SP.product_id
+        INNER JOIN measurement_unit MU
+          ON MU.id = PRO.measurement_unit_id
+        WHERE SP.product_id = :productId
+          AND ${ fSaleDate }
+                  BETWEEN :startDate
+                  AND :endDate
+      ) SQ1
+      ${ operationType === '1'
+          ? "WHERE SQ1.type = 'Compra'"
+          : operationType === '2'
+              ? "WHERE SQ1.type = 'Venta'"
+              : ""
+      }
+      ORDER BY date DESC
+    `;
+
+    sequelize.query(sql, {
+        replacements: {
+          'productId': productId,
+          'startDate': fStartDate,
+          'endDate': fEndDate
+        }
+      })
+      .then(cb)
+      .catch(err => {
+        console.error('Product could not be audited: ' + err);
+      });
+  }
+
+  /**
+   * Queries the total investment for given product between
+   * given dates range
+   *
+   * @param {number} productId - Product to audit
+   * @param startDate
+   * @param endDate
+   * @param cb
+   */
+  totalPurchases(productId, startDate, endDate, cb) {
+    let fPurchaseDate = DateService.fromSQLiteUtcToLocal('PUR.date');
+    let fStartDate = DateService.formatForSQLQuery(startDate, false);
+    let fEndDate = DateService.formatForSQLQuery(endDate, true);
+
+    let sql = `
+      SELECT
+        IFNULL(SUM(ROUND(PP.price * PHP.quantity, 2)), 0) AS total
+      FROM purchase_has_product PHP
+      INNER JOIN purchase PUR
+        ON PUR.id = PHP.purchase_id
+      INNER JOIN purchase_price PP
+        ON PP.id = PHP.purchase_price_id
+      INNER JOIN measurement_unit MU
+        ON MU.id = PP.measurement_unit_id
+      INNER JOIN provider PRO
+        ON PRO.id = PP.provider_id
+      WHERE PP.product_id = :productId
+        AND ${ fPurchaseDate }
+                BETWEEN :startDate
+                AND :endDate
+    `;
+
+    sequelize.query(sql, {
+        replacements: {
+          'productId': productId,
+          'startDate': fStartDate,
+          'endDate': fEndDate
+        }
+      })
+      .then(cb)
+      .catch(err => {
+        console.error('Product purchases total audit error: ' + err);
+      });
+  }
+
+  /**
+   * Queries the sales total for given product between
+   * given dates range
+   *
+   * @param {number} productId - Product to audit
+   * @param startDate
+   * @param endDate
+   * @param cb
+   */
+  totalSales(productId, startDate, endDate, cb) {
+    let fSaleDate = DateService.fromSQLiteUtcToLocal('SAL.date');
+    let fStartDate = DateService.formatForSQLQuery(startDate, false);
+    let fEndDate = DateService.formatForSQLQuery(endDate, true);
+
+    let sql = `
+      SELECT
+        IFNULL(SUM(ROUND(SP.price * SHP.quantity, 2)), 0) AS total
+      FROM sale_has_product SHP
+      INNER JOIN sale SAL
+        ON SAL.id = SHP.sale_id
+      INNER JOIN sale_price SP
+        ON SP.id = SHP.sale_price_id
+      INNER JOIN product PRO
+        ON PRO.id = SP.product_id
+      INNER JOIN measurement_unit MU
+        ON MU.id = PRO.measurement_unit_id
+      WHERE SP.product_id = :productId
+        AND ${ fSaleDate }
+                BETWEEN :startDate
+                AND :endDate
+    `;
+
+    sequelize.query(sql, {
+        replacements: {
+          'productId': productId,
+          'startDate': fStartDate,
+          'endDate': fEndDate
+        }
+      })
+      .then(cb)
+      .catch(err => {
+        console.error('Product sales total audit error: ' + err);
       });
   }
 }
