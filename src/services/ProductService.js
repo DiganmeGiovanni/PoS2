@@ -324,8 +324,10 @@ class ProductService {
           ON PUR.id = PHP.purchase_id
         INNER JOIN purchase_price PP
           ON PP.id = PHP.purchase_price_id
+        INNER JOIN product PROD
+          ON PROD.id = PP.product_id
         INNER JOIN measurement_unit MU
-          ON MU.id = PP.measurement_unit_id
+          ON MU.id = PROD.measurement_unit_id
         INNER JOIN provider PRO
           ON PRO.id = PP.provider_id
         WHERE PP.product_id = :productId
@@ -350,7 +352,7 @@ class ProductService {
           ON PRO.id = SP.product_id
         INNER JOIN measurement_unit MU
           ON MU.id = PRO.measurement_unit_id
-        WHERE SP.product_id = :productId
+        WHERE PRO.id = :productId
           AND ${ fSaleDate }
                   BETWEEN :startDate
                   AND :endDate
@@ -399,11 +401,9 @@ class ProductService {
         ON PUR.id = PHP.purchase_id
       INNER JOIN purchase_price PP
         ON PP.id = PHP.purchase_price_id
-      INNER JOIN measurement_unit MU
-        ON MU.id = PP.measurement_unit_id
-      INNER JOIN provider PRO
-        ON PRO.id = PP.provider_id
-      WHERE PP.product_id = :productId
+      INNER JOIN product PRO
+        ON PRO.id = PP.product_id
+      WHERE PRO.id = :productId
         AND ${ fPurchaseDate }
                 BETWEEN :startDate
                 AND :endDate
@@ -446,9 +446,7 @@ class ProductService {
         ON SP.id = SHP.sale_price_id
       INNER JOIN product PRO
         ON PRO.id = SP.product_id
-      INNER JOIN measurement_unit MU
-        ON MU.id = PRO.measurement_unit_id
-      WHERE SP.product_id = :productId
+      WHERE PRO.id = :productId
         AND ${ fSaleDate }
                 BETWEEN :startDate
                 AND :endDate

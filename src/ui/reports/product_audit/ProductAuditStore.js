@@ -15,7 +15,7 @@ class ProductAuditStore extends EventEmitter {
           autocompleteValue: '',
           error: '',
         },
-        startDate: new Date(2017, 2, 1),
+        startDate: new Date(2017, 1, 1),
         endDate: new Date(),
         operationsType: '0'
       },
