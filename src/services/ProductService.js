@@ -335,7 +335,7 @@ class ProductService {
                   BETWEEN :startDate
                   AND :endDate
       
-        UNION SELECT
+        UNION ALL SELECT
           'Venta'                           AS type,
           SAL.id                            AS operation_id,
           ${ fSaleDate }                    AS date,
