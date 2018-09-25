@@ -7,7 +7,7 @@ import {
   PurchasePrice,
   SalePrice
 } from '../model/entities';
-
+import ProductService from './ProductService';
 const Sequelize = require('sequelize');
 
 class PurchaseService {
@@ -21,14 +21,42 @@ class PurchaseService {
     return this.findPurchaseHasProducts(purchaseId).then(hasProducts => {
       let promises = [];
 
-      for (let hasProduct of hasProducts) {
-        hasProduct.product.existences -= hasProduct.quantity;
-        let updatePromise = hasProduct.product.save().then(() => {
-          let deletePromise = hasProduct.destroy();
-          promises.push(deletePromise);
-        });
+      // Store all decrements in array
+      let productDecrements = [];
 
-        promises.push(updatePromise);
+      for (let hasProduct of hasProducts) {
+
+        // Add decrement to array
+        let productDecrementedPreviously = false;
+        for (let decrement of productDecrements) {
+          if (decrement.productId === hasProduct.productId) {
+            productDecrementedPreviously = true;
+
+            decrement.quantity += hasProduct.quantity;
+            break;
+          }
+        }
+        if (!productDecrementedPreviously) {
+          productDecrements.push({
+            productId: hasProduct.productId,
+            quantity: hasProduct.quantity
+          });
+        }
+
+        // Destroy has product
+        promises.push(hasProduct.destroy());
+      }
+
+      // Decrement products existences
+      for (let decrement of productDecrements) {
+        let decrementPromise = ProductService
+          .findOne(decrement.productId)
+          .then(product => {
+            product.existences -= decrement.quantity;
+            return product.save();
+          });
+
+        promises.push(decrementPromise);
       }
 
       return Promise.all(promises);

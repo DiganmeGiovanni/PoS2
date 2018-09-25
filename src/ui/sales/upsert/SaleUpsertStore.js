@@ -239,42 +239,50 @@ class SaleUpsertStore extends EventEmitter {
 
   onSaveClicked() {
     if (this._validateSale()) {
+      let saleData = {
+        date: this.state.date,
+        total: this.state.total
+      };
 
-      // Store sale in transaction
-      sequelize.transaction(transaction => {
-          let saleData = {
-            date: this.state.date,
-            total: this.state.total
-          };
+      // Update contents from old sale
+      if (this.state.id !== null) {
+        SaleService.deleteContents(this.state.id)
+          .then(() => {
 
-          // Update existing sale
-          if (this.state.id !== null) {
-            return SaleService.deleteContents(this.state.id).then(() => {
-              return SaleService.findOne(this.state.id).then(sale => {
-                sale.date = this.state.date;
-                sale.total = this.state.total;
+            // Store sale in transaction
+            sequelize.transaction(transaction => {
+                return SaleService.findOne(this.state.id).then(sale => {
+                  sale.date = this.state.date;
+                  sale.total = this.state.total;
 
-                return sale.save({ transaction: transaction }).then(sale => {
-                  return this._saveContents(sale, transaction);
+                  return sale.save({ transaction: transaction }).then(sale => {
+                    return this._saveContents(sale, transaction);
+                  })
                 })
               })
-            })
-          }
+              .then(() => this.reset(true))
+              .catch(err => {
+                console.error('Sale could not be updated: ' + err)
+              })
+          })
+          .catch(err => {
+            console.error('Sale could not be updated: ' + err)
+          })
+      }
 
-          // Create new sale
-          else {
-            return Sale
-              .create(saleData, { transaction: transaction })
+      // Create new sale
+      else {
+        sequelize.transaction(transaction => {
+            return Sale.create(saleData, { transaction: transaction })
               .then(sale => {
                 return this._saveContents(sale, transaction);
-              });
-          }
-        })
-        .then(() => this.reset(true))
-        .catch(err => {
-          console.error('Sale could not be created');
-          console.error(err);
-        });
+              })
+          })
+          .then(() => this.reset(true))
+          .catch(err => {
+            console.error('Sale could not be created: ' + err)
+          });
+      }
     }
   }
 
@@ -352,11 +360,31 @@ class SaleUpsertStore extends EventEmitter {
   _saveContents(sale, transaction) {
     let promises = [];
 
+    // Store all product decrements in array
+    let productDecrements = [];
+
     for (let content of this.state.contents) {
       let productId = content.product.id;
       let quantity = content.quantity;
       let price = content.price;
       let date = sale.date;
+
+      // Add decrement to array
+      let productDecrementedPreciously = false;
+      for (let decrement of productDecrements) {
+        if (decrement.productId === productId) {
+          productDecrementedPreciously = true;
+
+          decrement.quantity += quantity;
+          break;
+        }
+      }
+      if (!productDecrementedPreciously) {
+        productDecrements.push({
+          productId: productId,
+          quantity: quantity
+        });
+      }
 
       // Validate stock
       let promise = ProductService.stockCount(productId, date).then(results => {
@@ -410,6 +438,18 @@ class SaleUpsertStore extends EventEmitter {
       promises.push(promise);
     }
 
+    // Decrement all product existences
+    for (let decrement of productDecrements) {
+      let decrementPromise = ProductService
+        .findOne(decrement.productId)
+        .then(product => {
+          product.existences -= decrement.quantity;
+          return product.save({ transaction: transaction });
+        });
+
+      promises.push(decrementPromise);
+    }
+
     return Promise.all(promises);
   }
 
@@ -422,13 +462,7 @@ class SaleUpsertStore extends EventEmitter {
       quantity: quantity
     };
 
-    return SaleHasProduct.create(hasProduct, { transaction: transaction })
-      .then(() => {
-        return ProductService.findOne(productId).then(product => {
-          product.existences -= quantity;
-          return product.save({ transaction: transaction });
-        });
-      });
+    return SaleHasProduct.create(hasProduct, { transaction: transaction });
   }
 
   _validate() {

@@ -230,45 +230,61 @@ class PurchaseUpsertStore extends EventEmitter {
 
   onSaveClicked() {
     if (this._validate()) {
+      let purchaseValues = {
+        reinvestment: this.state.reinvestment.value,
+        investment: this.state.investment.value,
+        date: this.state.date
+      };
 
-      // Save purchase on transaction
-      sequelize.transaction(transaction => {
-        let purchaseValues = {
-          reinvestment: this.state.reinvestment.value,
-          investment: this.state.investment.value,
-          date: this.state.date
-        };
+      // Update contents from old purchase
+      if (this.state.id !== null) {
+        PurchaseService.deleteContents(this.state.id)
+          .then(() => {
 
-        // Update existant purchase
-        if (this.state.id !== null) {
-          return PurchaseService.deleteContents(this.state.id).then(() => {
-            return PurchaseService.findOne(this.state.id).then(purchase => {
-              purchase.reinvestment = this.state.reinvestment.value;
-              purchase.investment = this.state.investment.value;
-              purchase.date = this.state.date;
+            // Store purchase in transaction
+            sequelize.transaction(transaction => {
+                return PurchaseService.findOne(this.state.id).then(purchase => {
+                  purchase.reinvestment = this.state.reinvestment.value;
+                  purchase.investment = this.state.investment.value;
+                  purchase.date = this.state.date;
 
-              return purchase.save().then(purchase => {
-                return this._saveContents(purchase, transaction);
+                  return purchase.save().then(purchase => {
+                    return this._saveContents(purchase, transaction);
+                  })
+                })
               })
-            });
-          });
-        }
+              .then(() => {
+                this.state = PurchaseUpsertStore.initialState(true);
+                this.emitChange();
+              })
+              .catch(err => {
+                console.error('Purchase could not be stored');
+                console.error(err);
+              });
+          })
+          .catch(err => {
+            console.error('Purchase could not be updated: ' + err);
+          })
+      }
 
-        // Create new purchase
-        else {
-          return Purchase
-            .create(purchaseValues, {transaction: transaction})
-            .then(purchase => {
-              return this._saveContents(purchase, transaction);
-            });
-        }
-      }).then(() => {
-        this.state = PurchaseUpsertStore.initialState(true);
-        this.emitChange();
-      }).catch(err => {
-        console.error('Purchase could not be stored');
-        console.error(err);
-      });
+      // Create new purchase
+      else {
+        sequelize.transaction(transaction => {
+            return Purchase
+              .create(purchaseValues, {transaction: transaction})
+              .then(purchase => {
+                return this._saveContents(purchase, transaction);
+              });
+          })
+          .then(() => {
+            this.state = PurchaseUpsertStore.initialState(true);
+            this.emitChange();
+          })
+          .catch(err => {
+            console.error('Purchase could not be stored');
+            console.error(err);
+          });
+      }
     } else {
       this.emitChange();
     }
@@ -278,10 +294,31 @@ class PurchaseUpsertStore extends EventEmitter {
     let promises = [];
     let providerId = this.state.provider.value.id;
 
+    // Storeall products increments in array
+    let productIncrements = [];
+
     for (let content of this.state.contents) {
       let productId = content.product.value.id;
       let cost = content.cost.value * 1;
       let price = content.price.value * 1;
+      let quantity = content.quantity.value * 1;
+
+      // Add increment to array
+      let productIncrementedPreviously = false;
+      for (let increment of productIncrements) {
+        if (increment.productId === productId) {
+          productIncrementedPreviously = true;
+
+          increment.quantity += quantity;
+          break;
+        }
+      }
+      if (!productIncrementedPreviously) {
+        productIncrements.push({
+          productId: productId,
+          quantity: quantity
+        });
+      }
 
       // Find last purchase price
       let lastPricePromise = ProductService
@@ -350,25 +387,33 @@ class PurchaseUpsertStore extends EventEmitter {
       promises.push(salePricePromise);
     }
 
+    // Increment all products existences
+    for (let increment of productIncrements) {
+      let incrementPromise = ProductService
+        .findOne(increment.productId)
+        .then(product => {
+          product.existences += increment.quantity;
+          return product.save({ transaction: transaction });
+        });
+
+      promises.push(incrementPromise);
+    }
+
     return Promise.all(promises);
   }
 
   _saveExistences(productId, purchaseId, purchasePriceId, quantity, transaction) {
-    return ProductService.findOne(productId).then(product => {
-      let purchaseHasProductData = {
-        purchaseId: purchaseId,
-        productId: productId,
-        purchasePriceId: purchasePriceId,
-        quantity: quantity
-      };
+    let purchaseHasProductData = {
+      purchaseId: purchaseId,
+      productId: productId,
+      purchasePriceId: purchasePriceId,
+      quantity: quantity
+    };
 
-      return PurchaseHasProduct
-        .create(purchaseHasProductData, { transaction: transaction })
-        .then(hasProduct => {
-          product.existences += quantity;
-          return product.save({ transaction: transaction });
-        });
-    });
+    return PurchaseHasProduct.create(
+      purchaseHasProductData,
+      { transaction: transaction }
+    );
   }
 
   _validate() {
