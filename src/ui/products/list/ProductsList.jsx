@@ -81,9 +81,13 @@ class ProductsList extends React.Component {
           activePage={this.state.pageIdx}
           totalPages={this.state.pagesCount}
           onFilterCodeChange={ ProductsList.onFilterCodeChange }
+          filterCode={ this.state.filters.code }
           onFilterNameChange={ ProductsList.onFilterNameChange }
+          filterName={ this.state.filters.name }
           onFilterBrandChange={ ProductsList.onFilterBrandChange }
+          filterBrand={ this.state.filters.brand }
           onFilterMeasurementUnitChange={ ProductsList.onFilterMeasurementUnitChange }
+          filterMeasurementUnit={ this.state.filters.measurementUnit }
         />
       </div>
     );

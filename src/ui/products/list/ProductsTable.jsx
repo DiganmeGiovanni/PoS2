@@ -5,9 +5,13 @@ import { Link } from "react-router-dom";
 
 const ProductsTable = ({ products, activePage, totalPages, navCallback,
                          onFilterCodeChange,
+                         filterCode,
                          onFilterNameChange,
+                         filterName,
                          onFilterBrandChange,
-                         onFilterMeasurementUnitChange
+                         filterBrand,
+                         onFilterMeasurementUnitChange,
+                         filterMeasurementUnit
                       }) => {
   const makeTableBody = () => {
     if (products.length === 0) {
@@ -61,6 +65,7 @@ const ProductsTable = ({ products, activePage, totalPages, navCallback,
                   type="text"
                   className="form-control"
                   onChange={ onFilterCodeChange }
+                  value={ filterCode }
                 />
               </th>
               <th>
@@ -69,6 +74,7 @@ const ProductsTable = ({ products, activePage, totalPages, navCallback,
                   type="text"
                   className="form-control"
                   onChange={ onFilterNameChange }
+                  value={ filterName }
                 />
               </th>
               <th>
@@ -77,6 +83,7 @@ const ProductsTable = ({ products, activePage, totalPages, navCallback,
                   type="text"
                   className="form-control"
                   onChange={ onFilterBrandChange }
+                  value={ filterBrand }
                 />
               </th>
               <th>
@@ -85,6 +92,7 @@ const ProductsTable = ({ products, activePage, totalPages, navCallback,
                   type="text"
                   className="form-control"
                   onChange={ onFilterMeasurementUnitChange }
+                  value={ filterMeasurementUnit }
                 />
               </th>
               <th className="text-right" style={{ width: '11%'}}>
@@ -122,9 +130,13 @@ ProductsTable.propTypes = {
   navCallback: PropTypes.func.isRequired,
 
   onFilterCodeChange: PropTypes.func.isRequired,
+  filterCode: PropTypes.string.isRequired,
   onFilterNameChange: PropTypes.func.isRequired,
+  filterName: PropTypes.string.isRequired,
   onFilterBrandChange: PropTypes.func.isRequired,
-  onFilterMeasurementUnitChange: PropTypes.func.isRequired
+  filterBrand: PropTypes.string.isRequired,
+  onFilterMeasurementUnitChange: PropTypes.func.isRequired,
+  filterMeasurementUnit: PropTypes.string.isRequired
 };
 
 export default ProductsTable;
