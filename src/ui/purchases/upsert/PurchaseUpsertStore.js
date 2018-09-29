@@ -30,7 +30,9 @@ class PurchaseUpsertStore extends EventEmitter {
         contents: '',
         date: ''
       },
-      productForm: PurchaseUpsertStore.initialProductFormState()
+      productForm: PurchaseUpsertStore.initialProductFormState(),
+
+      saving: false
     }
   }
 
@@ -244,6 +246,9 @@ class PurchaseUpsertStore extends EventEmitter {
 
   onSaveClicked() {
     if (this._validate()) {
+      this.state.saving = true;
+      this.emitChange();
+
       let purchaseValues = {
         reinvestment: this.state.reinvestment.value,
         investment: this.state.investment.value,
@@ -278,6 +283,8 @@ class PurchaseUpsertStore extends EventEmitter {
           })
           .catch(err => {
             console.error('Purchase could not be updated: ' + err);
+            this.state.saving = false;
+            this.emitChange();
           })
       }
 
@@ -297,6 +304,9 @@ class PurchaseUpsertStore extends EventEmitter {
           .catch(err => {
             console.error('Purchase could not be stored');
             console.error(err);
+
+            this.state.saving = false;
+            this.emitChange();
           });
       }
     } else {

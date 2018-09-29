@@ -4,6 +4,7 @@ import PurchaseForm from './PurchaseForm';
 import PurchaseProductForm from './PurchaseProductForm';
 import PurchaseContents from './PurchaseContents';
 import PoSActions from '../../PoSActions';
+import ButtonSave from "../../components/form/ButtonSave";
 
 
 class PurchaseUpsert extends React.Component {
@@ -13,7 +14,6 @@ class PurchaseUpsert extends React.Component {
 
     this.purchaseId = this.props.match.params.purchaseId;
     this.state = PurchaseUpsertStore.getState();
-    console.log('Purchase is: ' + this.purchaseId);
   }
 
   componentDidMount() {
@@ -190,10 +190,11 @@ class PurchaseUpsert extends React.Component {
 
         <div className="row padding-top-16 padding-bottom-64">
           <div className="col-xs-12 text-center">
-            <button className="btn btn-success"
-                    onClick={ PurchaseUpsert.onSaveClicked }>
-              <span>Guardar compra</span>
-            </button>
+            <ButtonSave
+              label="Guardar compra"
+              saving={ this.state.saving }
+              onClick={ PurchaseUpsert.onSaveClicked }
+            />
           </div>
         </div>
       </div>

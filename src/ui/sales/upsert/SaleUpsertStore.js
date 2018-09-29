@@ -272,7 +272,10 @@ class SaleUpsertStore extends EventEmitter {
               })
           })
           .catch(err => {
-            console.error('Sale could not be updated: ' + err)
+            console.error('Sale could not be updated: ' + err);
+
+            this.state.saving = false;
+            this.emitChange();
           })
       }
 
@@ -286,7 +289,10 @@ class SaleUpsertStore extends EventEmitter {
           })
           .then(() => this.reset(true))
           .catch(err => {
-            console.error('Sale could not be created: ' + err)
+            console.error('Sale could not be created: ' + err);
+
+            this.state.saving = false;
+            this.emitChange();
           });
       }
     }
