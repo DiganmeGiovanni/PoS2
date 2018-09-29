@@ -47,6 +47,7 @@
     }
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.3.1",
     "bootstrap": "^4.0.0",
     "electron-compile": "^6.4.2",
     "electron-devtools-installer": "^2.2.3",

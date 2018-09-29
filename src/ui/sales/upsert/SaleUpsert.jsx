@@ -3,6 +3,7 @@ import SaleUpsertStore from './SaleUpsertStore';
 import PoSActions from "../../PoSActions";
 import SaleProductForm from "./SaleProductForm";
 import SaleContents from "./SaleContents";
+import ButtonSave from "../../components/form/ButtonSave";
 
 const DatePicker = require('react-datetime');
 
@@ -178,11 +179,11 @@ class SaleUpsert extends React.Component {
 
         <div className="row">
           <div className="col-xs-12 text-center margin-top-16 padding-bottom-64">
-            <button className="btn btn-success"
-                    onClick={ SaleUpsert.onSaveClicked }
-            >
-              <span>{ this.state.id ? 'Modificar venta' : 'Crear venta' }</span>
-            </button>
+            <ButtonSave
+              label={ this.state.id ? 'Modificar venta' : 'Crear venta' }
+              saving={ this.state.saving  }
+              onClick={ SaleUpsert.onSaveClicked }
+            />
           </div>
         </div>
       </div>

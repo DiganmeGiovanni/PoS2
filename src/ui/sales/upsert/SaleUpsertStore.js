@@ -38,7 +38,10 @@ class SaleUpsertStore extends EventEmitter {
       date: date,
 
       // Product form data
-      form: SaleUpsertStore.initialFormState()
+      form: SaleUpsertStore.initialFormState(),
+
+      // Save in progress?
+      saving: true
     }
   }
 
@@ -239,6 +242,9 @@ class SaleUpsertStore extends EventEmitter {
 
   onSaveClicked() {
     if (this._validateSale()) {
+      this.state.saving = true;
+      this.emitChange();
+
       let saleData = {
         date: this.state.date,
         total: this.state.total
