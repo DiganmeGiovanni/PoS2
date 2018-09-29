@@ -3,6 +3,7 @@ import PoSDispatcher from '../../PoSDispatcher';
 import ActionTypes from '../../ActionTypes';
 import sequelize from '../../../model/database';
 import DateFormatter from "../../../services/DateFormatter";
+import DateService from "../../../services/DateService";
 
 const Sequelize = require('sequelize');
 
