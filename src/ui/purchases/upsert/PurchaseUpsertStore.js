@@ -152,12 +152,26 @@ class PurchaseUpsertStore extends EventEmitter {
     // Fetch last cost for product and refresh state
     ProductService.lastCost(product.id, this.state.date)
       .then(purchasePrice => {
-
         this.state.productForm.product.value = product;
         this.state.productForm.product.inpValue = product.name;
         this.state.productForm.product.error = '';
         this.state.productForm.lastCost.value = purchasePrice === null ? 0 : purchasePrice.price;
-        this.emitChange();
+        this.state.productForm.cost.value = this.state.productForm.lastCost.value;
+
+        // Find last sale price for product
+        ProductService.lastPrice(product.id, this.state.date)
+          .then(salePrice => {
+            if (salePrice != null) {
+              this.state.productForm.price.value = salePrice.price;
+            } else {
+              this.state.productForm.price.value = this.state.productForm.cost.value + 1;
+            }
+
+            this.emitChange();
+          })
+          .catch(() => {
+            this.emitChange();
+          });
       })
       .catch(err => { console.error(err); });
   }
