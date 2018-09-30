@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FGAutosuggest from "./FGAutosuggest";
 import ProvidersService from "../../../services/ProvidersService";
+import TBAutosuggest from './TBAutosuggest';
 
 class ProvidersAutosuggest extends React.Component {
   constructor(props) {
@@ -9,12 +9,19 @@ class ProvidersAutosuggest extends React.Component {
     this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this);
     this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this);
 
-    this.state = { value: '', suggestions: [] };
+    this.state = { suggestions: [] };
   }
 
-  // noinspection JSMethodCanBeStatic
-  getSuggestionValue(suggestion) {
+  static getSuggestionValue(suggestion) {
     return suggestion.name;
+  }
+
+  static renderSuggestion(suggestion) {
+    return (
+      <div className="suggestion-item">
+        { suggestion.name }
+      </div>
+    )
   }
 
   onSuggestionsFetchRequested({ value }) {
@@ -27,26 +34,19 @@ class ProvidersAutosuggest extends React.Component {
     this.setState({ suggestions: [] });
   }
 
-  // noinspection JSMethodCanBeStatic
-  renderSuggestion(suggestion) {
-    return (
-      <div className="suggestion-item">
-        { suggestion.name }
-      </div>
-    )
-  }
-
   render() {
     return (
-      <FGAutosuggest
+      <TBAutosuggest
         label="Proveedor"
-        errMessage={ this.props.errMessage }
         suggestions={ this.state.suggestions }
         onSugFetchRequested={ this.onSuggestionsFetchRequested }
         onSugClearRequested={ this.onSuggestionsClearRequested }
         onSugSelected={ this.props.onProviderSelected }
-        getSugValue={ this.getSuggestionValue }
-        renderSug={ this.renderSuggestion }
+        getSugValue={ ProvidersAutosuggest.getSuggestionValue }
+        renderSug={ ProvidersAutosuggest.renderSuggestion }
+        value={ this.props.value }
+        onValueChange={ this.props.onValueChange }
+        error={ this.props.error }
       />
     );
   }
@@ -54,11 +54,9 @@ class ProvidersAutosuggest extends React.Component {
 
 ProvidersAutosuggest.propTypes = {
   onProviderSelected: PropTypes.func.isRequired,
-  errMessage: PropTypes.string
-};
-
-ProvidersAutosuggest.defaultProps = {
-  errMessage: null
+  value: PropTypes.string.isRequired,
+  onValueChange: PropTypes.func.isRequired,
+  error: PropTypes.string
 };
 
 export default ProvidersAutosuggest;

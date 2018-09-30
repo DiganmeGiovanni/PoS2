@@ -4,25 +4,30 @@ import {
   Route,
 } from 'react-router-dom';
 
-import BrandsList from './ui/brands/BrandsList';
-import BrandsCreate from './ui/brands/BrandsCreate';
-import MUnitsList from './ui/m_unit/MUnitsList';
-import MUnitsCreate from './ui/m_unit/MUnitsCreate';
-import ProductsList from './ui/products/ProductsList';
-import ProductsCreate from './ui/products/ProductsCreate';
+import BrandsList from './ui/brands/list/BrandsList';
+import BrandCreate from './ui/brands/create/BrandCreate';
+import BrandUpdate from './ui/brands/update/BrandUpdate';
+import MUnitsList from './ui/m_unit/list/MUnitsList';
+import MUnitsCreate from './ui/m_unit/create/MUnitsCreate';
+import MUnitsUpdate from './ui/m_unit/update/MUnitsUpdate';
+import ProductsList from './ui/products/list/ProductsList';
+import ProductsCreate from './ui/products/upsert/ProductsCreate';
+import ProductUpdate from './ui/products/upsert/ProductUpdate';
 import ProductView from './ui/products/view/ProductView';
-import ProvidersList from './ui/providers/ProvidersList';
-import ProvidersCreate from './ui/providers/ProvidersCreate';
+import ProvidersList from './ui/providers/list/ProvidersList';
+import ProviderCreate from './ui/providers/create/ProviderCreate';
+import ProviderUpdate from './ui/providers/update/ProviderUpdate';
 import PurchasePricesList from './ui/purchase_prices/PurchasePricesList';
 import PurchasePricesCreate from './ui/purchase_prices/PurchasePricesCreate'
 import Navbar from './ui/components/navbar/PNavbar';
 import PurchasesList from "./ui/purchases/list/PurchasesList";
-import PurchasesCreate from "./ui/purchases/PurchasesCreate";
+import PurchaseUpsert from './ui/purchases/upsert/PurchaseUpsert';
 import PurchaseView from "./ui/purchases/view/PurchaseView";
 import SalesList from "./ui/sales/list/SalesList";
-import CreateSale from "./ui/sales/create/CreateSale";
+import SaleUpsert from './ui/sales/upsert/SaleUpsert';
 import SaleView from "./ui/sales/view/SaleView";
 import Welcome from "./ui/home/Welcome";
+import ProductAudit from "./ui/reports/product_audit/ProductAudit";
 
 export default class App extends React.Component {
   render() {
@@ -39,47 +44,23 @@ export default class App extends React.Component {
             data={{ title: 'Punto de venta' }}
           />
 
-          <Route
-            exact
-            path={'/brands'}
-            component={BrandsList}
-            data={{ title: 'Punto de venta' }}
-          />
-          <Route
-            exact
-            path={'/brands/create'}
-            component={BrandsCreate}
-            data={{ title: 'Punto de venta' }}
-          />
-          <Route
-            exact
-            path={'/measurement_units'}
-            component={MUnitsList}
-            data={{ title: 'Punto de venta' }}
-          />
-          <Route
-            exact
-            path={'/measurement_units/create'}
-            component={MUnitsCreate}
-            data={{ title: 'Punto de venta' }}
-          />
-          <Route
-            exact
-            path={'/products'}
-            component={ProductsList}
-            data={{ title: 'Punto de venta' }}
-          />
-          <Route
-            exact
-            path={'/products/create'}
-            component={ProductsCreate}
-            data={{ title: 'Punto de venta' }}
-          />
+          <Route exact path={ '/brands' } component={ BrandsList }/>
+          <Route exact path={ '/brands/create' } component={ BrandCreate }/>
+          <Route exact path={ '/brand/:brandId/update' } component={ BrandUpdate }/>
+
+          <Route exact path={'/measurement_units'} component={MUnitsList}/>
+          <Route exact path={'/measurement_units/create'} component={MUnitsCreate}/>
+          <Route exact path={'/measurement_unit/:measurementUnitId/update'} component={ MUnitsUpdate }/>
+
+          <Route exact path={'/products'} component={ProductsList}/>
+          <Route exact path={'/products/create'} component={ProductsCreate}/>
+          <Route exact path={'/product/:productId/update'} component={ProductUpdate}/>
           <Route
             exact
             path={'/products/view/:productId'}
             component={ ProductView }
           />
+
           <Route
             exact
             path={'/purchase_prices/:pModelId'}
@@ -101,46 +82,26 @@ export default class App extends React.Component {
           <Route
             exact
             path={'/providers/create'}
-            component={ProvidersCreate}
+            component={ProviderCreate}
             data={{ title: 'Punto de venta' }}
           />
           <Route
             exact
-            path={'/purchases'}
-            component={PurchasesList}
-            data={{ title: 'Punto de venta' }}
-          />
-          <Route
-            exact
-            path={'/purchase/:purchaseId'}
-            component={PurchaseView}
-            data={{ title: 'Punto de venta' }}
-          />
-          <Route
-            exact
-            path={'/purchases/create'}
-            component={PurchasesCreate}
-            data={{ title: 'Punto de venta' }}
+            path={'/providers/update/:providerId'}
+            component={ ProviderUpdate }
           />
 
-          <Route
-            exact
-            path={'/sales'}
-            component={ SalesList }
-            data={{ title: 'Punto de venta' }}
-          />
-          <Route
-            exact
-            path={'/sale/:saleId'}
-            component={ SaleView }
-            data={{ title: 'Punto de venta' }}
-          />
-          <Route
-            exact
-            path={'/sales/create'}
-            component={ CreateSale }
-            data={{ title: 'Punto de venta' }}
-          />
+          <Route exact path={'/purchases'} component={PurchasesList}/>
+          <Route exact path={'/purchase/:purchaseId'} component={PurchaseView}/>
+          <Route exact path={'/purchases/create'} component={ PurchaseUpsert }/>
+          <Route exact path={'/purchase/:purchaseId/update'} component={ PurchaseUpsert }/>
+
+          <Route exact path={'/sales'} component={ SalesList }/>
+          <Route exact path={'/sales/create'} component={ SaleUpsert }/>
+          <Route exact path={'/sale/:saleId/update'} component={ SaleUpsert } />
+          <Route exact path={'/sale/:saleId'} component={ SaleView }/>
+
+          <Route exact path={'/reports/product/audit'} component={ ProductAudit }/>
         </div>
       </Router>
     );

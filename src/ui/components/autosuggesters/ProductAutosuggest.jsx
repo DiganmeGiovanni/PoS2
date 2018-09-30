@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import ProductService from "../../../services/ProductService";
-import FGAutosuggest from "./FGAutosuggest";
+import TBAutosuggest from './TBAutosuggest';
 
 class ProductAutosuggest extends React.Component {
   constructor() {
@@ -9,12 +9,19 @@ class ProductAutosuggest extends React.Component {
     this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this);
     this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this);
 
-    this.state = { value: '', suggestions: [] };
+    this.state = { suggestions: [] };
   }
 
-  // noinspection JSMethodCanBeStatic
-  getSuggestionValue(suggestion) {
+  static getSuggestionValue(suggestion) {
     return suggestion.name;
+  }
+
+  static renderSuggestion(suggestion) {
+    return (
+      <div className="suggestion-item">
+        { suggestion.name }
+      </div>
+    )
   }
 
   onSuggestionsFetchRequested({ value }) {
@@ -27,26 +34,19 @@ class ProductAutosuggest extends React.Component {
     this.setState({ suggestions: [] });
   }
 
-  // noinspection JSMethodCanBeStatic
-  renderSuggestion(suggestion) {
-    return (
-      <div className="suggestion-item">
-        { suggestion.name }
-      </div>
-    )
-  }
-
   render() {
     return (
-      <FGAutosuggest
+      <TBAutosuggest
         label="Producto"
-        errMessage={ this.props.errMessage }
         suggestions={ this.state.suggestions }
         onSugFetchRequested={ this.onSuggestionsFetchRequested }
         onSugClearRequested={ this.onSuggestionsClearRequested }
         onSugSelected={ this.props.onProductSelected }
-        getSugValue={ this.getSuggestionValue }
-        renderSug={ this.renderSuggestion }
+        getSugValue={ ProductAutosuggest.getSuggestionValue }
+        renderSug={ ProductAutosuggest.renderSuggestion }
+        value={ this.props.value }
+        onValueChange={ this.props.onValueChange }
+        error={ this.props.error }
       />
     )
   }
@@ -54,11 +54,9 @@ class ProductAutosuggest extends React.Component {
 
 ProductAutosuggest.propTypes = {
   onProductSelected: PropTypes.func.isRequired,
-  errMessage: PropTypes.string,
-};
-
-ProductAutosuggest.defaultProps = {
-  errMessage: null
+  value: PropTypes.string.isRequired,
+  onValueChange: PropTypes.func.isRequired,
+  error: PropTypes.string,
 };
 
 export default ProductAutosuggest;

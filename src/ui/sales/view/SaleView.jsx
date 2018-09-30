@@ -1,10 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import PoSActions from '../../PoSActions';
 import SaleViewStore from './SaleViewStore';
 import TextFormatter from '../../../services/TextFormatter';
 import moment from 'moment';
 import 'moment/locale/es';
 import SaleContent from "./SaleContent";
+import GoBackTitle from "../../components/GoBackTitle";
 
 moment.locale('es');
 
@@ -23,7 +25,7 @@ class SaleView extends React.Component {
 
   componentDidMount() {
     document.title = 'Detalles de venta';
-    PoSActions.sales.list.fetch(this.saleId);
+    PoSActions.sales.view.fetch(this.saleId);
   }
 
   componentWillUnmount() {
@@ -32,6 +34,30 @@ class SaleView extends React.Component {
 
   onChange() {
     this.setState(SaleViewStore.getState());
+  }
+
+  static onFilterByProductChange(e) {
+    PoSActions.sales.view.onFilterProductChange(e.target.value)
+  }
+
+  static onFilterBySelfConsumptionChange(e) {
+    PoSActions.sales.view.onFilterSelfConsumptionChange(e.target.value)
+  }
+
+  static onFilterByQuantityChange(e) {
+    PoSActions.sales.view.onFilterQuantityChange(e.target.value)
+  }
+
+  static onFilterByMUnitChange(e) {
+    PoSActions.sales.view.onFilterMUnitChange(e.target.value)
+  }
+
+  static onFilterByUnitPriceChange(e) {
+    PoSActions.sales.view.onFilterUnitPriceChange(e.target.value)
+  }
+
+  static onFilterByPriceChange(e) {
+    PoSActions.sales.view.onFilterPriceChange(e.target.value)
   }
 
   renderDetails() {
@@ -62,8 +88,11 @@ class SaleView extends React.Component {
 
   render() {
     return (
-      <div className="container">
-        <h1 className="margin-bottom-0">Detalles de venta</h1>
+      <div className={ this.props.embeddedMode ? '' : 'container' }>
+        <GoBackTitle
+          title="Detalles de la venta"
+          history={ this.props.history }
+        />
         <h4 className="margin-top-4"># { this.saleId }</h4>
 
         <div className="panel panel-default margin-top-32">
@@ -83,6 +112,12 @@ class SaleView extends React.Component {
             <SaleContent
               contents={ this.state.contents }
               isLoadingProducts={ this.state.isLoadingProducts }
+              onFilterByProductChange={ SaleView.onFilterByProductChange }
+              onFilterBySelfConsumptionChange={ SaleView.onFilterBySelfConsumptionChange }
+              onFilterByQuantityChange={ SaleView.onFilterByQuantityChange }
+              onFilterByMUnitChange={ SaleView.onFilterByMUnitChange }
+              onFilterByUnitPriceChange={ SaleView.onFilterByUnitPriceChange }
+              onFilterByPriceChange={ SaleView.onFilterByPriceChange }
             />
           </div>
         </div>
@@ -90,5 +125,13 @@ class SaleView extends React.Component {
     );
   }
 }
+
+SaleView.propTypes = {
+  embeddedMode: PropTypes.bool
+};
+
+SaleView.defaultProps = {
+  embeddedMode: false
+};
 
 export default SaleView;

@@ -3,6 +3,7 @@ import SalesListStore from './SalesListStore';
 import PoSActions from "../../PoSActions";
 import SalesTable from "./SalesTable";
 import { Link } from 'react-router-dom';
+import moment from "moment";
 
 class SalesList extends React.Component {
   constructor(props) {
@@ -39,21 +40,44 @@ class SalesList extends React.Component {
     )
   }
 
+  static onFilterIdChange(e) {
+    PoSActions.sales.list.onFilterIdChange(e.target.value);
+  }
+
+  static onFilterDateChange(aMoment) {
+    const filterValue = moment.isMoment(aMoment) ? aMoment.toDate() : '';
+    PoSActions.sales.list.onFilterDateChange(filterValue);
+  }
+
+  static onFilterTotalChange(e) {
+    PoSActions.sales.list.onFilterTotalChange(e.target.value);
+  }
+
   render() {
     return (
       <div className="container">
-        <h1>Ventas</h1>
-        <Link to={'/sales/create'} className="btn btn-primary">
-          Nueva venta
-        </Link>
+        <div className="row">
+          <div className="col-sm-6">
+            <h1>Ventas</h1>
+          </div>
+          <div className="col-sm-6 text-right padding-top-24">
+            <Link to={'/sales/create'} className="btn btn-primary">
+              Nueva venta
+            </Link>
+          </div>
+        </div>
 
-        <br/>
-        <br/>
         <SalesTable
           sales={ this.state.sales }
           activePage={ this.state.pageIdx }
           totalPages={ this.state.pagesCount }
           navCb={ this.navToPage }
+          onFilterIdChange={ SalesList.onFilterIdChange }
+          filterId={ this.state.filters.id }
+          onFilterDateChange={ SalesList.onFilterDateChange }
+          filterDate={ this.state.filters.date }
+          onFilterTotalChange={ SalesList.onFilterTotalChange }
+          filterTotal={ this.state.filters.total }
         />
       </div>
     );
