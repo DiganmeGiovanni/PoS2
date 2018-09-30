@@ -18,7 +18,7 @@ const PAuditOperations = props => {
   const renderOperations = () => {
     if (props.operations.length === 0) {
       return <tr>
-        <td colSpan="6" className="text-center">
+        <td colSpan="7" className="text-center">
           <i>Haga click en 'Generar reporte' para auditar el producto</i>
         </td>
       </tr>
