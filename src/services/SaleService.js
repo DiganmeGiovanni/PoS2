@@ -248,19 +248,25 @@ class SaleService {
   static getPurchasedStockUntil(date, cb) {
     let sql = `
       SELECT
-        PHP.product_id    AS product_id,
-        PP.price          AS price,
-        SUM(PHP.quantity) AS quantity,
-        PP.date           AS date,
-        0                 AS soldBeforeQuantity,
-        0                 AS soldBeforeEarnings,
-        0                 AS soldQuantity,
-        0                 AS soldEarnings
+        PHP.product_id                   AS product_id,
+        PRO.name                         AS product_name,
+        MU.name                          AS measurement_unit_name,
+        PP.price                         AS price,
+        SUM(PHP.quantity)                AS quantity,
+        datetime(PP.date, 'localtime') AS date,
+        0                                AS soldBeforeQuantity,
+        0                                AS soldBeforeEarnings,
+        0                                AS soldQuantity,
+        0                                AS soldEarnings
       FROM purchase_has_product PHP
       INNER JOIN purchase_price PP
         ON PP.id = PHP.purchase_price_id
       INNER JOIN purchase PUR
         ON PUR.id = PHP.purchase_id
+      INNER JOIN product PRO
+        ON PRO.id = PHP.product_id
+      INNER JOIN measurement_unit MU
+        ON MU.id = PRO.measurement_unit_id       
       WHERE ${ DateService.fromSQLiteUtcToLocal('PUR.date', false) } <= :date
       GROUP BY PHP.purchase_price_id, PHP.product_id
       ORDER BY PHP.product_id, PP.date

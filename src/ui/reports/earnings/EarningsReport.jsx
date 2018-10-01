@@ -32,13 +32,13 @@ class EarningsReport extends Component {
   static onStartDateChange(aMoment) {
     PoSActions.reports
       .earnings
-      .onEndDateChange(aMoment.toDate());
+      .onStartDateChange(aMoment.toDate());
   }
 
   static onEndDateChange(aMoment) {
     PoSActions.reports
       .earnings
-      .onStartDateChange(aMoment.toDate());
+      .onEndDateChange(aMoment.toDate());
   }
 
   static onGenerateReportClicked() {
