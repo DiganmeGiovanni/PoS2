@@ -19,7 +19,10 @@ class EarningsReportStore extends EventEmitter {
       details: [],
 
       // Indicates if report is being generated on background
-      generatingReport: false
+      generatingReport: false,
+
+      showingModal: false,
+      salePrices: []
     }
   }
 
@@ -46,6 +49,20 @@ class EarningsReportStore extends EventEmitter {
 
   onEndDateChange(date) {
     this.state.endDate = date;
+    this.emitChange();
+  }
+
+  showSalePricesModal(detailsIndex) {
+    this.state.showingModal = true;
+    this.state.salePrices = this.state.details[detailsIndex].salePrices;
+
+    this.emitChange();
+  }
+
+  onSalePricesModalClose() {
+    this.state.showingModal = false;
+    this.state.salePrices = [];
+
     this.emitChange();
   }
 
@@ -77,7 +94,12 @@ class EarningsReportStore extends EventEmitter {
       this.state.details = report.details;
       this.state.generatingReport = false;
 
-      this.emitChange();
+      // Compute self consumption debt
+      SaleService.getSelfConsumptionDebpt(mStartDate, mEndDate, results => {
+        this.state.totalSelfConsumption = results[0].self_consumption;
+
+        this.emitChange();
+      });
     });
   }
 }
@@ -95,6 +117,14 @@ store.dispatchToken = PoSDispatcher.register(action => {
 
     case ActionTypes.REPORTS.EARNINGS.ON_GENERATE_REPORT_CLICKED:
       store.generateReport();
+      break;
+
+    case ActionTypes.REPORTS.EARNINGS.ON_SHOW_SALE_PRICES_MODAL_CLICKED:
+      store.showSalePricesModal(action.detailsIndex);
+      break;
+
+    case ActionTypes.REPORTS.EARNINGS.ON_CLOSE_SALE_PRICES_MODAL_CLICKED:
+      store.onSalePricesModalClose();
       break;
   }
 });

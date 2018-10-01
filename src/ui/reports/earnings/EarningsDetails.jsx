@@ -22,17 +22,33 @@ const EarningsDetails = props => {
           <tr key={`purchased-product-${ idx }`}>
             <td>{ purchasedProduct.product_name }</td>
             <td>{ fDate }</td>
-            <td className="text-right">{ purchasedProduct.quantity }</td>
+            <td className="text-right">
+              { purchasedProduct.quantity }
+            </td>
             <td>{ purchasedProduct.measurement_unit_name }</td>
             <td className="text-right">{ TextFormatter.asMoney(purchasedProduct.price) }</td>
             <td className="text-right">{ TextFormatter.asMoney(purchasedProduct.price * purchasedProduct.quantity) }</td>
-            <td className="text-right">{ purchasedProduct.soldQuantity }</td>
+            <td className="text-right">
+              { purchasedProduct.soldQuantity }
+              <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <button className="btn btn-sm btn-default"
+                      onClick={ () => { props.onViewSalePricesClicked(idx) }}
+              >
+                <span className="glyphicon glyphicon-eye-open"/>
+              </button>
+            </td>
             <td className="text-right">{ TextFormatter.asMoney(purchasedProduct.soldEarnings) }</td>
           </tr>
         )
       })
     }
   };
+
+  let earningsPercent = 0;
+  if (props.totalSold !== 0) {
+    earningsPercent = (props.totalEarnings / props.totalSold) * 100;
+    earningsPercent = earningsPercent.toFixed(2);
+  }
 
   return (
     <div className="panel panel-default">
@@ -44,16 +60,25 @@ const EarningsDetails = props => {
           <LabelValue
             label="Total vendido"
             value={ TextFormatter.asMoney(props.totalSold) }
-          />
-
-          <LabelValue
-            label="Total ganancias"
-            value={ TextFormatter.asMoney(props.totalEarnings) }
+            clazz="col-sm-3"
           />
 
           <LabelValue
             label="Total autoconsumo"
             value={ TextFormatter.asMoney(props.totalSelfConsumption) }
+            clazz="col-sm-3"
+          />
+
+          <LabelValue
+            label="Total ganancias"
+            value={ TextFormatter.asMoney(props.totalEarnings) }
+            clazz="col-sm-3"
+          />
+
+          <LabelValue
+            label="Porcentaje de ganancias"
+            value={ `${ earningsPercent }%` }
+            clazz="col-sm-3"
           />
         </div>
 
@@ -88,7 +113,8 @@ EarningsDetails.propTypes = {
   totalEarnings: PropTypes.number.isRequired,
   totalSelfConsumption: PropTypes.number.isRequired,
 
-  details: PropTypes.array.isRequired
+  details: PropTypes.array.isRequired,
+  onViewSalePricesClicked: PropTypes.func.isRequired
 };
 
 export default EarningsDetails;

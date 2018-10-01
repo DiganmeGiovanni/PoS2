@@ -4,6 +4,7 @@ import EarningsForm from "./EarningsForm";
 import EarningsReportStore from "./EarningsReportStore";
 import PoSActions from "../../PoSActions";
 import EarningsDetails from "./EarningsDetails";
+import EarningsPricesModal from "./EarningsPricesModal";
 
 class EarningsReport extends Component {
   constructor(props) {
@@ -45,6 +46,14 @@ class EarningsReport extends Component {
     PoSActions.reports.earnings.onGenerateReportClicked();
   }
 
+  static onShowSalePricesModal(detailsIndex) {
+    PoSActions.reports.earnings.onShowSalePricesModalClicked(detailsIndex);
+  }
+
+  static onSalePricesModalClose() {
+    PoSActions.reports.earnings.onCloseSalePricesModalClicked();
+  }
+
   render() {
     return (
       <div className="container">
@@ -64,6 +73,14 @@ class EarningsReport extends Component {
           totalEarnings={ this.state.totalEarnings }
           totalSelfConsumption={ this.state.totalSelfConsumption }
           details={ this.state.details }
+
+          onViewSalePricesClicked={ EarningsReport.onShowSalePricesModal }
+        />
+
+        <EarningsPricesModal
+          show={ this.state.showingModal }
+          onClose={ EarningsReport.onSalePricesModalClose }
+          salePrices={ this.state.salePrices }
         />
       </div>
     );

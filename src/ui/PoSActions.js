@@ -737,6 +737,17 @@ const PoSActions = {
         PosDispatcher.dispatch({
           type: ActionTypes.REPORTS.EARNINGS.ON_GENERATE_REPORT_CLICKED
         })
+      },
+      onShowSalePricesModalClicked(detailsIndex) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.REPORTS.EARNINGS.ON_SHOW_SALE_PRICES_MODAL_CLICKED,
+          detailsIndex: detailsIndex
+        })
+      },
+      onCloseSalePricesModalClicked() {
+        PosDispatcher.dispatch({
+          type: ActionTypes.REPORTS.EARNINGS.ON_CLOSE_SALE_PRICES_MODAL_CLICKED
+        })
       }
     }
   }

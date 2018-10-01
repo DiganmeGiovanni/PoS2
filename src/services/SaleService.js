@@ -327,6 +327,33 @@ class SaleService {
         console.error(err);
       });
   }
+
+  static getSelfConsumptionDebpt(startdate, endDate, cb) {
+    let sql = `
+      SELECT
+        IFNULL(SUM(SP.price * SHP.quantity), 0) AS self_consumption
+      FROM sale_has_product SHP
+      INNER JOIN sale_price SP
+        ON SP.id = SHP.sale_price_id
+      INNER JOIN sale SAL
+        ON SAL.id = SHP.sale_id
+      WHERE SHP.self_consumption = 1
+        AND ( ${ DateService.fromSQLiteUtcToLocal('SAL.date', false) }
+          BETWEEN :startDate
+              AND :endDate
+        )
+    `;
+
+    sequelize.query(sql, {
+        type: Sequelize.QueryTypes.SELECT,
+        replacements: { startDate: startdate, endDate: endDate }
+      })
+      .then(cb)
+      .catch(err => {
+        console.error('Self consumption debt could not be queried')
+        console.error(err);
+      });
+  }
 }
 
 export default SaleService

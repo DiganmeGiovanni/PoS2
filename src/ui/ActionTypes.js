@@ -168,7 +168,9 @@ const ActionTypes = {
     EARNINGS: {
       ON_START_DATE_CHANGE: 'reports/earnings/on_start_date_change',
       ON_END_DATE_CHANGE: 'reports/earnings/on_end_date_change',
-      ON_GENERATE_REPORT_CLICKED: 'reports/earning/on_generate_report_clicked'
+      ON_GENERATE_REPORT_CLICKED: 'reports/earning/on_generate_report_clicked',
+      ON_SHOW_SALE_PRICES_MODAL_CLICKED: 'reports/earnings/on_show_sale_prices_modal',
+      ON_CLOSE_SALE_PRICES_MODAL_CLICKED: 'reports/earnings/on_close_sale_prices_modal'
     }
   }
 };
