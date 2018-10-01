@@ -164,6 +164,11 @@ const ActionTypes = {
       ON_GENERATE_REPORT_CLICKED: 'reports/product/audit/on_operations_report_clicked',
       ON_VIEW_DETAIL_CLICKED: 'reports/product/audit/on_view_detail_clicked',
       ON_DETAIL_MODAL_CLOSE_CLICKED: 'reports/product/audit/on_detail_modal_close_clicked'
+    },
+    EARNINGS: {
+      ON_START_DATE_CHANGE: 'reports/earnings/on_start_date_change',
+      ON_END_DATE_CHANGE: 'reports/earnings/on_end_date_change',
+      ON_GENERATE_REPORT_CLICKED: 'reports/earning/on_generate_report_clicked'
     }
   }
 };

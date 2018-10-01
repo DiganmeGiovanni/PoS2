@@ -77,6 +77,12 @@ class PNavbar extends React.Component {
                 to={'/reports/product/audit'}
                 active={ location.pathname.endsWith('/product/audit')}
               >Auditar producto</MenuItem>
+              <MenuItem
+                componentClass={ Link }
+                href={'/reports/earnings'}
+                to={'/reports/earnings'}
+                active={ location.pathname.endsWith('/reports/earnings')}
+              >Ventas y ganancias</MenuItem>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

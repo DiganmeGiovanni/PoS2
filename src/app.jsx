@@ -28,6 +28,7 @@ import SaleUpsert from './ui/sales/upsert/SaleUpsert';
 import SaleView from "./ui/sales/view/SaleView";
 import Welcome from "./ui/home/Welcome";
 import ProductAudit from "./ui/reports/product_audit/ProductAudit";
+import EarningsReport from "./ui/reports/earnings/EarningsReport";
 
 export default class App extends React.Component {
   render() {
@@ -102,6 +103,7 @@ export default class App extends React.Component {
           <Route exact path={'/sale/:saleId'} component={ SaleView }/>
 
           <Route exact path={'/reports/product/audit'} component={ ProductAudit }/>
+          <Route exact path={'/reports/earnings'} component={ EarningsReport }/>
         </div>
       </Router>
     );

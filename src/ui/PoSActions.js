@@ -719,6 +719,25 @@ const PoSActions = {
           type: ActionTypes.REPORTS.PAUDIT.ON_DETAIL_MODAL_CLOSE_CLICKED
         })
       }
+    },
+    earnings: {
+      onStartDateChange(date) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.REPORTS.EARNINGS.ON_START_DATE_CHANGE,
+          date
+        });
+      },
+      onEndDateChange(date) {
+        PosDispatcher.dispatch({
+          type: ActionTypes.REPORTS.EARNINGS.ON_END_DATE_CHANGE,
+          date
+        });
+      },
+      onGenerateReportClicked() {
+        PosDispatcher.dispatch({
+          type: ActionTypes.REPORTS.EARNINGS.ON_GENERATE_REPORT_CLICKED
+        })
+      }
     }
   }
 };
