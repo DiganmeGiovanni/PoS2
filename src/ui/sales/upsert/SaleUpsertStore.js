@@ -41,7 +41,7 @@ class SaleUpsertStore extends EventEmitter {
       form: SaleUpsertStore.initialFormState(),
 
       // Save in progress?
-      saving: true
+      saving: false
     }
   }
 
