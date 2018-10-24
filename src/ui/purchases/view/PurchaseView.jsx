@@ -128,10 +128,7 @@ class PurchaseView extends React.Component {
   render() {
     return (
       <div className={this.props.embeddedMode ? '' : 'container'}>
-        <GoBackTitle
-          title="Detalles de la compra"
-          history={ this.props.history }
-        />
+        <GoBackTitle title="Detalles de la compra"/>
         <h4 className="margin-top-4"># { this.purchaseId }</h4>
 
         <div className="panel panel-default margin-top-32">

@@ -57,7 +57,7 @@ class EarningsReport extends Component {
   render() {
     return (
       <div className="container">
-        <GoBackTitle title="Reporte de ganancias" history={ this.props.history }/>
+        <GoBackTitle title="Reporte de ganancias"/>
         <br/>
 
         <EarningsForm

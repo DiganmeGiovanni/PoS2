@@ -89,10 +89,7 @@ class SaleView extends React.Component {
   render() {
     return (
       <div className={ this.props.embeddedMode ? '' : 'container' }>
-        <GoBackTitle
-          title="Detalles de la venta"
-          history={ this.props.history }
-        />
+        <GoBackTitle title="Detalles de la venta"/>
         <h4 className="margin-top-4"># { this.saleId }</h4>
 
         <div className="panel panel-default margin-top-32">

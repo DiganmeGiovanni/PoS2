@@ -66,7 +66,7 @@ class ProductAudit extends Component {
   render() {
     return (
       <div className="container">
-        <GoBackTitle title="Auditar producto" history={ this.props.history }/>
+        <GoBackTitle title="Auditar producto" />
         <br/>
 
         <PAuditForm

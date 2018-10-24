@@ -99,10 +99,7 @@ class ProductView extends React.Component {
   render() {
     return (
       <div className="container">
-        <GoBackTitle
-          title="Detalles de producto"
-          history={ this.props.history }
-        />
+        <GoBackTitle title="Detalles de producto"/>
         <h3 className="margin-top-4">{ this.state.product.name }</h3>
 
         { this.renderDetails() }

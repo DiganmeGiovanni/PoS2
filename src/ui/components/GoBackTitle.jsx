@@ -1,6 +1,9 @@
 import React from 'react';
+import createHistory from 'history/createBrowserHistory';
 
-const GoBackTitle = ({ title, history }) => {
+const history = createHistory();
+
+const GoBackTitle = ({ title }) => {
   if (!history) {
     return <h1>{ title }</h1>
   }
