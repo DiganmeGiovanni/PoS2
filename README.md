@@ -3,13 +3,13 @@ PoS For the people
 A Point of Sales for micro & small business in latam
 
 There are a lot of small business that does not require and overcomplicated,
-ultra flexible, and redundant Point of sales. This kind of businesses usually
+over engineered, ultra flexible Point of Sales. This kind of businesses usually
 are managed by non technical people.
 
-The purpose of this project is to bring an easy to use Point of sales to manage
-a small inventory, a list of providers, purchases, sales and a few reports. Also
-the application works offline and the end user should not configure anything
-to be able to use it. Simply download, double click and whala.
+The purpose of this project is to bring an easy to use Point of Sales application
+to manage a small inventory, a list of providers, purchases, daily sales and a
+few reports. Also the application works offline and the end user does not needs
+configure anything to be able to use it. Simply download, double click and whala.<br/>
 All through a very intuitive UI.
 
 ## Technology stack
